@@ -9,14 +9,14 @@ const swings = {
 };
 
 const defaultFormData = {
-  title: "Test",
+  title: "",
   description: "",
-  tags: "4/4, dundun, test",
+  tags: "",
   swing: "",
   tempo: "",
   signal: "",
   patterns: {
-    dundunba: "o-----o-",
+    dundunba: "",
     sangban: "",
     kenkeni: "",
     kenkeni2: "",
@@ -25,6 +25,8 @@ const defaultFormData = {
 };
 
 export const useSnippetForm = () => {
+  const [errors, setErrors] = useState<string[]>([]);
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState(defaultFormData);
 
@@ -34,7 +36,11 @@ export const useSnippetForm = () => {
 
     try {
       const res = await addSnippet(formData);
-      console.log("res", res);
+      if (res.ok) {
+        setSuccess(true);
+      } else {
+        setErrors(res.messages);
+      }
     } catch (error) {
       console.log("Error:", error);
     } finally {
@@ -45,5 +51,13 @@ export const useSnippetForm = () => {
   const updateFormData = (partial: Record<string, unknown>) =>
     setFormData({ ...formData, ...partial });
 
-  return { handleSubmit, loading, swings, formData, updateFormData };
+  return {
+    handleSubmit,
+    loading,
+    errors,
+    success,
+    swings,
+    formData,
+    updateFormData,
+  };
 };

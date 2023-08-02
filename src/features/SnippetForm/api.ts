@@ -18,22 +18,40 @@ export const addSnippet = async ({
   patterns,
   ...data
 }: Snippet) => {
-  const firstLen = Object.values(patterns as Record<string, string>)?.[0]
-    .length;
+  const patternKeys = Object.keys(patterns);
+  const patternValues = Object.values(patterns);
+  let messages: string[] = [];
+
+  const firstLen = patternValues?.[0].length;
   const meter = firstLen % 4 === 0 ? 4 : firstLen % 3 === 0 ? 3 : -1;
 
-  if (
-    meter < 0 ||
-    !title ||
-    (tags?.length || 0) < 3 ||
-    (Object.keys(patterns)?.length || 0) < 1 ||
-    Object.values(patterns as Record<string, string>).some(
-      (p) => p.length % meter !== 0
-    )
-  ) {
-    return {
-      message: "Incomplete data payload",
-    };
+  const incorrectPatterns = patternKeys.filter(
+    (inst) => patterns[inst].length % meter !== 0
+  );
+
+  if (meter < 0) {
+    messages.push(`Incorrect pattern: ${patternKeys[0]}`);
+  }
+
+  if (meter > 0 && incorrectPatterns.length > 0) {
+    messages.push(`Incorrect patterns: ${incorrectPatterns.join(", ")}`);
+  }
+
+  if (!title) {
+    messages.push("A non-empty title please.");
+  }
+
+  if ((tags?.length || 0) < 3) {
+    messages.push(
+      "At least 3 tags please. They must be separated with a coma."
+    );
+  }
+  if ((Object.keys(patterns)?.length || 0) < 1) {
+    messages.push("Incomplete data payload");
+  }
+
+  if (messages.length > 0) {
+    return { messages };
   }
 
   const patternsRefs = await Promise.all(
@@ -61,8 +79,15 @@ export const addSnippet = async ({
     patterns: patternsRefs,
   });
 
+  if (snippet?.id) {
+    return {
+      messages: ["Snippet added"],
+      ok: true,
+    };
+  }
+
   return {
-    message: snippet?.id ? "Snippet added" : "Failed to add the snippet",
+    messages: ["Failed to add the snippet"],
   };
 };
 

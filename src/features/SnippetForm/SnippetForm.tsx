@@ -4,8 +4,15 @@ import { Button, Input, Radios } from "..";
 import Image from "next/image";
 
 export const SnippetForm: FC = () => {
-  const { loading, handleSubmit, swings, formData, updateFormData } =
-    useSnippetForm();
+  const {
+    loading,
+    errors,
+    success,
+    handleSubmit,
+    swings,
+    formData,
+    updateFormData,
+  } = useSnippetForm();
   return (
     <div className="h-fit w-full">
       <form className="grid grid-flow-row gap-8" onSubmit={handleSubmit}>
@@ -120,10 +127,30 @@ export const SnippetForm: FC = () => {
           value={formData.signal}
           onChange={(e) => updateFormData({ signal: e.target.value })}
         />
-        <div className="flex w-full pt-16 justify-center">
+        <div className="flex flex-col w-full pt-16 items-center">
           <Button type="submit" disabled={loading}>
             {loading ? "..." : "Submit rhythm"}
           </Button>
+          {errors.length > 0 && (
+            <div className="py-4 flex md:flex-row-reverse justify-center md:justify-between md:order-reverse items-center flex-wrap w-full">
+              <div className="py-4">
+                {errors.map((msg) => (
+                  <div key={msg} className="text-xl text-red-600 py-2">
+                    {msg}
+                  </div>
+                ))}
+              </div>
+              <div className="py-4 md:pr-8">
+                <Image
+                  src="/dictator.avif"
+                  alt=""
+                  width={165}
+                  height={330}
+                  className="rounded-md"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </form>
     </div>
