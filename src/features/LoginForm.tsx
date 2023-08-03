@@ -18,33 +18,35 @@ export const LoginForm: FC = () => {
     <form className="grid grid-flow-row gap-4 md:gap-6" onSubmit={handleSubmit}>
       <Image
         className="rounded-lg"
-        src="/doors.webp"
-        width={960}
+        src="/god2.avif"
+        width={480}
         height={480}
         alt="The Doors of Durin"
       />
-      <h2 className="my-4 md:my-12 w-full text-center text-stone-300 text-2xl tracking-wider italic">
-        Ennyn Durin Aran Moria.
+      <h2 className="my-4 md:my-8 w-full text-center text-neutral-400 text-xl tracking-wider italic">
+        Ayè si la bila yo djembéfola luye,
         <br />
-        Pedo Mellon a Minno.
+        temi wolu ma wèndyèlon
       </h2>
-      <Input
-        name="e-mail"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Who are you?"
-      />
-      <Input
-        name="password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="What's your secret?"
-      />
-      <div className="flex w-full h-fit justify-center">
-        <Button type="submit" disabled={loading}>
-          {loading ? "..." : "I vow to add many rhythms"}
-        </Button>
+      <div className="grid grid-flow-row gap-2">
+        <Input
+          name="e-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Who are you?"
+        />
+        <Input
+          name="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="What's your secret?"
+        />
+        <div className="flex w-full h-fit justify-center">
+          <Button type="submit" disabled={loading}>
+            {loading ? "..." : "I vow to add many rhythms"}
+          </Button>
+        </div>
       </div>
     </form>
   );

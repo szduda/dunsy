@@ -35,13 +35,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
     });
 
     return unsubscribe;
-  }, [auth]);
-
-  useEffect(() => {
-    if (auth.currentUser) {
-      setUser(auth.currentUser);
-    }
-  }, [auth.currentUser?.uid]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, logIn }}>

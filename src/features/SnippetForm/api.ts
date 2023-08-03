@@ -18,24 +18,18 @@ export const addSnippet = async ({
   patterns,
   ...data
 }: Snippet) => {
-  const patternKeys = Object.keys(patterns);
-  const patternValues = Object.values(patterns);
+  const patternKeys = Object.keys(patterns).filter((key) =>
+    Boolean(patterns[key])
+  );
+  const patternValues = Object.values(patterns).filter(Boolean);
   let messages: string[] = [];
 
-  const firstLen = patternValues?.[0].length;
+  const firstLen = patternValues?.[0]?.length || 1;
   const meter = firstLen % 4 === 0 ? 4 : firstLen % 3 === 0 ? 3 : -1;
 
   const incorrectPatterns = patternKeys.filter(
     (inst) => patterns[inst].length % meter !== 0
   );
-
-  if (meter < 0) {
-    messages.push(`Incorrect pattern: ${patternKeys[0]}`);
-  }
-
-  if (meter > 0 && incorrectPatterns.length > 0) {
-    messages.push(`Incorrect patterns: ${incorrectPatterns.join(", ")}`);
-  }
 
   if (!title) {
     messages.push("A non-empty title please.");
@@ -46,8 +40,17 @@ export const addSnippet = async ({
       "At least 3 tags please. They must be separated with a coma."
     );
   }
-  if ((Object.keys(patterns)?.length || 0) < 1) {
-    messages.push("Incomplete data payload");
+
+  if (patternValues.length < 1) {
+    messages.push("At least one drum pattern please.");
+  } else {
+    if (meter < 0) {
+      messages.push(`Incorrect pattern: ${patternKeys[0]}.`);
+    }
+
+    if (meter > 0 && incorrectPatterns.length > 0) {
+      messages.push(`Incorrect patterns: ${incorrectPatterns.join(", ")}.`);
+    }
   }
 
   if (messages.length > 0) {
@@ -87,7 +90,7 @@ export const addSnippet = async ({
   }
 
   return {
-    messages: ["Failed to add the snippet"],
+    messages: ["Off you go. The rhythm vault is closed today."],
   };
 };
 

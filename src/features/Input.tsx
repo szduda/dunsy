@@ -20,14 +20,14 @@ export const Input: FC<Props> = ({
   ...inputProps
 }) => {
   const inputClasses = [
-    "bg-white border border-slate-300 size-16 text-lg text-slate-700 tracking-wide p-2 rounded-md w-full hover:border-slate-400 focus:border-slate-700 focus:outline-none transition-colors",
+    "bg-white border border-slate-200 size-16 text-lg text-slate-700 tracking-wide p-2 rounded-md w-full hover:border-slate-400 focus:border-slate-700 focus:outline-none transition-colors",
     className,
   ].join(" ");
 
   return (
     <label>
       {label && (
-        <div className="text-slate-400 text-sm font-semibold tracking-wider mb-2 uppercase">
+        <div className="text-slate-500 text-sm font-semibold tracking-wider mb-2 uppercase">
           {label}
         </div>
       )}

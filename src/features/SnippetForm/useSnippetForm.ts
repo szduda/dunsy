@@ -38,6 +38,7 @@ export const useSnippetForm = () => {
       const res = await addSnippet(formData);
       if (res.ok) {
         setSuccess(true);
+        setErrors([]);
       } else {
         setErrors(res.messages);
       }
@@ -51,6 +52,13 @@ export const useSnippetForm = () => {
   const updateFormData = (partial: Record<string, unknown>) =>
     setFormData({ ...formData, ...partial });
 
+  const resetForm = () => {
+    setFormData(defaultFormData);
+    setLoading(false);
+    setSuccess(false);
+    setErrors([]);
+  };
+
   return {
     handleSubmit,
     loading,
@@ -59,5 +67,6 @@ export const useSnippetForm = () => {
     swings,
     formData,
     updateFormData,
+    resetForm,
   };
 };
