@@ -66,7 +66,7 @@ export const SnippetForm: FC = () => {
           onChange={(e) => updateFormData({ tags: e.target.value })}
         />
 
-        <div className="bg-amber-300 md:rounded-lg mt-4 -mx-2 px-2 py-8 md:-mx-24 md:py-10 md:px-24">
+        <div className="bg-amber-300 md:rounded-lg mt-4 -mx-2 px-2 py-8 md:-mx-24 md:pt-12 md:pb-14 md:px-24">
           <div className="text-xl pb-4 flex justify-between items-end">
             <div className="text-orange-800 tracking-wide">Patterns</div>
             <div className="pl-4 text-orange-800 text-sm">min 1 required</div>
