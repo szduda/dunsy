@@ -13,98 +13,32 @@ import {
   query,
   where,
   documentId,
-  DocumentSnapshot,
+  limit,
+  orderBy,
 } from "firebase/firestore/lite";
+import { DbSnippet, Pattern, Snippet } from "./types";
 
-type Pattern = {
-  id?: string;
-  pattern?: string;
-  instrument?: string;
-  title?: string;
-};
+const DRUMS_COLLECTION = "drums";
+const PATTERNS_COLLECTION = "patterns";
 
-type Snippet = {
-  title: string;
-  tags: string;
-  patterns: Record<string, string>;
-  description?: string;
-  swing?: string;
-  tempo?: string;
-  signal?: string;
-};
-
-type DbSnippet = {
-  id?: string;
-  title: string;
-  tags: string[];
-  patterns: any[];
-  description?: string;
-  swing?: string;
-  tempo?: number;
-  signal?: string;
-};
-
-const validate = ({ title, tags, patterns, tempo }: Snippet) => {
-  const patternKeys = Object.keys(patterns).filter((key) =>
-    Boolean(patterns[key])
-  );
-  const patternValues = Object.values(patterns).filter(Boolean);
-  let messages: string[] = [];
-
-  const firstLen = patternValues?.[0]?.length || 1;
-  const meter = firstLen % 4 === 0 ? 4 : firstLen % 3 === 0 ? 3 : -1;
-
-  const incorrectPatterns = patternKeys.filter(
-    (inst) => patterns[inst].length % meter !== 0
-  );
-
-  if (!title) {
-    messages.push("A non-empty title please.");
-  }
-
-  if ((tags?.length || 0) < 3) {
-    messages.push(
-      "At least 3 tags please. They must be separated with a coma."
-    );
-  }
-
-  if (patternValues.length < 1) {
-    messages.push("At least one drum pattern please.");
-  } else {
-    if (meter < 0) {
-      messages.push(`Incorrect pattern: ${patternKeys[0]}.`);
-    }
-
-    if (meter > 0 && incorrectPatterns.length > 0) {
-      messages.push(`Incorrect patterns: ${incorrectPatterns.join(", ")}.`);
-    }
-  }
-
-  const incorrectNotation = patternKeys.find((inst) =>
-    [...patterns[inst]].some((char) => !["x", "o", "-"].includes(char))
-  );
-
-  if (incorrectNotation) {
-    messages.push("Incorrect notation. Patterns speak only: x o -");
-  }
-
-  if (tempo && (Number(tempo) < 80 || Number(tempo) > 180)) {
-    messages.push("Tempo between 80 and 180 please.");
-  }
-
-  return messages;
-};
-
-export const getSnippets = async (search: string) => {
+export const getSnippets = async (search?: string) => {
+  const col = collection(db, DRUMS_COLLECTION);
   const response = await getDocs(
-    query(collection(db, "_drums"), where("tags", "array-contains", search))
+    search
+      ? query(
+          col,
+          where("tags", "array-contains", search.toLowerCase().trim()),
+          orderBy("createdAt", "desc"),
+          limit(20)
+        )
+      : query(col, orderBy("createdAt", "desc"), limit(5))
   );
 
   return response.docs.map((doc) => ({ id: doc.id, title: doc.data().title }));
 };
 
 export const getSnippet = async (id: string) => {
-  const raw = await getDoc(doc(db, "_drums", id));
+  const raw = await getDoc(doc(db, DRUMS_COLLECTION, id));
   const rawData = raw.data();
   const rawPatterns = await Promise.all(
     rawData?.patterns
@@ -176,7 +110,7 @@ export const updateSnippet = async (id: string, data: Snippet) => {
     return { messages };
   }
 
-  const document = await getDoc(doc(db, "_drums", id));
+  const document = await getDoc(doc(db, DRUMS_COLLECTION, id));
   const patternsRefs = await updatePatterns(document.data() as DbSnippet, data);
 
   const success = await updateDrums(document.ref, {
@@ -201,6 +135,64 @@ export const updateSnippet = async (id: string, data: Snippet) => {
   };
 };
 
+const validate = ({ title, tags, patterns, tempo }: Snippet) => {
+  const patternKeys = Object.keys(patterns).filter((key) =>
+    Boolean(patterns[key])
+  );
+  const patternValues = Object.values(patterns).filter(Boolean);
+  let messages: string[] = [];
+
+  const firstLen = patternValues?.[0]?.length || 1;
+  const meter =
+    Number.parseInt(tags.charAt(0)) || firstLen % 6 === 0
+      ? 6
+      : firstLen % 4 === 0
+      ? 4
+      : firstLen % 3 === 0
+      ? 3
+      : -1;
+
+  const incorrectPatterns = patternKeys.filter(
+    (inst) => patterns[inst].length % meter !== 0
+  );
+
+  if (!title) {
+    messages.push("A non-empty title please.");
+  }
+
+  if ((tags?.length || 0) < 3) {
+    messages.push(
+      "At least 3 tags please. They must be separated with a coma."
+    );
+  }
+
+  if (patternValues.length < 1) {
+    messages.push("At least one drum pattern please.");
+  } else {
+    if (meter < 0) {
+      messages.push(`Incorrect pattern: ${patternKeys[0]}.`);
+    }
+
+    if (meter > 0 && incorrectPatterns.length > 0) {
+      messages.push(`Incorrect patterns: ${incorrectPatterns.join(", ")}.`);
+    }
+  }
+
+  const incorrectNotation = patternKeys.find((inst) =>
+    [...patterns[inst]].some((char) => !["x", "o", "-"].includes(char))
+  );
+
+  if (incorrectNotation) {
+    messages.push("Incorrect notation. Patterns speak only: x o -");
+  }
+
+  if (tempo && (Number(tempo) < 80 || Number(tempo) > 180)) {
+    messages.push("Tempo between 80 and 180 please.");
+  }
+
+  return messages;
+};
+
 const addDrums = async (snippet: DbSnippet) => {
   if (snippet.patterns.length < 1) {
     console.log("Snippet data invalid: min 1 pattern is required.");
@@ -208,7 +200,7 @@ const addDrums = async (snippet: DbSnippet) => {
   }
 
   try {
-    const docRef = await addDoc(collection(db, "_drums"), {
+    const docRef = await addDoc(collection(db, DRUMS_COLLECTION), {
       ...snippet,
       createdAt: serverTimestamp(),
     });
@@ -240,7 +232,7 @@ const updateDrums = async (docRef: DocumentReference, snippet: DbSnippet) => {
 
 const addPattern = async (data: Pattern) => {
   try {
-    const docRef = await addDoc(collection(db, "_patterns"), data);
+    const docRef = await addDoc(collection(db, PATTERNS_COLLECTION), data);
     console.log("Pattern written with ID: ", docRef.id);
     return docRef;
   } catch (e) {
@@ -254,7 +246,7 @@ const addPattern = async (data: Pattern) => {
 const updatePatterns = async (existingData: DbSnippet, data: Snippet) => {
   const existingPatterns = await getDocs(
     query(
-      collection(db, "_patterns"),
+      collection(db, PATTERNS_COLLECTION),
       where(documentId(), "in", existingData.patterns)
     )
   );

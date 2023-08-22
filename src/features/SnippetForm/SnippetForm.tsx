@@ -47,7 +47,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
         className="p-2 md:px-4 text-xl text-black fixed top-11 md:top-13 left-12 tracking-wider rounded-lg hover:bg-amber-400 hover:scale-110 transition-all"
         onClick={onBack}
       >
-        &#xFFE9; Back
+        {'\u2190'} Back
       </button>
       <form className="grid grid-flow-row gap-8" onSubmit={handleSubmit}>
         <div className="flex w-full justify-center">
@@ -154,7 +154,13 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
           value={formData.tempo}
           onChange={(e) => updateFormData({ tempo: e.target.value })}
         />
-        <Radios label="Swing style" name="swing" items={swings} />
+        <Radios
+          label="Swing style"
+          name="swing"
+          items={swings}
+          value={formData.swing}
+          onChange={(swing) => updateFormData({ swing })}
+        />
         <Input
           label="Custom call pattern"
           placeholder="sstsss------"

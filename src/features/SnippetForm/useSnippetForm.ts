@@ -1,14 +1,15 @@
 import { FormEvent, useState } from "react";
 import { addSnippet } from "..";
+import { Snippet } from "./types";
 
 const swings = {
   "": "none",
-  ">": "4/4 standard",
+  ">": "4/4",
   ">>": "6/8 tiriba, djaa",
   "<<": "6/8 soli, dunumba",
 };
 
-const defaultFormData = {
+const defaultFormData: Snippet = {
   title: "",
   description: "",
   tags: "",

@@ -18,7 +18,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={inter.className}>
         <AuthContextProvider>
           <header className="flex justify-center items-center pt-14 pb-8 px-4 w-full">
-            <Image src="logo.svg" alt="logo" width={80} height={36} className="animate-bounce" />
+            <Image
+              src="logo.svg"
+              alt="logo"
+              width={80}
+              height={36}
+              className="animate-bounce"
+            />
             <h1 className="font-black p-4 text-3xl text-orange-600 hidden md:block">
               edundytor
             </h1>
