@@ -38,7 +38,7 @@ export const Choice: FC = () => {
           <Button
             className="md:min-w-full bg-emerald-800 hover:bg-emerald-700 border-transparent"
             onClick={() => {
-              setInitialData(undefined);
+              setInitialData(null);
               setMode("add");
             }}
           >

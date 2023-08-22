@@ -26,7 +26,7 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose }) => {
     <div className="fixed top-0 left-0 w-full h-full bg-[#000C] flex justify-center items-center">
       <div className="fixed bg-white md:rounded-lg py-3 px-4 flex flex-col w-full md:w-[500px] h-full md:h-fit">
         <div className="w-full flex justify-between items-center text-gray-500">
-          <div className="text-sm">Fixin' da mess, huh?</div>
+          <div className="text-sm">Fixin&rsqo; da mess, huh?</div>
           <button
             className="w-8 h-8 font-bold rounded-full hover:bg-[#0002] hover:text-black transition-colors"
             onClick={onClose}
