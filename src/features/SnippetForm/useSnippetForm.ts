@@ -24,11 +24,16 @@ const defaultFormData = {
   },
 };
 
-export const useSnippetForm = () => {
+export type FormData = typeof defaultFormData;
+
+export const useSnippetForm = (initialData: Partial<FormData> = {}) => {
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState(defaultFormData);
+  const [formData, setFormData] = useState<FormData>({
+    ...defaultFormData,
+    ...initialData,
+  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

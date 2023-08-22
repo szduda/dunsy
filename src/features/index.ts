@@ -9,3 +9,4 @@ export { addSnippet } from "./SnippetForm/api";
 export { LoginForm } from "./LoginForm";
 export { useAuth, AuthContextProvider } from "./AuthContext/AuthContext";
 export { logIn } from "./AuthContext/api";
+export { Choice } from "./Choice/Choice";

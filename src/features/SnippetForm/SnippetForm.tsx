@@ -1,9 +1,14 @@
-import { FC, useEffect } from "react";
-import { useSnippetForm } from "./useSnippetForm";
+import { FC } from "react";
+import { useSnippetForm, FormData } from "./useSnippetForm";
 import { Button, Input, Radios } from "..";
 import Image from "next/image";
 
-export const SnippetForm: FC = () => {
+type Props = {
+  initialData?: Partial<FormData>;
+  onBack?(): void;
+};
+
+export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
   const {
     loading,
     errors,
@@ -13,7 +18,7 @@ export const SnippetForm: FC = () => {
     formData,
     updateFormData,
     resetForm,
-  } = useSnippetForm();
+  } = useSnippetForm(initialData);
 
   if (success) {
     return (
@@ -38,13 +43,19 @@ export const SnippetForm: FC = () => {
 
   return (
     <div className="h-fit w-full">
+      <button
+        className="p-2 md:px-4 text-xl text-black fixed top-11 md:top-13 left-12 tracking-wider rounded-lg hover:bg-amber-400 hover:scale-110 transition-all"
+        onClick={onBack}
+      >
+        &#xFFE9; Back
+      </button>
       <form className="grid grid-flow-row gap-8" onSubmit={handleSubmit}>
         <div className="flex w-full justify-center">
           <Image
-            src="/host.avif"
+            src={initialData ? "/godess2.avif" : "/host.avif"}
             alt="The rhythm vault host in person"
-            width={300}
-            height={400}
+            width={450}
+            height={450}
             className="rounded-lg"
           />
         </div>
