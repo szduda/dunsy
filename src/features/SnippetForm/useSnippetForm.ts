@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { addSnippet } from "..";
 import { Snippet } from "./types";
+import { updateSnippet } from "./api";
 
 const swings = {
   "": "none",
@@ -10,6 +11,7 @@ const swings = {
 };
 
 const defaultFormData: Snippet = {
+  id: "",
   title: "",
   description: "",
   tags: "",
@@ -34,6 +36,10 @@ export const useSnippetForm = (initialData: Partial<FormData> = {}) => {
   const [formData, setFormData] = useState<FormData>({
     ...defaultFormData,
     ...initialData,
+    patterns: {
+      ...defaultFormData.patterns,
+      ...initialData.patterns,
+    },
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -41,7 +47,9 @@ export const useSnippetForm = (initialData: Partial<FormData> = {}) => {
     setLoading(true);
 
     try {
-      const res = await addSnippet(formData);
+      const res = formData.id
+        ? await updateSnippet(formData)
+        : await addSnippet(formData);
       if (res.ok) {
         setSuccess(true);
         setErrors([]);
@@ -55,8 +63,17 @@ export const useSnippetForm = (initialData: Partial<FormData> = {}) => {
     }
   };
 
-  const updateFormData = (partial: Record<string, unknown>) =>
-    setFormData({ ...formData, ...partial });
+  const updateFormData = (partial: Partial<FormData>) =>
+    setFormData({
+      ...defaultFormData,
+      ...formData,
+      ...partial,
+      patterns: {
+        ...defaultFormData.patterns,
+        ...formData.patterns,
+        ...(partial["patterns"] ?? {}),
+      },
+    });
 
   const resetForm = () => {
     setFormData(defaultFormData);

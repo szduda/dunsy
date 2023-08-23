@@ -3,7 +3,7 @@ import { Button, PickSnippetModal, SnippetForm, getSnippet } from "@/features";
 import { FormData } from "../SnippetForm/useSnippetForm";
 
 export const Choice: FC = () => {
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const [initialData, setInitialData] = useState<Partial<FormData> | null>(
     null
   );
@@ -23,7 +23,7 @@ export const Choice: FC = () => {
 
   const onPick = async (id: string) => {
     const snippet = await getSnippet(id);
-    setInitialData(snippet);
+    setInitialData({ id, ...snippet });
     setModalOpen(false);
     setMode("edit");
   };
@@ -33,7 +33,7 @@ export const Choice: FC = () => {
       style={{ backgroundImage: "url('/guard.avif')" }}
       className="w-screen h-screen bg-cover bg-center fixed top-0 flex justify-center"
     >
-      <div className="flex flex-col md:flex-row px-4 items-start md:justify-center w-full">
+      <div className="flex flex-col md:flex-row px-4 items-center md:justify-around w-full">
         <div className="w-full md:w-[360px] p-4 md:py-8">
           <Button
             className="md:min-w-full bg-emerald-800 hover:bg-emerald-700 border-transparent"
@@ -54,9 +54,18 @@ export const Choice: FC = () => {
           </Button>
         </div>
       </div>
-      {modalOpen && (
-        <PickSnippetModal onPick={onPick} onClose={() => setModalOpen(false)} />
-      )}
+      <PickSnippetModal
+        onPick={onPick}
+        onClose={() => setModalOpen(false)}
+        className={[
+          "transition ease-in-out origin-center duration-300",
+          modalOpen
+            ? "opacity-1 scale-y-100 rotate-0"
+            : "opacity-0 scale-y-0 rotate-12",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      />
     </div>
   );
 };

@@ -102,16 +102,21 @@ export const addSnippet = async (data: Snippet) => {
   };
 };
 
-export const updateSnippet = async (id: string, data: Snippet) => {
+export const updateSnippet = async (data: Snippet) => {
   const { title, tags, description, swing, signal, tempo } = data;
   const messages = validate(data);
+
+  if (!data.id) {
+    throw new Error("Missing id param in data");
+  }
 
   if (messages.length > 0) {
     return { messages };
   }
 
-  const document = await getDoc(doc(db, DRUMS_COLLECTION, id));
-  const patternsRefs = await updatePatterns(document.data() as DbSnippet, data);
+  const document = await getDoc(doc(db, DRUMS_COLLECTION, data.id));
+  const existingData = document.data() as DbSnippet;
+  const patternsRefs = await updatePatterns(existingData, data);
 
   const success = await updateDrums(document.ref, {
     title,
@@ -120,7 +125,7 @@ export const updateSnippet = async (id: string, data: Snippet) => {
     ...(swing ? { swing: swing } : {}),
     ...(tempo ? { tempo: Number(tempo) } : {}),
     tags: tags.split(",").map((tag: string) => tag.trim()),
-    patterns: patternsRefs,
+    patterns: patternsRefs.filter(Boolean),
   });
 
   if (success) {
@@ -223,10 +228,7 @@ const updateDrums = async (docRef: DocumentReference, snippet: DbSnippet) => {
     console.log("Snippet updated with ID: ", docRef.id);
     return true;
   } catch (e) {
-    console.error(
-      "Error updating snippet: ",
-      e instanceof FirebaseError && e.code
-    );
+    console.error("Error updating snippet: ", e instanceof FirebaseError && e);
   }
 };
 
@@ -259,15 +261,23 @@ const updatePatterns = async (existingData: DbSnippet, data: Snippet) => {
 
       const newPattern = data.patterns?.[instrument];
 
-      if (patternDoc?.exists() && newPattern) {
+      if (patternDoc?.exists()) {
+        if (!newPattern) {
+          removePattern(patternDoc.ref);
+          return;
+        }
+
         if (patternDoc.data().pattern !== newPattern) {
-          return updatePattern(patternDoc.ref, {
+          updatePattern(patternDoc.ref, {
+            id: patternDoc.id,
             pattern: data.patterns[instrument],
           });
         }
-      } else if (patternDoc?.exists()) {
-        return removePattern(patternDoc.ref);
+
+        // changes or no, return existing ref
+        return Promise.resolve(patternDoc.ref);
       } else {
+        // return new ref
         return addPattern({
           instrument,
           title: instrument,

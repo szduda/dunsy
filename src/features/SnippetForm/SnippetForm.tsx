@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useSnippetForm, FormData } from "./useSnippetForm";
-import { Button, Input, Radios } from "..";
+import { Button, Input, Radios, getSnippet } from "..";
 import Image from "next/image";
 
 type Props = {
@@ -34,8 +34,27 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
           The Gods are pleased with your sacrifice
         </h2>
         {/* <h3 className="my-8 w-full text-5xl text-center text-stone-200">404</h3> */}
-        <Button className="mt-8" onClick={resetForm}>
-          Add another rhythm
+        {initialData ? (
+          <Button
+            className="mt-8"
+            onClick={async () => {
+              resetForm();
+              const refetched = await getSnippet(String(initialData.id));
+              updateFormData({ id: initialData.id, ...refetched });
+            }}
+          >
+            Edit this rhythm again
+          </Button>
+        ) : (
+          <Button className="mt-8" onClick={resetForm}>
+            Add another rhythm
+          </Button>
+        )}
+        <Button
+          className="mt-8 bg-transparent md:hover:bg-transparent border-transparent hover:border-gray-300"
+          onClick={onBack}
+        >
+          <span className="text-black">Go to mountains</span>
         </Button>
       </div>
     );
@@ -44,10 +63,10 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
   return (
     <div className="h-fit w-full">
       <button
-        className="p-2 md:px-4 text-xl text-black fixed top-11 md:top-13 left-12 tracking-wider rounded-lg hover:bg-amber-400 hover:scale-110 transition-all"
+        className="p-2 md:px-4 text-xl text-neutral-500 absolute top-16 left-2 tracking-wider rounded-md hover:bg-[#0002] hover:scale-110 transition-all"
         onClick={onBack}
       >
-        {'\u2190'} Back
+        {"\u2190"} Back
       </button>
       <form className="grid grid-flow-row gap-8" onSubmit={handleSubmit}>
         <div className="flex w-full justify-center">

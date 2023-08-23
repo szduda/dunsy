@@ -4,11 +4,12 @@ import { SnippetListItem } from "../SnippetForm/types";
 import { getSnippets } from "../SnippetForm/api";
 
 type Props = {
+  className?: string;
   onPick(id: string): void;
   onClose(): void;
 };
 
-export const PickSnippetModal: FC<Props> = ({ onPick, onClose }) => {
+export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
   const [term, setTerm] = useState("");
   const [selectedSnippet, selectSnippet] = useState("");
 
@@ -23,10 +24,17 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose }) => {
   }, [term]);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-[#000C] flex justify-center items-center">
+    <div
+      className={[
+        "fixed top-0 left-0 w-full h-full bg-gradient-radial from-[#0008] via-[#000C] to-[#000E] flex justify-center items-end",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className="fixed bg-white md:rounded-lg py-3 px-4 flex flex-col w-full md:w-[500px] h-full md:h-fit">
         <div className="w-full flex justify-between items-center text-gray-500">
-          <div className="text-sm">Fixin&rsqo; da mess, huh?</div>
+          <div className="text-sm">Fixin&rsquo; da mess, huh?</div>
           <button
             className="w-8 h-8 font-bold rounded-full hover:bg-[#0002] hover:text-black transition-colors"
             onClick={onClose}
@@ -41,7 +49,7 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose }) => {
             value={term}
             onChange={(e) => setTerm(e.target.value)}
           />
-          <div className="my-6 overflow-y-scroll max-h-[288px]">
+          <div className="my-6 overflow-y-scroll h-[200px]">
             {snippets.map(({ title, id }) => (
               <label
                 key={id}

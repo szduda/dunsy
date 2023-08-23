@@ -6,6 +6,7 @@ export type Pattern = {
 };
 
 export type Snippet = {
+  id?: string;
   title: string;
   tags: string;
   patterns: Record<string, string>;
