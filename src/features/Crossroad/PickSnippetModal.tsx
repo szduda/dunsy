@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { Button, Input } from "..";
-import { SnippetListItem } from "../SnippetForm/types";
-import { getSnippets } from "../SnippetForm/api";
+import { SnippetListItem } from "../SnippetApi/types";
+import { getSnippets } from "../SnippetApi";
 
 type Props = {
   className?: string;
@@ -72,12 +72,7 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
           </div>
           <Button
             disabled={!selectedSnippet}
-            className={[
-              "md:w-full",
-              !selectedSnippet && "bg-gray-400 pointer-events-none",
-            ]
-              .filter(Boolean)
-              .join(" ")}
+            className="md:w-full"
             onClick={(e) => {
               e.preventDefault();
               onPick(selectedSnippet);

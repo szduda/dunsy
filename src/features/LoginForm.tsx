@@ -6,27 +6,56 @@ export const LoginForm: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const { logIn } = useAuth();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    logIn(email, password);
+    const res = await logIn(email, password);
+    setError(!res);
+    setLoading(false);
   };
 
   return (
     <form className="grid grid-flow-row gap-4 md:gap-6" onSubmit={handleSubmit}>
       <Image
         className="rounded-lg"
-        src="/god2.avif"
+        src={error ? "/dictator.avif" : "/god2.avif"}
         width={480}
         height={480}
-        alt="The Doors of Durin"
+        alt="Dundunin The Guardian"
       />
-      <h2 className="my-4 md:my-8 w-full text-center text-neutral-400 text-xl tracking-wider italic">
-        Ayè si la bila yo djembéfola luye,
-        <br />
-        temi wolu ma wèndyèlon
+      <h2
+        className={[
+          "my-4 md:mt-8 w-full text-center text-xl tracking-wider italic h-[84px]",
+          error ? "text-orange-700" : "text-neutral-400",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {error ? (
+          <>
+            {!email && password && "Dundunfola needa name."}
+            {email && !password && "Mi a know dundunfola has a secret."}
+            {email && password && "Yar a quick learner, mi a say."}
+            {!email && !password && (
+              <>
+                Needa key to enta ina di garage.
+                <br />
+                Ya beda geta key.
+                <br />
+                Mi a wait. Ya know di way.
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            Ayè si la bila yo djembéfola luye,
+            <br />
+            temi wolu ma wèndyèlon
+          </>
+        )}
       </h2>
       <div className="grid grid-flow-row gap-2">
         <Input

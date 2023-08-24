@@ -1,10 +1,10 @@
-import { ChangeEvent, ComponentProps, FC } from "react";
+import { ComponentProps, FC } from "react";
 
 type Props = {
   label: string;
-  items: Record<string, string>;
+  items: Record<string, unknown>;
   value?: string;
-  onChange(value: string): void;
+  onChange(value: any): void;
 } & Omit<ComponentProps<"input">, "value" | "onChange">;
 
 export const Radios: FC<Props> = ({
@@ -32,7 +32,7 @@ export const Radios: FC<Props> = ({
             {...rest}
           />
 
-          {items[myValue]}
+          {String(items[myValue])}
         </label>
       ))}
     </fieldset>

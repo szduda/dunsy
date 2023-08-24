@@ -1,3 +1,7 @@
+import { DocumentReference } from "firebase/firestore/lite";
+
+export type SwingStyle = "" | ">" | ">>" | "<<";
+
 export type Pattern = {
   id?: string;
   pattern?: string;
@@ -11,7 +15,7 @@ export type Snippet = {
   tags: string;
   patterns: Record<string, string>;
   description?: string;
-  swing?: string;
+  swing?: SwingStyle;
   tempo?: string;
   signal?: string;
 };
@@ -20,9 +24,9 @@ export type DbSnippet = {
   id?: string;
   title: string;
   tags: string[];
-  patterns: any[];
+  patterns: DocumentReference[];
   description?: string;
-  swing?: string;
+  swing?: SwingStyle;
   tempo?: number;
   signal?: string;
 };

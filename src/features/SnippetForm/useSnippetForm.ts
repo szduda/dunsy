@@ -1,7 +1,10 @@
 import { FormEvent, useState } from "react";
-import { addSnippet } from "..";
-import { Snippet } from "./types";
-import { updateSnippet } from "./api";
+import {
+  addSnippet,
+  updateSnippet,
+  Snippet,
+  getSnippet,
+} from "@/features/SnippetApi";
 
 const swings = {
   "": "none",
@@ -29,7 +32,8 @@ const defaultFormData: Snippet = {
 
 export type FormData = typeof defaultFormData;
 
-export const useSnippetForm = (initialData: Partial<FormData> = {}) => {
+export const useSnippetForm = (_initialData: Partial<FormData> = {}) => {
+  const [initialData, setInitialData] = useState(_initialData);
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,13 +46,33 @@ export const useSnippetForm = (initialData: Partial<FormData> = {}) => {
     },
   });
 
+  const patternsDirty = Object.keys(formData.patterns).some(
+    (instrument) =>
+      formData.patterns[instrument] !==
+      (initialData.patterns?.[instrument] || "")
+  );
+
+  const dirty = Object.keys(formData).some((field) => {
+    const value = formData[field as keyof Snippet];
+    // try shallow comparison
+    if (value === (initialData?.[field as keyof Snippet] || "")) {
+      return false;
+    }
+
+    if (field === "patterns") {
+      return patternsDirty;
+    }
+
+    return true;
+  });
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const res = formData.id
-        ? await updateSnippet(formData)
+        ? await updateSnippet(formData, patternsDirty)
         : await addSnippet(formData);
       if (res.ok) {
         setSuccess(true);
@@ -82,6 +106,14 @@ export const useSnippetForm = (initialData: Partial<FormData> = {}) => {
     setErrors([]);
   };
 
+  const editAgain = async () => {
+    resetForm();
+    const refetched = await getSnippet(String(initialData.id));
+    const newInitial = { id: initialData.id, ...refetched };
+    updateFormData(newInitial);
+    setInitialData(newInitial);
+  };
+
   return {
     handleSubmit,
     loading,
@@ -91,5 +123,7 @@ export const useSnippetForm = (initialData: Partial<FormData> = {}) => {
     formData,
     updateFormData,
     resetForm,
+    editAgain,
+    dirty,
   };
 };

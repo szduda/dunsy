@@ -1,20 +1,11 @@
-import { app, auth } from "@/firebase";
+import { auth } from "@/firebase";
 import { FirebaseError } from "firebase/app";
-import {
-  getAuth,
-  indexedDBLocalPersistence,
-  initializeAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-
-// export const auth = initializeAuth(app, {
-//   persistence: indexedDBLocalPersistence,
-// });
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export const logIn = async (email: string, password: string) => {
   if (auth.currentUser) {
     console.log("Already logged in", auth.currentUser?.email);
-    // return auth.currentUser;
+    return;
   }
 
   if (!email || !password) {
