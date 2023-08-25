@@ -14,6 +14,7 @@ import { DbSnippet, Snippet } from "./types";
 import { addDrums, updateDrums } from "./drums.api";
 import { addPattern, updatePatterns } from "./pattern.api";
 import { validate } from "./validate";
+import { useAuth } from "..";
 
 const DRUMS_COLLECTION = "drums";
 
@@ -54,7 +55,16 @@ export const getSnippet = async (id: string) => {
 };
 
 export const addSnippet = async (data: Snippet) => {
-  const { title, tags, patterns, description, swing, signal, tempo } = data;
+  const {
+    title,
+    tags,
+    patterns,
+    description,
+    swing,
+    signal,
+    tempo,
+    authorUid,
+  } = data;
   const messages = validate(data);
 
   if (messages.length > 0) {
@@ -84,6 +94,7 @@ export const addSnippet = async (data: Snippet) => {
     ...(tempo ? { tempo: Number(tempo) } : {}),
     tags: tags.split(",").map((tag: string) => tag.trim()),
     patterns: patternsRefs,
+    authorUid,
   });
 
   if (snippet?.id) {

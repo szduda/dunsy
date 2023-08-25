@@ -7,6 +7,7 @@ export type Pattern = {
   pattern?: string;
   instrument?: string;
   title?: string;
+  authorUid: string
 };
 
 export type Snippet = {
@@ -18,6 +19,7 @@ export type Snippet = {
   swing?: SwingStyle;
   tempo?: string;
   signal?: string;
+  authorUid: string
 };
 
 export type DbSnippet = {
@@ -29,6 +31,7 @@ export type DbSnippet = {
   swing?: SwingStyle;
   tempo?: number;
   signal?: string;
+  authorUid: string
 };
 
 export type SnippetListItem = {

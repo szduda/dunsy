@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Button, Input, Radios } from "@/features";
+import { Button, Input, Radios, useAuth } from "@/features";
 import { useSnippetForm, FormData } from "./useSnippetForm";
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
 };
 
 export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
+  const { user } = useAuth();
+
   const {
     loading,
     errors,
@@ -20,7 +22,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
     resetForm,
     editAgain,
     dirty,
-  } = useSnippetForm(initialData);
+  } = useSnippetForm({ ...initialData, authorUid: user?.uid });
 
   return (
     <>

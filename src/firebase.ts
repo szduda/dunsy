@@ -15,10 +15,3 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
-
-// export const fetchDrums = async () => {
-//   const drumsCol = collection(db, "drums");
-//   const drumSnapshot = await getDocs(drumsCol);
-//   const snippetList = drumSnapshot.docs.map((doc) => doc.data());
-//   return snippetList;
-// };
