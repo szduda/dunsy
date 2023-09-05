@@ -125,7 +125,6 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
 
     // onBeat ...
     if (noteIndex % beatSize === beatSize - 1) {
-      // const beatsPerBar = barSize === 9 ? 3 : 2;
       const lastBeat = loopLength / beatSize;
       const beatDelta =
         typeof beat === "number"
@@ -134,7 +133,6 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
       const beatGamma = 1 + beatDelta > 0 ? beatDelta : 0;
       const beatIndex = beatGamma === lastBeat ? 1 : beatGamma + 1;
 
-      // console.log("b", loopLength / beatSize, beatIndex);
       setBeat(beatIndex);
     }
   }, [noteIndex]);
