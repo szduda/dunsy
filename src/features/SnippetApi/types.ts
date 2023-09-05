@@ -7,7 +7,7 @@ export type Pattern = {
   pattern?: string;
   instrument?: string;
   title?: string;
-  authorUid: string;
+  authorUid?: string;
 };
 
 export type Snippet = {
