@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Button, Input, Radios, useAuth } from "@/features";
+import { Button, Input, Radios, useAuth, GroovyPlayer } from "@/features";
 import { useSnippetForm, FormData } from "./useSnippetForm";
 
 type Props = {
@@ -51,7 +51,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
             className="mt-8 bg-transparent md:hover:bg-transparent border-transparent hover:border-gray-300"
             onClick={onBack}
           >
-            <span className="text-black">Go to mountains</span>
+            <span className="text-black">Go to the mountains</span>
           </Button>
         </div>
       )}
@@ -66,7 +66,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
         >
           {"\u2190"} Back
         </button>
-        <form className="grid grid-flow-row gap-8" onSubmit={handleSubmit}>
+        <form className="grid grid-flow-row gap-8">
           <div className="flex w-full justify-center">
             <Image
               src={initialData ? "/godess2.avif" : "/host.avif"}
@@ -94,7 +94,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
             onChange={(e) => updateFormData({ tags: e.target.value })}
           />
 
-          <div className="bg-amber-300 md:rounded-lg mt-4 -mx-2 px-2 py-8 md:-mx-24 md:pt-12 md:pb-14 md:px-24">
+          <div className="bg-amber-300 md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24">
             <div className="text-xl pb-4 flex justify-between items-end">
               <div className="text-orange-800 tracking-wide">Patterns</div>
               <div className="pl-4 text-orange-800 text-sm">min 1 required</div>
@@ -158,6 +158,19 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
                 }
               />
             </div>
+            <div className="pt-8 lg:pt-12">
+              <GroovyPlayer
+                swingStyle={formData.swing}
+                tempo={formData.tempo ? Number(formData.tempo) : 110}
+                tracks={Object.keys(formData.patterns)
+                  .map((instrument) => ({
+                    instrument,
+                    title: instrument,
+                    pattern: formData.patterns[instrument],
+                  }))
+                  .filter((track) => Boolean(track.pattern))}
+              />
+            </div>
           </div>
 
           <h2 className="my-12 w-full text-center text-gray-400 text-3xl tracking-wider">
@@ -193,7 +206,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
           <div className="flex flex-col w-full pt-16 items-center">
             {errors.length > 0 && (
               <div className="py-4 flex md:flex-row-reverse justify-center md:justify-between md:order-reverse items-center flex-wrap w-full">
-                <div className="py-4">
+                <div className="py-4 flex-1">
                   {errors.map((msg) => (
                     <div key={msg} className="text-xl text-orange-600 py-2">
                       {msg}
@@ -211,7 +224,11 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
                 </div>
               </div>
             )}
-            <Button type="submit" disabled={loading || !dirty}>
+            <Button
+              type="submit"
+              disabled={loading || !dirty}
+              onClick={handleSubmit}
+            >
               {loading ? "..." : "Submit rhythm"}
             </Button>
           </div>

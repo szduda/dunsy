@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} id="root">
         <AuthContextProvider>
           <header className="flex justify-center items-center pt-14 pb-8 px-4 w-full">
             <Image

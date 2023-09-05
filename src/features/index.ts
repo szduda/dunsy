@@ -10,3 +10,4 @@ export { useAuth, AuthContextProvider } from "./AuthContext/AuthContext";
 export { logIn } from "./AuthContext/api";
 export { Crossroad } from "./Crossroad/Crossroad";
 export { PickSnippetModal } from "./Crossroad/PickSnippetModal";
+export { GroovyPlayer } from "./GroovyPlayer/GroovyPlayer";

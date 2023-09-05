@@ -76,7 +76,7 @@ export const validate = ({
     swing &&
     !(
       (base === 3 && [">>", "<<"].includes(swing)) ||
-      (base === 4 && [">"].includes(swing))
+      (base === 4 && [">", "--<", "-->"].includes(swing))
     )
   ) {
     messages.push("Ya messed up dem swings, sir.");

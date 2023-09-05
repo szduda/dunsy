@@ -49,7 +49,7 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
             value={term}
             onChange={(e) => setTerm(e.target.value)}
           />
-          <div className="my-6 overflow-y-scroll h-[200px]">
+          <div className="my-6 overflow-y-scroll h-[calc(100dvh-224px)] md:h-[200px]">
             {snippets.map(({ title, id }) => (
               <label
                 key={id}

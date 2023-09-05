@@ -1,8 +1,11 @@
+import { cx } from "@/utils";
 import { ComponentProps, FC, ReactNode } from "react";
 
 type Props = {
+  mini?: boolean;
   label?: ReactNode;
   className?: string;
+  black?: boolean;
 } & (InputProps | TextareaProps);
 
 type InputProps = {
@@ -14,15 +17,21 @@ type TextareaProps = {
 } & ComponentProps<"textarea">;
 
 export const Input: FC<Props> = ({
+  mini = false,
+  black = false,
   label,
   className,
   textarea = false,
   ...inputProps
 }) => {
-  const inputClasses = [
-    "bg-white border border-slate-200 size-16 text-lg text-slate-700 tracking-wide p-2 rounded-md w-full hover:border-slate-400 focus:border-slate-700 focus:outline-none transition-colors",
+  const inputClasses = cx([
+    black
+      ? "bg-black text-white border-slate-500 hover:border-slate-400 focus:border-slate-200 py-3"
+      : "bg-white text-slate-700 border-slate-200 hover:border-slate-400 focus:border-slate-700",
+    "border size-16 text-lg tracking-wide p-2 rounded-md focus:outline-none transition-colors",
+    !mini && "w-full",
     className,
-  ].join(" ");
+  ]);
 
   return (
     <label>

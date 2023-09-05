@@ -1,13 +1,13 @@
 import { DocumentReference } from "firebase/firestore/lite";
 
-export type SwingStyle = "" | ">" | ">>" | "<<";
+export type SwingStyle = "" | ">" | ">>" | "<<" | "-->" | "--<";
 
 export type Pattern = {
   id?: string;
   pattern?: string;
   instrument?: string;
   title?: string;
-  authorUid: string
+  authorUid: string;
 };
 
 export type Snippet = {
@@ -19,7 +19,7 @@ export type Snippet = {
   swing?: SwingStyle;
   tempo?: string;
   signal?: string;
-  authorUid: string
+  authorUid: string;
 };
 
 export type DbSnippet = {
@@ -31,7 +31,7 @@ export type DbSnippet = {
   swing?: SwingStyle;
   tempo?: number;
   signal?: string;
-  authorUid: string
+  authorUid: string;
 };
 
 export type SnippetListItem = {

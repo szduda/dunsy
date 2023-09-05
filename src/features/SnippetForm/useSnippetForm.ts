@@ -11,10 +11,13 @@ const swings = {
   ">": "4/4",
   ">>": "6/8 tiriba, djaa",
   "<<": "6/8 soli, dunumba",
+  "-->": "4/4 gnawa",
+  "--<": "4/4 soboninkun",
 };
 
 const defaultFormData: Snippet = {
   id: "",
+  authorUid: "",
   title: "",
   description: "",
   tags: "",

@@ -14,7 +14,6 @@ import { DbSnippet, Snippet } from "./types";
 import { addDrums, updateDrums } from "./drums.api";
 import { addPattern, updatePatterns } from "./pattern.api";
 import { validate } from "./validate";
-import { useAuth } from "..";
 
 const DRUMS_COLLECTION = "drums";
 
@@ -81,6 +80,7 @@ export const addSnippet = async (data: Snippet) => {
             instrument,
             title: instrument,
             pattern: patterns[instrument],
+            authorUid,
           })
       )
       .filter(Boolean)
