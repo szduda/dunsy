@@ -33,14 +33,14 @@ export const Tags: FC<Props> = ({
           onClick={() => (dimmed ? null : search(tag))}
           key={tag}
           className={cx([
-            "mt-1 mx-0.5 tracking-wide rounded-md border border-yellowy",
+            "mt-1 mx-0.5 tracking-wide rounded-md border",
             dimmed
               ? "border-graye-dark/50 text-graye/75 pointer-events-none opacity-75"
-              : "bg-yellowy-light hover:bg-yellowy-dark text-blacky",
+              : "bg-yellowy-light hover:bg-yellowy-dark border-yellowy text-blacky",
             small ? "text-md px-1" : "text-lg font-medium px-2",
           ])}
         >
-          {tag.trim()}
+          {tag.trim().toLowerCase()}
         </button>
       ))}
     </div>

@@ -20,7 +20,9 @@ const RhythmPage: FC<Props> = async ({ params }) => {
     <main className="flex mx-auto flex-col items-center justify-center pt-8 pb-8 max-w-[1024px]">
       <div className="px-2 lg:px-8 w-full md:w-3/4 self-start pt-4 md:pt-8">
         <Tags tagString={data.tags} />
-        <h1 className="w-full text-5xl font-black mt-5">{data.title}</h1>
+        <h1 className="w-full text-5xl font-black mt-5 capitalize">
+          {data.title}
+        </h1>
         {data.description && (
           <p className="mt-6 md:mt-12 text-graye-light">{data.description}</p>
         )}
@@ -54,8 +56,13 @@ export async function generateMetadata(
 ) {
   const snippet = await getSnippetBySlug(params.slug);
   const parentMeta = await parent;
+  const title = snippet?.title
+    .split(" ")
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.substring(1)}`)
+    .join(" ");
+
   return {
-    title: `${snippet?.title ?? "Not found"} - ${parentMeta.title?.absolute}`,
+    title: `${title ?? "Page Not Found"} - ${parentMeta.title?.absolute}`,
   };
 }
 

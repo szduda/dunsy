@@ -2,6 +2,7 @@ export {
   getSnippets,
   getSnippet,
   getSnippetBySlug,
+  getRecentlyAdded,
   addSnippet,
   updateSnippet,
 } from "./snippet.api";

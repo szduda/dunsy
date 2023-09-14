@@ -18,7 +18,9 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const snippets = await getSnippets(term.length > 2 ? term : undefined);
+      const snippets = await getSnippets(term.length > 2 ? term : undefined, {
+        limit: 20,
+      });
       setSnippets(snippets);
       selectSnippet("");
     };

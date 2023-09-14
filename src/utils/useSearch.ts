@@ -43,9 +43,10 @@ export const useSearch = () => {
 
   return {
     search,
+    clearSearch: () => search(""),
+    searchQuery,
+    searchResults,
     term,
     setTerm,
-    searchResults,
-    clearSearch: () => search(""),
   };
 };

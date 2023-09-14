@@ -26,10 +26,32 @@ export const getSnippets = async (search?: string, options = { limit: 5 }) => {
           col,
           where("tags", "array-contains", search.toLowerCase().trim()),
           orderBy("createdAt", "desc"),
-          limit(options.limit || 20)
+          limit(options.limit)
         )
-      : query(col, orderBy("createdAt", "desc"), limit(options.limit || 5))
+      : query(col, orderBy("createdAt", "desc"), limit(options.limit))
   );
+
+  const results: SnippetCard[] = response.docs.map((doc) => {
+    const { title, slug, tags } = doc.data();
+    return {
+      id: doc.id,
+      title,
+      slug,
+      tags,
+    };
+  });
+
+  return results;
+};
+
+export const getRecentlyAdded = async (options = { limit: 4 }) => {
+  const _query = query(
+    collection(db, DRUMS_COLLECTION),
+    orderBy("createdAt", "desc"),
+    limit(options.limit)
+  );
+
+  const response = await getDocs(_query);
 
   const results: SnippetCard[] = response.docs.map((doc) => {
     const { title, slug, tags } = doc.data();
