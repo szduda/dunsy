@@ -1,37 +1,40 @@
-import { AuthContextProvider } from "@/features";
-import "./globals.css";
+import { ComponentProps, FC } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Image from "next/image";
-import { ReactNode } from "react";
+import { Layout } from "@/features";
+import { MidiSounds } from "@/lib/MidiSounds";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Edundytor",
-  description: "Allows to CRUD rhythm snippets",
+  title: "dunsy.app",
+  description: "Phrases, patterns and arranges for West African dundun drums",
+  icons: [
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "32x32",
+      url: "/favicons/fav-32.png",
+    },
+  ],
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <body className={inter.className} id="root">
-        <AuthContextProvider>
-          <header className="flex justify-center items-center pt-14 pb-8 px-4 w-full">
-            <Image
-              src="logo.svg"
-              alt="logo"
-              width={80}
-              height={36}
-              className="animate-bounce"
-            />
-            <h1 className="font-black p-4 text-3xl text-orange-600 hidden md:block">
-              edundytor
-            </h1>
-          </header>
-          {children}
-        </AuthContextProvider>
-      </body>
-    </html>
-  );
-}
+const RootLayout: FC<ComponentProps<typeof Layout>> = (props) => (
+  <html lang="en">
+    <body
+      className={inter.className}
+      style={{
+        backgroundImage: `url('/bg.jpg')`,
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <MidiSounds>
+        <Layout {...props} />
+      </MidiSounds>
+    </body>
+  </html>
+);
+
+export default RootLayout;

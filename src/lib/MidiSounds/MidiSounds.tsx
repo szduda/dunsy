@@ -5,6 +5,7 @@ import {
   useEffect,
   FC,
   ReactNode,
+  useState,
 } from "react";
 
 import { MIDISounds } from "./midi-sounds-react";
@@ -52,26 +53,20 @@ const MidiSoundsContext = createContext<any>(null);
 export const useMidiSounds = () => useContext(MidiSoundsContext);
 
 export const MidiSounds: FC<{ children: ReactNode }> = ({ children }) => {
+  const [isClient, setIsClient] = useState(false);
   const midiSounds = useRef<any>(null);
 
-  useEffect(() => () => midiSounds.current?.stopPlayLoop, []);
+  useEffect(() => {
+    setIsClient(true);
+    return midiSounds.current?.stopPlayLoop;
+  }, []);
+
+  if (!isClient) return children;
 
   return (
     <MidiSoundsContext.Provider value={midiSounds}>
       {children}
-      <div
-        style={{
-          opacity: 0.4,
-          // textAlign: "right",
-          // margin: "0.75em 0",
-          // position: "fixed",
-          // left: "calc(100% - 80px)",
-          // bottom: "-16px",
-          filter: "saturate(0)",
-        }}
-      >
-        <MIDISounds ref={midiSounds} appElementName="root" drums={drums} />
-      </div>
+      <MIDISounds ref={midiSounds} appElementName="root" drums={drums} />
     </MidiSoundsContext.Provider>
   );
 };

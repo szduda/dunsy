@@ -2,6 +2,7 @@ import { FC } from "react";
 import Image from "next/image";
 import { Button, Input, Radios, useAuth, GroovyPlayer } from "@/features";
 import { useSnippetForm, FormData } from "./useSnippetForm";
+import { cx } from "@/utils";
 
 type Props = {
   initialData?: Partial<FormData>;
@@ -35,7 +36,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
             height={403}
             alt="Happy African Gods"
           />
-          <h2 className="my-8 md:my-16 w-full text-center text-emerald-500 text-4xl tracking-wider">
+          <h2 className="my-8 md:my-16 w-full text-center text-greeny-light text-4xl tracking-wider">
             Mandé Gods are pleased with your sacrifice
           </h2>
           {initialData ? (
@@ -48,20 +49,16 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
             </Button>
           )}
           <Button
-            className="mt-8 bg-transparent md:hover:bg-transparent border-transparent hover:border-gray-300"
+            className="mt-8 bg-transparent md:hover:bg-transparent border-transparent hover:border-graye"
             onClick={onBack}
           >
-            <span className="text-black">Go to the mountains</span>
+            <span className="text-graye-light">Go to the mountains</span>
           </Button>
         </div>
       )}
-      <div
-        className={["h-fit w-full", success && "hidden"]
-          .filter(Boolean)
-          .join(" ")}
-      >
+      <div className={cx(["h-fit w-full", success && "hidden"])}>
         <button
-          className="p-2 md:px-4 text-lg text-neutral-500 absolute top-16 left-2 tracking-wider rounded-md hover:bg-[#0002] hover:scale-110 transition-all"
+          className="p-2 md:px-4 text-lg text-graye absolute top-16 left-2 tracking-wider rounded-md hover:bg-[#0002] hover:scale-110 transition-all"
           onClick={onBack}
         >
           {"\u2190"} Back
@@ -77,33 +74,32 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
             />
           </div>
 
-          <h2 className="my-12 w-full text-center text-gray-400 text-3xl tracking-wider">
+          <h2 className="my-12 w-full text-center text-graye text-3xl tracking-wider">
             Required
           </h2>
 
           <Input
             label="Title"
-            placeholder="Djansa dundun set"
             value={formData.title}
             onChange={(e) => updateFormData({ title: e.target.value })}
           />
           <Input
             label="Tags"
-            placeholder="dundun, set, djansa, 4/4"
             value={formData.tags}
             onChange={(e) => updateFormData({ tags: e.target.value })}
           />
 
-          <div className="bg-amber-300 md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24">
+          <div className="bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24">
             <div className="text-xl pb-4 flex justify-between items-end">
-              <div className="text-orange-800 tracking-wide">Patterns</div>
-              <div className="pl-4 text-orange-800 text-sm">min 1 required</div>
+              <div className="text-yellowy tracking-wide">Patterns</div>
+              <div className="pl-4 text-yellowy opacity-50 text-sm">
+                min 1 required
+              </div>
             </div>
 
             <div className="grid grid-flow-row gap-8 mt-4">
               <Input
                 label="Dundunba"
-                placeholder="o-----o-o---oo-o"
                 value={formData.patterns.dundunba}
                 onChange={(e) =>
                   updateFormData({
@@ -116,7 +112,6 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
               />
               <Input
                 label="Sangban"
-                placeholder="x-o--oo-"
                 value={formData.patterns.sangban}
                 onChange={(e) =>
                   updateFormData({
@@ -126,7 +121,6 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
               />
               <Input
                 label="Kenkeni"
-                placeholder="o---"
                 value={formData.patterns.kenkeni}
                 onChange={(e) =>
                   updateFormData({
@@ -136,7 +130,6 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
               />
               <Input
                 label="Kenkeni (low)"
-                placeholder="--o-"
                 value={formData.patterns.kenkeni2}
                 onChange={(e) =>
                   updateFormData({
@@ -149,7 +142,6 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
               />
               <Input
                 label="Bell"
-                placeholder="x-xx-xx-"
                 value={formData.patterns.bell}
                 onChange={(e) =>
                   updateFormData({
@@ -160,6 +152,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
             </div>
             <div className="pt-8 lg:pt-12">
               <GroovyPlayer
+                className="-mx-2 lg:-mx-24"
                 swingStyle={formData.swing}
                 tempo={formData.tempo ? Number(formData.tempo) : 110}
                 tracks={Object.keys(formData.patterns)
@@ -173,20 +166,18 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
             </div>
           </div>
 
-          <h2 className="my-12 w-full text-center text-gray-400 text-3xl tracking-wider">
+          <h2 className="my-12 w-full text-center text-graye text-3xl tracking-wider">
             Optional
           </h2>
 
           <Input
             label="Description"
-            placeholder="Everybody loves djansa."
             textarea
             value={formData.description}
             onChange={(e) => updateFormData({ description: e.target.value })}
           />
           <Input
             label="Tempo"
-            placeholder="140"
             value={formData.tempo}
             onChange={(e) => updateFormData({ tempo: e.target.value })}
           />
@@ -199,7 +190,6 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
           />
           <Input
             label="Custom call pattern"
-            placeholder="sstsss------"
             value={formData.signal}
             onChange={(e) => updateFormData({ signal: e.target.value })}
           />
@@ -208,7 +198,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
               <div className="py-4 flex md:flex-row-reverse justify-center md:justify-between md:order-reverse items-center flex-wrap w-full">
                 <div className="py-4 flex-1">
                   {errors.map((msg) => (
-                    <div key={msg} className="text-xl text-orange-600 py-2">
+                    <div key={msg} className="text-xl text-redy py-2">
                       {msg}
                     </div>
                   ))}
@@ -229,7 +219,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
               disabled={loading || !dirty}
               onClick={handleSubmit}
             >
-              {loading ? "..." : "Submit rhythm"}
+              {loading ? "Submitting..." : "Submit rhythm"}
             </Button>
           </div>
         </form>

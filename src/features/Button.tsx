@@ -1,36 +1,52 @@
 import { cx } from "@/utils";
 import { ComponentProps, FC } from "react";
 
-export const Button: FC<
-  ComponentProps<"button"> & { mini?: boolean; black?: boolean; on?: boolean }
-> = ({
+type Props = ComponentProps<"button"> & {
+  mini?: boolean;
+  black?: boolean;
+  ninja?: boolean;
+  on?: boolean;
+  colorClasses?: string;
+  circle?: boolean;
+  padding?: string;
+};
+
+export const Button: FC<Props> = ({
   mini = false,
   black = false,
+  ninja = false,
   on = false,
   className,
+  colorClasses = "bg-redy-dark hover:bg-redy text-white",
+  circle,
+  padding = "p-3",
   children,
   ...props
 }) => (
   <button
     className={cx([
-      "rounded-md transition-all ease-in-out border",
-      black ? "hover:bg-neutral-800 active:scale-90" : "hover:bg-orange-500",
+      "transition-all ease-in-out border",
       props.disabled
-        ? "bg-neutral-700 text-neutral-500 pointer-events-none border-transparent"
+        ? "bg-graye opacity-25 text-graye-light pointer-events-none border-transparent"
         : black
-        ? "bg-black text-white border-transparent"
-        : "bg-orange-600 text-white",
-      on && !props.disabled
-        ? "border-yellow-400 scale-95"
+        ? "bg-black text-white border-transparent hover:bg-graye-darkest active:scale-90"
+        : colorClasses,
+      on && !props.disabled && !ninja
+        ? "border-yellowy scale-95"
         : "border-transparent",
+      ninja ? (on && !props.disabled ? "saturate-100" : "saturate-0") : "",
       mini ? "w-min" : " w-full md:min-w-[240px] md:w-fit",
+      circle ? "rounded-full" : "rounded-md",
+      ninja &&
+        "bg-transparent hover:bg-transparent hover:scale-110 active:scale-95",
       className,
     ])}
     {...props}
   >
     <div
       className={cx([
-        "transition-all px-4 py-3 tracking-wider variant-small-caps font-semibold",
+        "transition-all tracking-wider variant-small-caps font-semibold",
+        padding,
         mini ? "" : "hover:scale-110",
       ])}
     >

@@ -30,14 +30,11 @@ export const Crossroad: FC = () => {
   };
 
   return (
-    <div
-      style={{ backgroundImage: "url('/guard.avif')" }}
-      className="w-screen h-screen bg-cover bg-center fixed top-0 flex justify-center"
-    >
-      <div className="flex flex-col md:flex-row px-4 items-center md:justify-around w-full">
+    <div className="w-screen h-screen bg-cover bg-guard bg-center fixed top-0 flex justify-center">
+      <div className="flex flex-col md:flex-row px-4 items-center md:justify-around w-full bg-[#14292688]">
         <div className="w-full md:w-[240px] p-4 md:py-8">
           <Button
-            className="md:min-w-full bg-emerald-800 hover:bg-emerald-700 border-transparent"
+            className="md:min-w-full border-transparent"
             onClick={() => {
               setInitialData(null);
               setMode("add");

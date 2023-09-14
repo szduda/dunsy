@@ -9,15 +9,16 @@ import {
   where,
   limit,
   orderBy,
+  DocumentSnapshot,
 } from "firebase/firestore/lite";
-import { DbSnippet, Snippet } from "./types";
+import { DbSnippet, Snippet, SnippetCard } from "./types";
 import { addDrums, updateDrums } from "./drums.api";
 import { addPattern, updatePatterns } from "./pattern.api";
 import { validate } from "./validate";
 
 const DRUMS_COLLECTION = "drums";
 
-export const getSnippets = async (search?: string) => {
+export const getSnippets = async (search?: string, options = { limit: 5 }) => {
   const col = collection(db, DRUMS_COLLECTION);
   const response = await getDocs(
     search
@@ -25,32 +26,40 @@ export const getSnippets = async (search?: string) => {
           col,
           where("tags", "array-contains", search.toLowerCase().trim()),
           orderBy("createdAt", "desc"),
-          limit(20)
+          limit(options.limit || 20)
         )
-      : query(col, orderBy("createdAt", "desc"), limit(5))
+      : query(col, orderBy("createdAt", "desc"), limit(options.limit || 5))
   );
 
-  return response.docs.map((doc) => ({ id: doc.id, title: doc.data().title }));
+  const results: SnippetCard[] = response.docs.map((doc) => {
+    const { title, slug, tags } = doc.data();
+    return {
+      id: doc.id,
+      title,
+      slug,
+      tags,
+    };
+  });
+
+  return results;
 };
 
 export const getSnippet = async (id: string) => {
   const raw = await getDoc(doc(db, DRUMS_COLLECTION, id));
-  const rawData = raw.data();
-  const rawPatterns = await Promise.all(
-    rawData?.patterns
-      .filter(Boolean)
-      .map(async (patternRef: DocumentReference) => await getDoc(patternRef))
+  return await parseSnippet(raw);
+};
+
+export const getSnippetBySlug = async (slug: string) => {
+  const col = collection(db, DRUMS_COLLECTION);
+  const response = await getDocs(
+    query(col, where("slug", "==", slug), limit(1))
   );
 
-  return {
-    ...rawData,
-    ...(rawData?.tempo ? { tempo: String(rawData.tempo) } : {}),
-    tags: rawData?.tags.join(", "),
-    patterns: rawPatterns.reduce((acc, current) => {
-      const { instrument, pattern } = current.data() ?? {};
-      return { ...acc, [instrument]: pattern };
-    }, {}),
-  } as Snippet;
+  if (response.empty) {
+    return null;
+  }
+
+  return parseSnippet(response.docs[0]);
 };
 
 export const addSnippet = async (data: Snippet) => {
@@ -156,3 +165,22 @@ export const updateSnippet = async (data: Snippet, patternsDirty: boolean) => {
     messages: ["Off you go. The rhythm vault is closed today."],
   };
 };
+
+async function parseSnippet(raw: DocumentSnapshot) {
+  const rawData = raw.data();
+  const rawPatterns = await Promise.all(
+    rawData?.patterns
+      .filter(Boolean)
+      .map(async (patternRef: DocumentReference) => await getDoc(patternRef))
+  );
+
+  return {
+    ...rawData,
+    ...(rawData?.tempo ? { tempo: String(rawData.tempo) } : {}),
+    tags: rawData?.tags.join(", "),
+    patterns: rawPatterns.reduce((acc, current) => {
+      const { instrument, pattern } = current.data() ?? {};
+      return { ...acc, [instrument]: pattern };
+    }, {}),
+  } as Snippet;
+}

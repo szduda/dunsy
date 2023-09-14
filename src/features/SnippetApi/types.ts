@@ -1,6 +1,6 @@
 import { DocumentReference } from "firebase/firestore/lite";
 
-export type SwingStyle = "" | ">" | ">>" | "<<" | "-->" | "--<";
+export type SwingStyle = "" | "<" | ">" | ">>" | "<<" | "-->" | "--<";
 
 export type Pattern = {
   id?: string;
@@ -34,7 +34,9 @@ export type DbSnippet = {
   authorUid: string;
 };
 
-export type SnippetListItem = {
+export type SnippetCard = {
   id: string;
   title: string;
+  slug: string;
+  tags: string[];
 };

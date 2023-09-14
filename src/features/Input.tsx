@@ -25,18 +25,19 @@ export const Input: FC<Props> = ({
   ...inputProps
 }) => {
   const inputClasses = cx([
+    "border size-16 text-lg tracking-wide p-2 rounded-md focus:outline-none transition-all ease-in-out",
     black
-      ? "bg-black text-white border-slate-500 hover:border-slate-400 focus:border-slate-200 py-3"
-      : "bg-white text-slate-700 border-slate-200 hover:border-slate-400 focus:border-slate-700",
-    "border size-16 text-lg tracking-wide p-2 rounded-md focus:outline-none transition-colors",
+      ? "bg-blacky text-whitey border-graye-darker hover:border-graye-dark focus:border-graye py-3"
+      : "bg-greeny-darker text-whitey border-graye-dark hover:border-graye focus:border-graye-light",
     !mini && "w-full",
+    !inputProps.value && "opacity-50",
     className,
   ]);
 
   return (
     <label>
       {label && (
-        <div className="text-slate-500 text-sm font-semibold tracking-wider mb-2 uppercase">
+        <div className="text-graye text-sm font-semibold tracking-wider mb-2 uppercase">
           {label}
         </div>
       )}

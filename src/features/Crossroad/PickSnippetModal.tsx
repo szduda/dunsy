@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { Button, Input } from "..";
-import { SnippetListItem } from "../SnippetApi/types";
+import { SnippetCard } from "../SnippetApi/types";
 import { getSnippets } from "../SnippetApi";
+import { cx } from "@/utils";
 
 type Props = {
   className?: string;
@@ -13,30 +14,29 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
   const [term, setTerm] = useState("");
   const [selectedSnippet, selectSnippet] = useState("");
 
-  const [snippets, setSnippets] = useState<SnippetListItem[]>([]);
+  const [snippets, setSnippets] = useState<SnippetCard[]>([]);
 
   useEffect(() => {
     const asyncEffect = async () => {
       const snippets = await getSnippets(term.length > 2 ? term : undefined);
       setSnippets(snippets);
+      selectSnippet("");
     };
     asyncEffect();
   }, [term]);
 
   return (
     <div
-      className={[
+      className={cx([
         "fixed top-0 left-0 w-full h-full bg-gradient-radial from-[#0008] via-[#000C] to-[#000E] flex justify-center items-end",
         className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      ])}
     >
-      <div className="fixed bg-white md:rounded-lg py-3 px-4 flex flex-col w-full md:w-[500px] h-full md:h-fit">
-        <div className="w-full flex justify-between items-center text-gray-500">
+      <div className="fixed bg-graye-dark md:rounded-lg py-3 px-4 flex flex-col w-full md:w-[500px] h-full md:h-fit">
+        <div className="w-full flex justify-between items-center text-graye-light">
           <div className="text-sm">Fixin&rsquo; da mess, huh?</div>
           <button
-            className="w-8 h-8 font-bold rounded-full hover:bg-[#0002] hover:text-black transition-colors"
+            className="w-8 h-8 font-bold rounded-full hover:bg-[#0002] transition-colors"
             onClick={onClose}
           >
             {"\u2715"}
@@ -53,12 +53,10 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
             {snippets.map(({ title, id }) => (
               <label
                 key={id}
-                className={[
-                  "p-2 text-lg flex items-center cursor-pointer rounded-md hover:bg-orange-100 transition-colors",
-                  selectedSnippet === id && "bg-orange-100",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
+                className={cx([
+                  "p-2 mb-0.5 text-lg flex items-center cursor-pointer rounded-md hover:bg-graye transition-colors",
+                  selectedSnippet === id && "bg-graye",
+                ])}
               >
                 <input
                   type="radio"

@@ -5,10 +5,10 @@
   xmlns="http://www.w3.org/2000/svg"
 >
 <g clip-path="url(#clip0_24_121)">
-<circle cx="44" cy="26" r="18.5" stroke="#EA580B" stroke-width="3" />
-<circle cx="44" cy="26" r="14" fill="#EA580B" />
-<circle cx="13" cy="27" r="11.5" stroke="#EA580B" stroke-width="3" />
-<circle cx="13" cy="27" r="8" fill="#EA580B" />
+<circle cx="44" cy="26" r="18.5" stroke="#f9c926aa" stroke-width="3" />
+<circle cx="44" cy="26" r="14" fill="#F9C926" stroke="#f9c926aa" />
+<circle cx="13" cy="27" r="11.5" stroke="#f9c926aa" stroke-width="3" />
+<circle cx="13" cy="27" r="8" fill="#F9C926" stroke="#f9c926aa" />
 <rect
       x="43.5661"
       y="29.2281"
@@ -16,8 +16,8 @@
       height="4"
       rx="2"
       transform="rotate(-137.518 43.5661 29.2281)"
-      fill="#EA580B"
-      stroke="#a40"
+      fill="#f9c926aa"
+      stroke="#12121199"
       stroke-width="2"
     />
 </g>
@@ -58,7 +58,7 @@
       />
 </filter>
 <clipPath id="clip0_24_121">
-<rect width="220" height="46" fill="white" />
+<rect width="220" height="46" fill="#f9c926aa" />
 </clipPath>
 </defs>
 </svg>

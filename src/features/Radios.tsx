@@ -17,7 +17,7 @@ export const Radios: FC<Props> = ({
   return (
     <fieldset>
       {label && (
-        <div className="text-gray-500 text-sm font-semibold tracking-wider mb-2 uppercase">
+        <div className="text-graye text-sm font-semibold tracking-wider mb-2 uppercase">
           {label}
         </div>
       )}

@@ -1,5 +1,6 @@
 import { FC, memo, useMemo } from "react";
 import { cx } from "@/utils";
+import { usePlayerSettings } from "./PlayerSettingsContext";
 
 type Props = {
   title?: string;
@@ -24,28 +25,32 @@ export const Track: FC<Props> = ({
     [pattern]
   );
 
+  const { largeBars, videoSync } = usePlayerSettings();
+  beat = videoSync ? beat - 1 : beat;
+
   return (
-    <div className="px-1 py-4 lg:px-8 border-bottom border-2 border-[#0001] w-full md:px-4">
-      <label className="flex align-center mb-4 w-fit cursor-pointer">
+    <div className="px-1 py-4 lg:px-8 border-b-2 border-graye-darker w-full md:px-4">
+      <label className="mx-1 flex align-center mb-4 w-fit cursor-pointer hover:opacity-75">
         <input
-          className="mr-3 w-4"
+          className="mr-3 w-4 cursor-pointer"
           type="checkbox"
           aria-label={`${title} track ${muted ? "off" : "on"}`}
           onChange={() => setMuted?.(!muted)}
           checked={!muted}
           disabled={!pattern}
         />
-        <div className="text-neutral-400">{title}</div>
+        <div className="text-graye-light">{title}</div>
       </label>
       <div className={cx(["transition", muted && "opacity-10"])}>
         {pattern ? (
           <MemoBars
+            large={largeBars}
             bars={bars}
             id={pattern}
             activeIndex={muted ? undefined : Math.round(beat / 2) - 1}
           />
         ) : (
-          <div className="min-h-[48px] flex items-center justify-center text-neutral-400">
+          <div className="min-h-[48px] flex items-center justify-center text-graye-light">
             ...
           </div>
         )}
@@ -57,14 +62,18 @@ export const Track: FC<Props> = ({
 type BarsProps = {
   id: string;
   bars: string[];
+  large?: boolean;
   activeIndex?: number;
 };
 
-const Bars: FC<BarsProps> = ({ bars, activeIndex = -1 }) => (
+const Bars: FC<BarsProps> = ({ bars, activeIndex = -1, large = false }) => (
   <div
     className={cx([
-      "grid grid-cols-4 md:grid-cols-8 gap-1 gap-y-3 w-full",
-      "text-md md:text-lg lg:text-xl leading-loose tracking-wide lg:tracking-wider font-medium lg:font-bold",
+      "grid gap-y-3  w-full",
+      large
+        ? "grid-cols-2 lg:grid-cols-4 gap-2 text-2xl md:text-3xl"
+        : "grid-cols-4 lg:grid-cols-8 gap-1 text-md md:text-lg lg:text-xl",
+      "leading-loose  lg:font-bold",
     ])}
   >
     {bars.map((bar, index) => (
@@ -72,7 +81,7 @@ const Bars: FC<BarsProps> = ({ bars, activeIndex = -1 }) => (
         key={bar + index}
         className={cx([
           "flex align-center w-full rounded-md overflow-hidden",
-          activeIndex === index ? "bg-[#410A]" : "bg-[#0004]",
+          activeIndex === index ? "bg-greeny-dark" : "bg-graye-darkest",
         ])}
       >
         {[...bar].map((note, noteIndex) => (
@@ -80,9 +89,9 @@ const Bars: FC<BarsProps> = ({ bars, activeIndex = -1 }) => (
             key={index + noteIndex}
             className={cx([
               "flex-1 py-1 text-center",
-              noteIndex === 0 && "pl-1",
-              noteIndex === bar.length - 1 && "pr-1",
-              note === "-" && "text-neutral-600",
+              noteIndex === 0 && "pl-0.5 md:pl-1",
+              noteIndex === bar.length - 1 && "pr-0.5 md:pr-1",
+
               (bar.length % 6 === 0
                 ? [0, 3]
                 : bar.length % 9 === 0
@@ -91,7 +100,9 @@ const Bars: FC<BarsProps> = ({ bars, activeIndex = -1 }) => (
               ).includes(noteIndex) && "bg-[#0003]",
             ])}
           >
-            {note}
+            <span className={cx([note === "-" && "opacity-25"])}>
+              {note in font ? font[note] : note}
+            </span>
           </span>
         ))}
       </div>
@@ -101,5 +112,15 @@ const Bars: FC<BarsProps> = ({ bars, activeIndex = -1 }) => (
 
 const MemoBars = memo(
   Bars,
-  (prev, next) => prev.id === next.id && prev.activeIndex === next.activeIndex
+  (prev, next) =>
+    prev.id === next.id &&
+    prev.activeIndex === next.activeIndex &&
+    prev.large === next.large
 );
+
+const font: Record<string, string> = {
+  "-": "\u22c5",
+  o: "\u23fa",
+  x: "\u2297",
+  i: "\u235C",
+};

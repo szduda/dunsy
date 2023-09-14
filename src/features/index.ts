@@ -11,3 +11,6 @@ export { logIn } from "./AuthContext/api";
 export { Crossroad } from "./Crossroad/Crossroad";
 export { PickSnippetModal } from "./Crossroad/PickSnippetModal";
 export { GroovyPlayer } from "./GroovyPlayer/GroovyPlayer";
+export { Logo } from "./Logo/Logo";
+export { Layout } from "./Layout/Layout";
+export { Tags } from "./Tags/Tags";

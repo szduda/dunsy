@@ -35,7 +35,7 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
   const trueTempo = useRef(calcTrueTempo());
 
   const playLoop = () => {
-    midiSounds.current?.startPlayLoop(
+    midiSounds?.current?.startPlayLoop(
       currentBeats.current,
       trueTempo.current,
       1 / 16,
@@ -46,7 +46,7 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
   };
 
   const stopLoop = () => {
-    midiSounds.current?.stopPlayLoop();
+    midiSounds?.current?.stopPlayLoop();
     setBeat(0);
     setPlaying(false);
   };
@@ -140,24 +140,24 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
   // adjust volumes on mount
   // stop playback if player is closed
   useEffect(() => {
-    midiSounds.current?.setEchoLevel(0.05);
+    midiSounds?.current?.setEchoLevel(0.05);
     // shaker
-    midiSounds.current?.setDrumVolume(173, 0.3);
+    midiSounds?.current?.setDrumVolume(173, 0.3);
     // bell
-    midiSounds.current?.setDrumVolume(227, 0.7);
+    midiSounds?.current?.setDrumVolume(227, 0.7);
     // dunduns
-    midiSounds.current?.setDrumVolume(3311, 1.5);
-    midiSounds.current?.setDrumVolume(3313, 2);
-    midiSounds.current?.setDrumVolume(3315, 1);
-    midiSounds.current?.setDrumVolume(3314, 0.7);
-    midiSounds.current?.setDrumVolume(3316, 1.5);
-    midiSounds.current?.setDrumVolume(3317, 1.5);
-    midiSounds.current?.setDrumVolume(3312, 1.5);
-    midiSounds.current?.setDrumVolume(3310, 1.5);
+    midiSounds?.current?.setDrumVolume(3311, 1.5);
+    midiSounds?.current?.setDrumVolume(3313, 2);
+    midiSounds?.current?.setDrumVolume(3315, 1);
+    midiSounds?.current?.setDrumVolume(3314, 0.7);
+    midiSounds?.current?.setDrumVolume(3316, 1.5);
+    midiSounds?.current?.setDrumVolume(3317, 1.5);
+    midiSounds?.current?.setDrumVolume(3312, 1.5);
+    midiSounds?.current?.setDrumVolume(3310, 1.5);
     // djembe
-    midiSounds.current?.setDrumVolume(3318, 4);
-    midiSounds.current?.setDrumVolume(3320, 6);
-    midiSounds.current?.setDrumVolume(3319, 10);
+    midiSounds?.current?.setDrumVolume(3318, 4);
+    midiSounds?.current?.setDrumVolume(3320, 6);
+    midiSounds?.current?.setDrumVolume(3319, 10);
     return stopLoop;
   }, []);
 

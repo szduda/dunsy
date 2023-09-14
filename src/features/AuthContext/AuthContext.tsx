@@ -29,7 +29,6 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      // console.log("onAuthStateChanged user:", user);
       setUser(user);
       setLoading(false);
     });
@@ -46,7 +45,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
       ) : user ? (
         children
       ) : (
-        <main className="flex min-h-screen mx-auto justify-center px-2 pt-2 md:pt-8 pb-8 max-w-[800px]">
+        <main className="flex min-h-screen mx-auto justify-center px-2 pt-2 md:pt-8 pb-8 max-w-[1024px]">
           <LoginForm />
         </main>
       )}

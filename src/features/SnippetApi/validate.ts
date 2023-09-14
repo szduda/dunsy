@@ -26,7 +26,7 @@ export const validate = ({
       ? 3
       : -1;
   const base =
-    meter === 12 ? 12 : meter % 3 === 0 ? 3 : meter % 4 === 0 ? 4 : 0;
+     meter % 3 === 0 ? 3 : meter % 4 === 0 ? 4 : 0;
 
   if (!base) {
     throw new Error("Unhandled meter.");
@@ -76,7 +76,7 @@ export const validate = ({
     swing &&
     !(
       (base === 3 && [">>", "<<"].includes(swing)) ||
-      (base === 4 && [">", "--<", "-->"].includes(swing))
+      (base === 4 && [">", "<", "--<", "-->"].includes(swing))
     )
   ) {
     messages.push("Ya messed up dem swings, sir.");

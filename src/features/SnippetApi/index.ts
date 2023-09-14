@@ -1,7 +1,8 @@
 export {
   getSnippets,
   getSnippet,
+  getSnippetBySlug,
   addSnippet,
   updateSnippet,
 } from "./snippet.api";
-export type { Snippet, Pattern, SnippetListItem } from "./types";
+export type { Snippet, Pattern, SnippetCard } from "./types";

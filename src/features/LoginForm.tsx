@@ -1,6 +1,7 @@
 import { FC, FormEvent, useState } from "react";
 import { Button, Input, useAuth } from ".";
 import Image from "next/image";
+import { cx } from "@/utils"
 
 export const LoginForm: FC = () => {
   const [email, setEmail] = useState("");
@@ -27,12 +28,11 @@ export const LoginForm: FC = () => {
         alt="Dundunin The Guardian"
       />
       <h2
-        className={[
+        className={cx([
           "my-4 md:mt-8 w-full text-center text-xl tracking-wider italic h-[84px]",
-          error ? "text-orange-700" : "text-neutral-400",
+          error ? "text-redy-dark" : "text-graye",
         ]
-          .filter(Boolean)
-          .join(" ")}
+  )}
       >
         {error ? (
           <>

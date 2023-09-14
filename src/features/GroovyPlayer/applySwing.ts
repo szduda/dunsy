@@ -56,6 +56,15 @@ const swingLikeMadan = (beats: any[]) => {
   return swingedBeats;
 };
 
+const swingLikeKujwiedon = (beats: any[]) => {
+  const swingedBeats: number[][][] = [];
+  beats.forEach(([notes]: any, noteIndex: number) => {
+    if (noteIndex % 2 === 0) swingedBeats.push(...swing(notes, 4));
+    else if (noteIndex % 2 === 1) swingedBeats.push(...swing(notes, 6));
+  });
+  return swingedBeats;
+};
+
 const swingLikeSoboninkun = (beats: any[]) => {
   const swingedBeats: number[][][] = [];
   beats.forEach(([notes]: any, noteIndex: number) => {
@@ -81,6 +90,7 @@ const swingLikeGnawa = (beats: any) => {
 const swingFns: Partial<Record<SwingStyle, Function>> = {
   "<<": swingLikeSoli,
   ">>": swingLikeTiriba,
+  "<": swingLikeKujwiedon,
   ">": swingLikeMadan,
   "--<": swingLikeSoboninkun,
   "-->": swingLikeGnawa,

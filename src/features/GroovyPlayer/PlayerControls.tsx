@@ -2,6 +2,7 @@ import { FC, ReactNode } from "react";
 import { SwingStyle } from "../SnippetApi/types";
 import { Button, Input } from "..";
 import { cx } from "@/utils";
+import { ShekereIcon, SignalIcon } from "../Icons";
 
 export type Props = {
   playLoop(): void;
@@ -75,11 +76,17 @@ export const PlayerControls: FC<Props> = ({
         maxLength={3}
         value={tempo}
         disabled={disabled}
+        onFocus={(e) => e.target.select()}
         onChange={(e) => {
           const value = Number(e.target.value);
-          if (isNaN(value)) return;
+          if (isNaN(value)) {
+            return;
+          }
 
           setTempo(value);
+          if (value >= 60 && value <= 200) {
+            setTimeout(playLoop, 0);
+          }
         }}
       />
       <div>BPM</div>
@@ -87,9 +94,13 @@ export const PlayerControls: FC<Props> = ({
 
     <Button
       mini
-      black
+      ninja
+      circle
       on={signalActive || signalRequested}
-      className={cx([buttonClassName])}
+      className={cx([
+        buttonClassName,
+        signalActive && playing ? "animate-ping" : "",
+      ])}
       disabled={disabled}
       aria-label="Play signal"
       onClick={(e) => {
@@ -97,16 +108,18 @@ export const PlayerControls: FC<Props> = ({
         playSignal();
       }}
     >
-      <div className={signalActive && playing ? "animate-bounce" : ""}>
-        {"\u26A0"}
-      </div>
+      <SignalIcon />
     </Button>
 
     <Button
       mini
-      black
+      ninja
+      circle
       on={metronome}
-      className={buttonClassName}
+      className={cx([
+        buttonClassName,
+        metronome && playing ? "animate-shake" : "",
+      ])}
       disabled={disabled}
       aria-label={`turn metronome ${metronome ? "off" : "on"}`}
       onClick={(e) => {
@@ -114,16 +127,15 @@ export const PlayerControls: FC<Props> = ({
         setMetronome(!metronome);
       }}
     >
-      <div className={metronome && playing ? "animate-spin" : ""}>
-        {"\u262F"}
-      </div>
+      <ShekereIcon />
     </Button>
 
     <Button
       mini
-      black
+      circle
+      ninja
       on={swing}
-      className={buttonClassName}
+      className={cx([buttonClassName, swing && playing ? "animate-shake" : ""])}
       disabled={disabled || !swingStyle}
       aria-label={`turn swing ${swing ? "off" : "on"}`}
       onClick={(e) => {
@@ -131,9 +143,7 @@ export const PlayerControls: FC<Props> = ({
         setSwing(!swing);
       }}
     >
-      <div className={swing && playing ? "animate-shake" : ""}>
-        {"\u26D0"}
-      </div>
+      <div className="text-yellowy scale-150">{"\u26D0"}</div>
     </Button>
   </Wrapper>
 );
@@ -142,7 +152,7 @@ const buttonClassName = "mr-1 md:mr-2 mb-2 text-3xl leading-7 min-w-[58px]";
 
 const Wrapper: FC<{ children: ReactNode }> = (props) => (
   <div
-    className="flex justify-between items-center flex-wrap w-full px-1 md:px-3 pb-1 pt-2 md:pt-4 md:pb-2 lg:px-8 lg:pb-3"
+    className="flex justify-between items-center flex-wrap w-full pl-1 pb-1 pt-4 md:pl-3 md:pb-2 lg:pl-8 lg:pr-2"
     {...props}
   />
 );

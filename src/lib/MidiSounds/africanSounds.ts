@@ -55,14 +55,14 @@ export const africanSounds: Record<number, DrumInfo> = {
   3316: {
     variable: "_drum_kenkeni_open",
     url: getUrl("kenkeniOpen"),
-    pitch: 78,
+    pitch: 0,
     title: "kenkeni open 2",
   },
 
   3317: {
     variable: "_drum_kenkeni_closed_2",
     url: getUrl("kenkeniClosed2"),
-    pitch: 78,
+    pitch: 0,
     title: "kenkeni closed 2",
   },
 

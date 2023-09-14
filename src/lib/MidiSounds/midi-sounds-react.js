@@ -1,6 +1,5 @@
 import { Component } from "react";
 import WebAudioFontPlayer from "./webaudiofont";
-import { MidiSoundsLogo } from "./MidiSoundsLogo";
 
 export class MIDISounds extends Component {
   constructor(props) {
@@ -17,7 +16,7 @@ export class MIDISounds extends Component {
   }
   render() {
     this.refreshCache();
-    return null;//<MidiSoundsLogo />;
+    return null;
   }
   contextTime() {
     return this.audioContext.currentTime;
