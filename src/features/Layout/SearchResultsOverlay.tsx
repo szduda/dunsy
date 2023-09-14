@@ -1,6 +1,7 @@
 import { ComponentProps, FC } from "react";
 import { cx, useSearch } from "@/utils";
 import { Button, Card } from "@/features";
+import { CloseIcon } from "../Icons";
 
 export const SearchResultsOverlay: FC = () => {
   const { searchResults, clearSearch, term, searchQuery } = useSearch();
@@ -26,11 +27,14 @@ export const SearchResultsOverlay: FC = () => {
           <Card key={card.id} {...card} />
         ))}
         {searchQuery && searchResults.length === 0 && (
-          <div className="col-span-4 flex flex-col items-center text-center">
+          <div className="col-span-4 flex flex-col items-center text-center mt-16 lg:mt-32">
             <div className="text-3xl lg:text-4xl text-graye">{term}?</div>
             <div className="mt-2 lg:mt-4 text-lg lg:text-xl">
               I don&rsquo;t know a rhytm called {term} yet.
             </div>
+            <Button className="mt-16 lg:mt-24">
+              Show all tracks
+            </Button>
             <CloseButton onClick={clearSearch} />
           </div>
         )}
@@ -40,14 +44,19 @@ export const SearchResultsOverlay: FC = () => {
 };
 
 const CloseIconButton: FC<ComponentProps<"button">> = (props) => (
-  <Button mini circle ninja className="ml-4 text-2xl lg:text-3xl" {...props}>
-    {"\u2715"}
-  </Button>
+  <button
+    className="ml-4 rounded-full p-1 fill-whitey transition-all hover:scale-110 hover:fill-graye-light"
+    {...props}
+  >
+    <CloseIcon className="lg:w-[40px] h-full" />
+  </button>
 );
 
 const CloseButton: FC<ComponentProps<"button">> = (props) => (
-  <Button mini className="mt-8 lg: mt-16 w-[120px]" {...props}>
-    {"\u2715"}
-    <span className="pl-3">Close</span>
+  <Button ninja className="mt-4 w-[120px]" {...props}>
+    <div className="flex justify-center">
+      <CloseIcon className="fill-whitey mr-2 -ml-2" />
+      <span>Close Search</span>
+    </div>
   </Button>
 );

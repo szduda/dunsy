@@ -1,6 +1,7 @@
-import { FC, memo, useMemo } from "react";
+import { FC, ReactNode, memo, useMemo } from "react";
 import { cx } from "@/utils";
 import { usePlayerSettings } from "./PlayerSettingsContext";
+import { SoundLowIcon, SoundMidIcon, SoundHighIcon } from "@/features/Icons";
 
 type Props = {
   title?: string;
@@ -71,9 +72,8 @@ const Bars: FC<BarsProps> = ({ bars, activeIndex = -1, large = false }) => (
     className={cx([
       "grid gap-y-3  w-full",
       large
-        ? "grid-cols-2 lg:grid-cols-4 gap-2 text-2xl md:text-3xl"
-        : "grid-cols-4 lg:grid-cols-8 gap-1 text-md md:text-lg lg:text-xl",
-      "leading-loose  lg:font-bold",
+        ? "grid-cols-2 lg:grid-cols-4 gap-2"
+        : "grid-cols-4 lg:grid-cols-8 gap-1",
     ])}
   >
     {bars.map((bar, index) => (
@@ -85,10 +85,11 @@ const Bars: FC<BarsProps> = ({ bars, activeIndex = -1, large = false }) => (
         ])}
       >
         {[...bar].map((note, noteIndex) => (
-          <span
+          <div
             key={index + noteIndex}
             className={cx([
-              "flex-1 py-1 text-center",
+              "flex-1 text-center",
+              large ? "py-2" : "py-1",
               noteIndex === 0 && "pl-0.5 md:pl-1",
               noteIndex === bar.length - 1 && "pr-0.5 md:pr-1",
 
@@ -100,10 +101,18 @@ const Bars: FC<BarsProps> = ({ bars, activeIndex = -1, large = false }) => (
               ).includes(noteIndex) && "bg-[#0003]",
             ])}
           >
-            <span className={cx([note === "-" && "opacity-25"])}>
+            <span
+              className={cx([
+                "flex items-center justify-center h-full mx-auto",
+                large
+                  ? "w-[20px] md:w-[36px] lg:w-[24px]"
+                  : "w-[10px] md:w-[20px] lg:w-[12px]",
+                note === "-" && "opacity-25",
+              ])}
+            >
               {note in font ? font[note] : note}
             </span>
-          </span>
+          </div>
         ))}
       </div>
     ))}
@@ -118,9 +127,9 @@ const MemoBars = memo(
     prev.large === next.large
 );
 
-const font: Record<string, string> = {
+const font: Record<string, ReactNode> = {
   "-": "\u22c5",
-  o: "\u23fa",
-  x: "\u2297",
-  i: "\u235C",
+  o: <SoundLowIcon />,
+  x: <SoundHighIcon />,
+  i: <SoundMidIcon />,
 };

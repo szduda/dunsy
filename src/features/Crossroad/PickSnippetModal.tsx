@@ -3,6 +3,7 @@ import { Button, Input } from "..";
 import { SnippetCard } from "../SnippetApi/types";
 import { getSnippets } from "../SnippetApi";
 import { cx } from "@/utils";
+import { CloseIcon } from "../Icons"
 
 type Props = {
   className?: string;
@@ -41,7 +42,7 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
             className="w-8 h-8 font-bold rounded-full hover:bg-[#0002] transition-colors"
             onClick={onClose}
           >
-            {"\u2715"}
+            <CloseIcon className="mx-auto fill-graye-light"/>
           </button>
         </div>
         <form className="flex flex-col">

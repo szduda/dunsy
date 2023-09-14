@@ -1,6 +1,6 @@
 import { Icon } from "./types";
 
-export default (props: Icon) => () =>
+export const Add: Icon = (props) =>
   (
     <svg
       xmlns="http://www.w3.org/2000/svg"

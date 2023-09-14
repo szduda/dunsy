@@ -1,8 +1,15 @@
 import { FC, ReactNode } from "react";
 import { SwingStyle } from "../SnippetApi/types";
-import { Button, Input } from "..";
+import { Button, Input } from "@/features";
 import { cx } from "@/utils";
-import { ShekereIcon, SignalIcon } from "../Icons";
+import {
+  PepperIcon,
+  PlayIcon,
+  RestartIcon,
+  ShekereIcon,
+  SignalIcon,
+  StopIcon,
+} from "../Icons";
 
 export type Props = {
   playLoop(): void;
@@ -51,7 +58,11 @@ export const PlayerControls: FC<Props> = ({
           playLoop();
         }}
       >
-        {"\u23F5"}
+        {playing ? (
+          <RestartIcon className="mx-auto" />
+        ) : (
+          <PlayIcon className="mx-auto" />
+        )}
       </Button>
       <Button
         mini
@@ -64,7 +75,7 @@ export const PlayerControls: FC<Props> = ({
           stopLoop();
         }}
       >
-        {"\u23F9"}
+        <StopIcon className="mx-auto" />
       </Button>
     </div>
     <div className="md:ml-6 mb-2 lg:mx-8 flex items-center flex-1 flex-nowrap">
@@ -135,7 +146,7 @@ export const PlayerControls: FC<Props> = ({
       circle
       ninja
       on={swing}
-      className={cx([buttonClassName, swing && playing ? "animate-shake" : ""])}
+      className={cx([buttonClassName, swing && playing ? "animate-spin" : ""])}
       disabled={disabled || !swingStyle}
       aria-label={`turn swing ${swing ? "off" : "on"}`}
       onClick={(e) => {
@@ -143,12 +154,12 @@ export const PlayerControls: FC<Props> = ({
         setSwing(!swing);
       }}
     >
-      <div className="text-yellowy scale-150">{"\u26D0"}</div>
+      <PepperIcon />
     </Button>
   </Wrapper>
 );
 
-const buttonClassName = "mr-1 md:mr-2 mb-2 text-3xl leading-7 min-w-[58px]";
+const buttonClassName = "mr-1 md:mr-2 mb-2 min-w-[54px]";
 
 const Wrapper: FC<{ children: ReactNode }> = (props) => (
   <div

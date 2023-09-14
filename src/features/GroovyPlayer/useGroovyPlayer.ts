@@ -17,7 +17,7 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
   const [muted, setMuted] = useState<TGroovyPlayerContext["muted"]>({});
   const [metronome, setMetronome] = useState(initialMetronome);
   const [playing, setPlaying] = useState(false);
-  const [swing, setSwing] = useState(Boolean(swingStyle));
+  const [swing, setSwing] = useState(false);
   const [noteIndex, setNoteIndex] = useState(0);
   const [beat, setBeat] = useState(0);
   const [signalRequested, setSignalRequested] = useState(false);
@@ -106,7 +106,7 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
     if (metronome !== initialMetronome) setMetronome(initialMetronome);
     setMuted({});
     const hasSwing = Boolean(swingStyle);
-    if (swing !== hasSwing) setSwing(hasSwing);
+    if (swing !== hasSwing) setSwing(false);
     if (signalActive) setSignalActive(false);
 
     if (tracks.length === 0) stopLoop();

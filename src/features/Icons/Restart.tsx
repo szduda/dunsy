@@ -1,16 +1,16 @@
 import { Icon } from "./types";
 
-export default (props: Icon) => () =>
+export const Restart: Icon = (props) =>
   (
     <svg
-      width="36"
-      height="36"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clip-path="url(#clip0_2_8)">
+      <g clipPath="url(#clip0_2_8)">
         <path
           d="M6.43299 3.76208C7.03802 3.46126 7.76106 3.83464 7.86605 4.50212L8.88954 11.0088C9.01682 11.8179 8.17062 12.4285 7.44285 12.0527L0.521504 8.47847C-0.206266 8.10265 -0.198296 7.05919 0.53513 6.69452L6.43299 3.76208Z"
           fill="#F9C926"

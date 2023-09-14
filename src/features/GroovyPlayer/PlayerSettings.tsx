@@ -31,19 +31,24 @@ export const PlayerSettings: FC<Props> = ({ onClose }) => {
           <input
             className="flex w-[20px]"
             type="checkbox"
-            checked={videoSync}
-            onChange={(e) => setVideoSync(e.target.checked)}
+            checked={largeBars}
+            onChange={(e) => setLargeBars(e.target.checked)}
           />
-          <div className="pl-3">My bluetooth audio is delayed</div>
+          <div className="pl-3">Zoom In</div>
         </label>
         <label className="cursor-pointer p-2 w-full flex leading-loose hover:bg-[#FFF2] rounded-md">
           <input
             className="flex w-[20px]"
             type="checkbox"
-            checked={largeBars}
-            onChange={(e) => setLargeBars(e.target.checked)}
+            checked={videoSync}
+            onChange={(e) => setVideoSync(e.target.checked)}
           />
-          <div className="pl-3">Enlarge bars</div>
+          <div className="pl-3">
+            <div>Audio/Video Sync</div>
+            <small className="opacity-75">
+              (beta) use when your bluetooth audio is delayed
+            </small>
+          </div>
         </label>
       </div>
     </div>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button, Input, Radios, useAuth, GroovyPlayer } from "@/features";
 import { useSnippetForm, FormData } from "./useSnippetForm";
 import { cx } from "@/utils";
+import { ArrowIcon } from "../Icons";
 
 type Props = {
   initialData?: Partial<FormData>;
@@ -58,10 +59,10 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
       )}
       <div className={cx(["h-fit w-full", success && "hidden"])}>
         <button
-          className="p-2 md:px-4 text-lg text-graye absolute top-16 left-2 tracking-wider rounded-md hover:bg-[#0002] hover:scale-110 transition-all"
+          className="p-2 md:px-4 text-lg text-graye absolute top-16 left-2 tracking-wider rounded-md hover:bg-[#0002] hover:scale-110 transition-all flex items-center"
           onClick={onBack}
         >
-          {"\u2190"} Back
+          <ArrowIcon className="fill-graye rotate-180 mr-2" /> Back
         </button>
         <form className="grid grid-flow-row gap-8">
           <div className="flex w-full justify-center">
