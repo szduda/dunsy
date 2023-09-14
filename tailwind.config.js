@@ -44,7 +44,7 @@ module.exports = {
         shake: "wiggle 500ms ease-in-out infinite",
       },
       backgroundImage: {
-        "guard": "url('/guard.avif')",
+        guard: "url('/guard.avif')",
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",

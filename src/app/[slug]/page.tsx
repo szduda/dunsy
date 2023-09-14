@@ -2,6 +2,7 @@ import { GroovyPlayer, Tags } from "@/features";
 import { getSnippetBySlug, getSnippets } from "@/features/SnippetApi";
 import { ResolvingMetadata } from "next";
 import { FC } from "react";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: {
@@ -13,7 +14,7 @@ const RhythmPage: FC<Props> = async ({ params }) => {
   const data = await getSnippetBySlug(params.slug);
 
   if (!data) {
-    return <main>Not found</main>;
+    notFound();
   }
 
   return (
