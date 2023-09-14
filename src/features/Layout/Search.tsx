@@ -15,7 +15,7 @@ export const Search = () => {
       }}
     >
       <SearchInput value={term} onChange={(e) => setTerm(e.target.value)} />
-      <SearchButton onClick={search} />
+      <SearchButton onClick={() => search()} />
     </form>
   );
 };

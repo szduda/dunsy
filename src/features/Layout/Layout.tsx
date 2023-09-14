@@ -11,6 +11,7 @@ type Props = {
 export const Layout: FC<Props> = ({ children }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { searchResults, clearSearch, term } = useSearch();
 
   if (pathname.startsWith("/admin")) {
     return <AuthContextProvider>{children}</AuthContextProvider>;
@@ -18,7 +19,6 @@ export const Layout: FC<Props> = ({ children }) => {
 
   const searchQuery = searchParams.get("search");
   const sticky = Boolean(pathname && pathname !== "/") || Boolean(searchQuery);
-  const { searchResults, clearSearch, term } = useSearch();
 
   return (
     <div
@@ -68,7 +68,7 @@ export const Layout: FC<Props> = ({ children }) => {
               <div className="col-span-4 flex flex-col items-center text-center">
                 <div className="text-3xl lg:text-4xl text-graye">{term}?</div>
                 <div className="mt-2 lg:mt-4 text-lg lg:text-xl">
-                  I don't know a rhytm called {term} yet.
+                  I don&rsquo;t know a rhytm called {term} yet.
                 </div>
                 <Button
                   mini
