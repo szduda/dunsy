@@ -2,10 +2,11 @@ import { ComponentProps, FC } from "react";
 import { cx, useSearch } from "@/utils";
 import { Button, Card } from "@/features";
 import { CloseIcon } from "../Icons";
+import Link from "next/link";
 
 export const SearchResultsOverlay: FC = () => {
   const { searchResults, clearSearch, term, searchQuery } = useSearch();
-
+  const noResults = searchQuery && searchResults && searchResults.length === 0;
   return (
     <aside
       className={cx([
@@ -15,26 +16,32 @@ export const SearchResultsOverlay: FC = () => {
           : "translate-y-32 opacity-0 pointer-events-none h-[0px]",
       ])}
     >
-      {searchResults.length > 0 && (
+      {searchResults?.length && (
         <div className="pt-6 md:pt-14 tracking-wide text-xl text-graye flex items-center justify-center">
-          <span className="opacity-75 pr-2">Search results for</span>
-          <span className="font-bold text-2xl">{searchQuery}</span>
+          <div className="flex flex-col md:flex-row">
+            <span className="opacity-75 pr-2 self-baseline">
+              Search results for
+            </span>
+            <span className="font-bold text-2xl self-baseline">
+              {searchQuery}
+            </span>
+          </div>
           <CloseIconButton onClick={clearSearch} />
         </div>
       )}
       <div className="pt-8 lg:pt-16 max-w-[1280px] mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
-        {searchResults.map((card) => (
+        {searchResults?.map((card) => (
           <Card key={card.id} {...card} />
         ))}
-        {searchQuery && searchResults.length === 0 && (
+        {noResults && (
           <div className="col-span-4 flex flex-col items-center text-center mt-16 lg:mt-32">
             <div className="text-3xl lg:text-4xl text-graye">{term}?</div>
             <div className="mt-2 lg:mt-4 text-lg lg:text-xl">
               I don&rsquo;t know a rhytm called {term} yet.
             </div>
-            <Button className="mt-16 lg:mt-24">
-              Show all tracks
-            </Button>
+            <Link href="/grooves">
+              <Button className="mt-16 lg:mt-24">Show all tracks</Button>
+            </Link>
             <CloseButton onClick={clearSearch} />
           </div>
         )}

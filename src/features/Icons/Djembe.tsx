@@ -1,6 +1,10 @@
-import { Icon } from "./types";
+import { FancyIcon } from "./types";
 
-export const DjembeIcon: Icon = (props) => (
+export const DjembeIcon: FancyIcon = ({
+  innerClass,
+  innerClass2,
+  ...props
+}) => (
   <svg
     width="128"
     height="128"
@@ -8,6 +12,7 @@ export const DjembeIcon: Icon = (props) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
+    className={innerClass}
   >
     <rect
       x="20"

@@ -1,6 +1,10 @@
-import { Icon } from "./types";
+import { FancyIcon } from "./types";
 
-export const DundunIcon: Icon = (props) => (
+export const DundunIcon: FancyIcon = ({
+  innerClass,
+  innerClass2,
+  ...props
+}) => (
   <svg
     width="128"
     height="128"
@@ -15,6 +19,7 @@ export const DundunIcon: Icon = (props) => (
       r="17.5"
       transform="rotate(90 31.5 21.5)"
       fill="#DBA906"
+      className={innerClass}
     />
     <circle
       cx="31.5"
@@ -24,6 +29,7 @@ export const DundunIcon: Icon = (props) => (
       stroke="#330000"
       strokeOpacity="0.25"
       strokeWidth="9"
+      className={innerClass}
     />
     <line
       x1="12.2291"

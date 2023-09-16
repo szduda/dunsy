@@ -8,23 +8,22 @@ export const useSearch = () => {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
   const [term, setTerm] = useState(searchQuery);
-  const [searchResults, setSearchResults] = useState<SnippetCard[]>([]);
+  const [searchResults, setSearchResults] = useState<SnippetCard[] | null>();
 
   useEffect(() => {
     setTerm(searchQuery);
   }, [searchQuery]);
 
   useEffect(() => {
-    const asyncEffect = async () => {
-      if (!term) {
-        setSearchResults([]);
-      }
-      if (term && term.length > 2) {
+    if (!term) {
+      setSearchResults(null);
+    } else if (term && term.length > 2) {
+      const asyncEffect = async () => {
         const snippets = await getSnippets(term, { limit: 50 });
-        setSearchResults(snippets);
-      }
-    };
-    asyncEffect();
+        setSearchResults(snippets || []);
+      };
+      asyncEffect();
+    }
   }, [term]);
 
   const search = (newTerm?: string) => {

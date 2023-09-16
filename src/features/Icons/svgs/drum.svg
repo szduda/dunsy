@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-export default (props) => <svg height="64" viewBox="0 0 64 64" width="64" xmlns="http://www.w3.org/2000/svg">
+<svg height="64" viewBox="0 0 64 64" width="64" xmlns="http://www.w3.org/2000/svg">
   <title/>
   <g>
     <g>
