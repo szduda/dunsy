@@ -18,7 +18,7 @@ export const DundunIcon: FancyIcon = ({
       cy="21.5"
       r="17.5"
       transform="rotate(90 31.5 21.5)"
-      fill="#DBA906"
+      fill="#F9C926"
       className={innerClass}
     />
     <circle

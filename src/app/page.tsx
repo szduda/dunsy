@@ -7,7 +7,7 @@ import { DjembeIcon, DundunIcon, InfoIcon } from "@/features/Icons";
 const HomePage: FC = async () => {
   const recentlyAdded = await getRecentlyAdded();
   const randomRecentGroove = recentlyAdded.sort(() =>
-    Math.random() * 2 > 1 ? 1 : -1
+    Math.random() > 0.5 ? 1 : -1
   )[0];
 
   return (

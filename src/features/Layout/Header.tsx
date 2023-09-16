@@ -52,7 +52,7 @@ const SmallLogo: FC = () => (
 );
 
 const InfoButton: FC<Omit<ComponentProps<typeof Link>, "href">> = (props) => (
-  <Link {...props} href="/about">
+  <Link {...props} href="/learn">
     <Button
       mini
       circle

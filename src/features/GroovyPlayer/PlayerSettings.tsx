@@ -1,20 +1,27 @@
 import { Button } from "@/features";
 import { usePlayerSettings } from "./PlayerSettingsContext";
-import { FC } from "react";
+import { ComponentProps, FC } from "react";
+import { CloseIcon } from "../Icons";
+import { cx } from "@/utils";
 
-type Props = {
+type Props = ComponentProps<"div"> & {
   onClose(): void;
 };
 
-export const PlayerSettings: FC<Props> = ({ onClose }) => {
+export const PlayerSettings: FC<Props> = ({ onClose, className }) => {
   const { largeBars, videoSync, setLargeBars, setVideoSync } =
     usePlayerSettings();
   return (
-    <div className="absolute top-0 right-0 px-2 py-4 lg:pl-6 lg:pr-8 bg-graye-darkest md:rounded-bl-lg min-w-[280px] w-full md:w-auto">
+    <div
+      className={cx([
+        "absolute top-0 right-0 px-2 pt-2 lg:pt-5 pb-4 lg:pl-6 lg:pr-6 bg-graye-darkest md:rounded-bl-lg min-w-[280px] w-full md:w-auto",
+        className,
+      ])}
+    >
       <div className="flex justify-end items-center text-xl">
         <div className="text-graye-light pl-2 pr-4 flex-1">Player Settings</div>
         <Button
-          className="-mr-2 leading-3"
+          className="-mr-1 leading-3 fill-whitey hover:bg-whitey/10"
           mini
           circle
           ninja
@@ -23,11 +30,11 @@ export const PlayerSettings: FC<Props> = ({ onClose }) => {
             onClose();
           }}
         >
-          {"\u2715"}
+          <CloseIcon />
         </Button>
       </div>
       <div className="pt-4 pr-2 font-normal">
-        <label className="cursor-pointer p-2 w-full flex leading-loose hover:bg-[#FFF2] rounded-md">
+        <label className="cursor-pointer p-2 w-full flex leading-loose hover:bg-whitey/10 rounded-md">
           <input
             className="flex w-[20px]"
             type="checkbox"
@@ -36,7 +43,7 @@ export const PlayerSettings: FC<Props> = ({ onClose }) => {
           />
           <div className="pl-3">Zoom In</div>
         </label>
-        <label className="cursor-pointer p-2 w-full flex leading-loose hover:bg-[#FFF2] rounded-md">
+        <label className="cursor-pointer p-2 w-full flex leading-loose hover:bg-whitey/10 rounded-md">
           <input
             className="flex w-[20px]"
             type="checkbox"

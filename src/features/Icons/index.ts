@@ -15,3 +15,4 @@ export { Restart as RestartIcon } from "./Restart";
 export { Stop as StopIcon } from "./Stop";
 export { DjembeIcon } from "./Djembe";
 export { DundunIcon } from "./Dundun";
+export { GearIcon } from "./Gear";

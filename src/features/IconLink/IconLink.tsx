@@ -48,11 +48,9 @@ export const IconLink: FC<Props> = ({
         <Icon
           width={iconSize}
           height={iconSize}
-          // className={cx([hover && icon === "story" && "animate-screw"])}
-          // innerClass2={cx([icon === "story" && "fill-redy stroke-blacky/50"])}
           innerClass={cx([
             icon === "story" && "fill-redy stroke-blacky/50",
-            hover && icon === "dundun" && "animate-dundun",
+            hover && icon === "dundun" && "animate-dundun origin-center",
             hover && icon === "djembe" && "animate-djembe",
             hover && icon === "question" && "animate-sway origin-center",
           ])}

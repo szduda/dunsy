@@ -70,18 +70,17 @@ type BarsProps = {
 const Bars: FC<BarsProps> = ({ bars, activeIndex = -1, large = false }) => (
   <div
     className={cx([
-      "grid gap-y-3  w-full",
-      large
-        ? "grid-cols-2 lg:grid-cols-4 gap-2"
-        : "grid-cols-4 lg:grid-cols-8 gap-1",
+      "grid gap-0.5 gap-y-3 w-full",
+      large ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-4 lg:grid-cols-8",
     ])}
   >
     {bars.map((bar, index) => (
       <div
         key={bar + index}
         className={cx([
-          "flex align-center w-full rounded-md overflow-hidden",
+          "flex align-center w-full overflow-hidden",
           activeIndex === index ? "bg-greeny-dark" : "bg-graye-darkest",
+          large ? "rounded-3xl" : "rounded-2xl",
         ])}
       >
         {[...bar].map((note, noteIndex) => (
@@ -89,16 +88,14 @@ const Bars: FC<BarsProps> = ({ bars, activeIndex = -1, large = false }) => (
             key={index + noteIndex}
             className={cx([
               "flex-1 text-center",
-              large ? "py-2" : "py-1",
-              noteIndex === 0 && "pl-0.5 md:pl-1",
-              noteIndex === bar.length - 1 && "pr-0.5 md:pr-1",
+              large ? "py-2 lg:py-3" : "py-1 lg:py-2",
 
               (bar.length % 6 === 0
                 ? [0, 3]
                 : bar.length % 9 === 0
                 ? [0, 3, 6]
                 : [0, 4]
-              ).includes(noteIndex) && "bg-[#0003]",
+              ).includes(noteIndex) && "bg-blacky/40",
             ])}
           >
             <span
@@ -129,7 +126,7 @@ const MemoBars = memo(
 
 const font: Record<string, ReactNode> = {
   "-": "\u22c5",
-  o: <SoundLowIcon />,
-  x: <SoundHighIcon />,
-  i: <SoundMidIcon />,
+  o: <SoundLowIcon className="w-full" />,
+  x: <SoundHighIcon className="w-full" />,
+  i: <SoundMidIcon className="w-full" />,
 };

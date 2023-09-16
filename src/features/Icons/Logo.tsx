@@ -1,6 +1,6 @@
-import { Icon } from "./types";
+import { FancyIcon } from "./types";
 
-export const LogoIcon: Icon = (props) => (
+export const LogoIcon: FancyIcon = ({ innerClass, innerClass2, ...props }) => (
   <svg
     height="36"
     viewBox="-4 0 76 52"
@@ -11,20 +11,22 @@ export const LogoIcon: Icon = (props) => (
   >
     <g clipPath="url(#clip0_24_121)">
       <circle cx="48" cy="26" r="18.5" stroke="#f9c926aa" strokeWidth="3" />
-      <circle cx="48" cy="26" r="14" fill="#f9c92644" stroke="#f9c926aa" />
+      <circle cx="48" cy="26" r="14" fill="#f9c92644" stroke="#f9c926aa" className={innerClass2} />
       <circle cx="13" cy="27" r="11.5" stroke="#f9c926aa" strokeWidth="3" />
       <circle cx="13" cy="27" r="8" fill="#f9c92644" stroke="#f9c926aa" />
-      <rect
-        x="43.5661"
-        y="29.2281"
-        width="36.8182"
-        height="4"
-        rx="2"
-        transform="rotate(-137.518 43.5661 29.2281)"
-        fill="#f9c926"
-        stroke="#121211AA"
-        strokeWidth="2"
-      />
+      <g className={innerClass}>
+        <rect
+          x="43.5661"
+          y="29.2281"
+          width="36.8182"
+          height="4"
+          rx="2"
+          transform="rotate(-137.518 43.5661 29.2281)"
+          fill="#f9c926"
+          stroke="#121211AA"
+          strokeWidth="2"
+        />
+      </g>
     </g>
     <defs>
       <filter

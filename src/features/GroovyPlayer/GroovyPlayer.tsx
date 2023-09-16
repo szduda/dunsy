@@ -9,6 +9,7 @@ import { Button } from "..";
 import { cx } from "@/utils";
 import { PlayerSettings } from "./PlayerSettings";
 import { PlayerSettingsProvider } from "./PlayerSettingsContext";
+import { GearIcon } from "../Icons";
 
 export type Props = ComponentProps<"div"> & {
   tracks: TTrack[];
@@ -47,14 +48,15 @@ export const GroovyPlayer: FC<Props> = ({
           </div>
           <Button
             mini
-            black
-            className="min-w-[58px] text-4xl leading-3 bg-transparent -mr-4 hover:bg-greeny-dark"
+            ninja
+            padding="0"
+            className="min-w-[58px] text-4xl leading-3 bg-transparent -mr-4"
             onClick={(e) => {
               e.preventDefault();
               setSettingsOpen(true);
             }}
           >
-            <div className="-translate-y-0.5 text-graye-darker">{"\u2699"}</div>
+            <GearIcon className="stroke-graye hover:animate-spin-once border-box p-1" />
           </Button>
         </div>
         {tracks.length
@@ -76,9 +78,15 @@ export const GroovyPlayer: FC<Props> = ({
           {...{ disabled: !tracks.length, swingStyle, ...rest }}
         />
       </div>
-      {settingsOpen && (
-        <PlayerSettings onClose={() => setSettingsOpen(false)} />
-      )}
+      <PlayerSettings
+        onClose={() => setSettingsOpen(false)}
+        className={cx([
+          "transition ease-in-out duration-300",
+          settingsOpen
+            ? "translate-x-0"
+            : "translate-x-16 pointer-events-none opacity-0",
+        ])}
+      />
     </Wrapper>
   );
 };

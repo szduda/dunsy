@@ -63,13 +63,20 @@ module.exports = {
           "87.5%": { transform: "rotate(5deg)" },
           "100%": { transform: "rotate(-4deg)" },
         },
+        dance: {
+          "0, 100%": { transform: "scale(1, 1)" },
+          "50%": { transform: "scale(-1, 1)" },
+        },
       },
       animation: {
         shake: "wiggle 500ms ease-in-out infinite",
         dundun: "dundun 1s ease-in infinite",
         djembe: "djembe 2s ease-in infinite",
         sway: "sway 2s ease-in-out infinite",
+        "sway-fast": "sway 1s ease-in-out infinite",
         screw: "spin 800ms ease-in-out infinite",
+        dance: "dance 1s ease-in-out infinite",
+        'spin-once': "spin 1s ease-in-out",
       },
       backgroundImage: {
         guard: "url('/guard.avif')",

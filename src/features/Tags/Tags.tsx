@@ -36,7 +36,7 @@ export const Tags: FC<Props> = ({
             "mt-1 mx-0.5 tracking-wide rounded-md border",
             dimmed
               ? "border-graye-dark/50 text-graye/75 pointer-events-none opacity-75"
-              : "bg-yellowy-light hover:bg-yellowy-dark border-yellowy text-blacky",
+              : "bg-yellowy-light hover:bg-yellowy border-yellowy text-blacky",
             small ? "text-md px-1" : "text-lg font-medium px-2",
           ])}
         >

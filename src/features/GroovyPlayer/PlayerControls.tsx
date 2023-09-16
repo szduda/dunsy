@@ -108,10 +108,7 @@ export const PlayerControls: FC<Props> = ({
       ninja
       circle
       on={signalActive || signalRequested}
-      className={cx([
-        buttonClassName,
-        signalActive && playing ? "animate-ping" : "",
-      ])}
+      className={cx([buttonClassName])}
       disabled={disabled}
       aria-label="Play signal"
       onClick={(e) => {
@@ -119,7 +116,13 @@ export const PlayerControls: FC<Props> = ({
         playSignal();
       }}
     >
-      <SignalIcon />
+      <SignalIcon
+        innerClass2={cx([
+          (signalActive || signalRequested) &&
+            playing &&
+            "-translate-x-4 origin-center animate-sway-fast",
+        ])}
+      />
     </Button>
 
     <Button
