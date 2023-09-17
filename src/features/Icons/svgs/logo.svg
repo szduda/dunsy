@@ -11,9 +11,9 @@
         fill="#455F5D"
       />
 </g> -->
-<circle cx="44" cy="26" r="18.5" stroke="#455F5D" stroke-width="3" />
+<circle cx="44" cy="26" r="18.5" stroke="#455F5D" strokeWidth="3" />
 <circle cx="44" cy="26" r="14" fill="#455F5D" />
-<circle cx="13" cy="27" r="11.5" stroke="#455F5D" stroke-width="3" />
+<circle cx="13" cy="27" r="11.5" stroke="#455F5D" strokeWidth="3" />
 <circle cx="13" cy="27" r="8" fill="#455F5D" />
 <rect
       x="43.5661"
@@ -24,7 +24,7 @@
       transform="rotate(-137.518 43.5661 29.2281)"
       fill="#455F5D"
       stroke="#0F2723"
-      stroke-width="2"
+      strokeWidth="2"
     />
 </g>
 <defs>
