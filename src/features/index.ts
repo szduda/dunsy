@@ -19,3 +19,4 @@ export { Card } from "./Card/Card";
 export { Grooves } from "./Grooves/Grooves";
 export { IconLink } from "./IconLink/IconLink";
 export { Legend } from "./Legend/Legend";
+export { Paragraph, H2, TextLink } from "./Typography/Typography";

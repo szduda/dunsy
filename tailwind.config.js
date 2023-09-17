@@ -9,6 +9,7 @@ module.exports = {
       colors: {
         redy: "#ED3C19",
         "redy-dark": "#BD2C0F",
+        "redy-light": "#EE4F2F",
 
         orangey: "#D95D39",
         "orangey-dark": "#AB3F21",
@@ -76,7 +77,7 @@ module.exports = {
         "sway-fast": "sway 1s ease-in-out infinite",
         screw: "spin 800ms ease-in-out infinite",
         dance: "dance 1s ease-in-out infinite",
-        'spin-once': "spin 1s ease-in-out",
+        "spin-once": "spin 1s ease-in-out",
       },
       backgroundImage: {
         guard: "url('/guard.avif')",

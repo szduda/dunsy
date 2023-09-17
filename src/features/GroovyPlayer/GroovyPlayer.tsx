@@ -43,7 +43,10 @@ export const GroovyPlayer: FC<Props> = ({
         ])}
       >
         <div className="px-1 md:px-3 lg:px-8 py-4 flex justify-between items-center text-3xl">
-          <div className="text-greeny-darker tracking-tighter opacity-50">
+          <div
+            className="text-greeny-darker tracking-tighter opacity-50"
+            style={{ textShadow: "0 0 2px #000" }}
+          >
             GroovyPlayer
           </div>
           <Button

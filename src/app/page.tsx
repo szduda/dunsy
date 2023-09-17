@@ -10,7 +10,7 @@ const HomePage: FC = async () => {
   )[0];
 
   return (
-    <main className="flex mx-auto flex-col items-center justify-center px-2 pt-8 pb-8 max-w-[1024px]">
+    <main className="flex mx-auto flex-col items-center justify-center px-2 pt-8 pb-24 max-w-[1024px]">
       <h2 className="text-graye text-3xl mt-6 text-center">
         Practicing your djembe?
       </h2>
