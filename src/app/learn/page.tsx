@@ -22,7 +22,7 @@ const AboutPage: FC = () => (
       title="Search By Tag"
       description={
         <>
-          Search only works if you type the full tag name. If you don't know
+          Search only works if you type the full tag name. If you don&rsquo;t know
           what to search for you can{" "}
           <Link href="/grooves" className="underline hover:no-underline">
             browse all rhythms at the grooves page.

@@ -2,7 +2,6 @@ import { FC } from "react";
 import Link from "next/link";
 import { getRecentlyAdded } from "@/features/SnippetApi";
 import { Button, Card, IconLink } from "@/features";
-import { DjembeIcon, DundunIcon, InfoIcon } from "@/features/Icons";
 
 const HomePage: FC = async () => {
   const recentlyAdded = await getRecentlyAdded();
@@ -65,7 +64,7 @@ const HomePage: FC = async () => {
           <>
             OMG
             <br />
-            You won't believe
+            You won&rsquo;t believe
             <br />
             that story
           </>

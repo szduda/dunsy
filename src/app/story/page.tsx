@@ -17,16 +17,16 @@ const StoryPage: FC = () => (
       You start <span className="text-greeny-light">loving djembe</span>.
     </p>
     <h2 className="text-graye text-3xl mt-24">
-      At some point you think it's time to grow
+      At some point you think it&rsquo;s time to grow
     </h2>
     <p className="mt-6 text-xl leading-relaxed tracking-wider">
-      But the growth ain't just happening. You want to practice your solos,
+      But the growth ain&rsquo;t just happening. You want to practice your solos,
       breaks, unisonos, intros and outros. You need the backing tracks. You look
       for recordings, but all you can find are 200 BPM jams recorded with a
-      potato. You barely hear the dun dun voice. And where's the pulse anyway?
+      potato. You barely hear the dun dun voice. And where&rsquo;s the pulse anyway?
       Which beat is the first beat? Wait... did they just change the rhythm? Or
-      maybe it's just your mind who changed it for you. "Hey mind, don't do
-      that". It keeps doing that.
+      maybe it&rsquo;s just your mind who changed it for you. &rsquo;Hey mind, don&rsquo;t do
+      that&rsquo;. It keeps doing that.
     </p>
     <p className="mt-6 text-xl leading-relaxed tracking-wider">
       You start <span className="text-orangey-light">hating djembe</span>. No -
@@ -43,7 +43,7 @@ const StoryPage: FC = () => (
     </p>
     <p className="mt-6 text-xl leading-relaxed tracking-wider">
       All these apps are really good in fact. And this is just one more. Maybe
-      better, maybe not. What's sure is that it's not perfect. The performance
+      better, maybe not. What&rsquo;s sure is that it&rsquo;s not perfect. The performance
       could (and hopefully eventually will) be improved. The sound samples could
       be more authentic. Plenty of things could be added or bettered. Feel free
       to provide your feedback. I accept it all.
@@ -55,9 +55,9 @@ const StoryPage: FC = () => (
       It feels like this story miss the...
     </h2>
     <p className="mt-6 text-xl leading-relaxed tracking-wider">
-      People. It's always better to play with people, together. To let your
+      People. It&rsquo;s always better to play with people, together. To let your
       tones speak, your slaps scream, your bases rumble. If for any reason at
-      any moment you can't play with other people and you still want to play
+      any moment you can&rsquo;t play with other people and you still want to play
       djembe or dundun...
     </p>
     <h3 className="text-greeny text-5xl mt-6 font-bold">
