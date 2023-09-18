@@ -24,9 +24,13 @@ const AboutPage: FC = () => (
         <>
           Search only works if you type the full tag name. If you don&rsquo;t
           know what to search for you can{" "}
-          <Link href="/grooves" className="underline hover:no-underline">
-            browse all rhythms at the grooves page.
-          </Link>
+          <Link
+            href="/grooves"
+            className="underline hover:no-underline tracking-widest"
+          >
+            browse all rhythms
+          </Link>{" "}
+          at the grooves page.
         </>
       }
       icon={<SearchIcon className="w-24 h-24 fill-whitey" />}
@@ -37,7 +41,12 @@ const AboutPage: FC = () => (
     <Legend
       title="Play Djembe Signal"
       description="Player will eventually play the signal. Just give it some time."
-      icon={<SignalIcon className="w-24 h-24" innerClass2="animate-sway" />}
+      icon={
+        <SignalIcon
+          className="w-24 h-24"
+          innerClass2="animate-ping origin-center"
+        />
+      }
     />
 
     <Legend
@@ -47,7 +56,7 @@ const AboutPage: FC = () => (
     />
 
     <Legend
-      title="Paprika Afreaka Spice"
+      title={<span className="text-redy">Paprika Afreaka Spice</span>}
       description="Groove it up. Apply swing, sometimes swong."
       icon={<PepperIcon className="w-24 h-24 hover:animate-spin" />}
     />
@@ -128,7 +137,9 @@ const AboutPage: FC = () => (
     <h3 className="text-graye text-3xl drop-shadow-lg mt-48">
       Need more help?
     </h3>
-    <Button className="mt-8">Send a message</Button>
+    <Link href="mailto:dunsy.contact@gmail.com" target="_blank">
+      <Button className="mt-8">Send a message</Button>
+    </Link>
 
     <h3 className="text-graye text-3xl drop-shadow-lg mt-48">App Version</h3>
     <div className="mt-8 pr-4 pl-6 py-4 border border-yellowy-light/25 rounded-full flex items-baseline">
@@ -147,7 +158,7 @@ const AboutPage: FC = () => (
           <TextLink href="https://www.moribaya.pl/?lang=en" target="_blank">
             Moribaya
           </TextLink>{" "}
-          band and{" "}
+          bandpage and{" "}
           <TextLink
             href="https://www.facebook.com/profile.php?id=100064576304359"
             target="_blank"
@@ -159,6 +170,8 @@ const AboutPage: FC = () => (
       }
       leftCol={
         <Image
+          placeholder="blur"
+          blurDataURL="/logo.svg"
           alt="people playing drums"
           src="/bg_.jpg"
           className="rounded-3xl"

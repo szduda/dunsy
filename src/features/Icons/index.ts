@@ -16,3 +16,4 @@ export { Stop as StopIcon } from "./Stop";
 export { DjembeIcon } from "./Djembe";
 export { DundunIcon } from "./Dundun";
 export { GearIcon } from "./Gear";
+export { DundunSetIcon } from "./DundunSet";

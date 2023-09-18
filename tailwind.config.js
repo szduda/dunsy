@@ -14,6 +14,7 @@ module.exports = {
         orangey: "#D95D39",
         "orangey-dark": "#AB3F21",
         "orangey-light": "#DE7254",
+        "orangey-lighter": "#E58E76",
 
         yellowy: "#F9C926",
         "yellowy-dark": "#DBA906",
@@ -44,6 +45,10 @@ module.exports = {
           "0%, 100%": { transform: "rotate(-15deg)" },
           "50%": { transform: "rotate(15deg)" },
         },
+        swaye: {
+          "0%, 100%": { transform: "rotate(-30deg)" },
+          "50%": { transform: "rotate(0deg)" },
+        },
         dundun: {
           "0%": { transform: "scale(1)" },
           "12.5%": { transform: "scale(0.975)" },
@@ -68,16 +73,23 @@ module.exports = {
           "0, 100%": { transform: "scale(1, 1)" },
           "50%": { transform: "scale(-1, 1)" },
         },
+        "spin-logo": {
+          "0%": { transform: "rotate(-180deg)" },
+          "100%": { transform: "rotate(-35deg)" },
+        },
       },
       animation: {
         shake: "wiggle 500ms ease-in-out infinite",
-        dundun: "dundun 1s ease-in infinite",
+        dundun: "dundun 1.5s ease-in infinite",
         djembe: "djembe 2s ease-in infinite",
+        swaye: "swaye 2s ease-in-out infinite",
         sway: "sway 2s ease-in-out infinite",
         "sway-fast": "sway 1s ease-in-out infinite",
         screw: "spin 800ms ease-in-out infinite",
         dance: "dance 1s ease-in-out infinite",
         "spin-once": "spin 1s ease-in-out",
+        "spin-logo-once": "spin-logo 500ms ease-out",
+        "spin-logo": "spin 100ms ease-in-out 3s infinite",
       },
       backgroundImage: {
         guard: "url('/guard.avif')",

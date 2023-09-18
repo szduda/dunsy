@@ -37,10 +37,11 @@ export const IconLink: FC<Props> = ({
     >
       {typeof Icon === "string" ? (
         <Image
+          placeholder="blur"
+          blurDataURL="/logo.svg"
           src={`/${Icon}`}
           width={96}
           height={96}
-          quality={100}
           alt="Exploading head octopus"
           className={cx([hover && "animate-screw"])}
         />

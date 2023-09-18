@@ -1,3 +1,5 @@
+"use client";
+
 import { SnippetCard, getSnippets } from "@/features/SnippetApi";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -8,20 +10,26 @@ export const useSearch = () => {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
   const [term, setTerm] = useState(searchQuery);
+  const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState<SnippetCard[] | null>();
 
   useEffect(() => {
     setTerm(searchQuery);
+    if (searchQuery.length < 3) {
+      search("");
+    }
   }, [searchQuery]);
 
   useEffect(() => {
     if (!term) {
       setSearchResults(null);
-    } else if (term && term.length > 2) {
+    } else {
       const asyncEffect = async () => {
         const snippets = await getSnippets(term, { limit: 50 });
         setSearchResults(snippets || []);
+        setLoading(false);
       };
+      setLoading(true);
       asyncEffect();
     }
   }, [term]);
@@ -32,7 +40,7 @@ export const useSearch = () => {
 
     if (!_term) {
       params.delete("search");
-    } else {
+    } else if (_term.length > 2) {
       params.set("search", _term);
     }
 
@@ -47,5 +55,6 @@ export const useSearch = () => {
     searchResults,
     term,
     setTerm,
+    loading,
   };
 };

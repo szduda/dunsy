@@ -1,11 +1,13 @@
 import { FC } from "react";
 import { cx, useSearch } from "@/utils";
 
+type GrooveTag = {
+  tag: string;
+  strength: number;
+};
+
 type Props = {
-  data: {
-    tag: string;
-    strength: number;
-  }[];
+  data: GrooveTag[];
 };
 
 export const Grooves: FC<Props> = ({ data }) => {
@@ -14,7 +16,7 @@ export const Grooves: FC<Props> = ({ data }) => {
 
   return (
     <div className="flex flex-wrap w-full">
-      {data.map(({ tag, strength }, index) => {
+      {data.sort(byTag).map(({ tag, strength }, index) => {
         const str = strength / maxStrength;
         return (
           <button
@@ -53,3 +55,6 @@ export const Grooves: FC<Props> = ({ data }) => {
     </div>
   );
 };
+
+const byStrength = (t1: GrooveTag, t2: GrooveTag) => t1.strength - t2.strength;
+const byTag = (t1: GrooveTag, t2: GrooveTag) => (t1.tag > t2.tag ? 1 : -1);

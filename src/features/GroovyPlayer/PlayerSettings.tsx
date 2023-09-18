@@ -14,7 +14,7 @@ export const PlayerSettings: FC<Props> = ({ onClose, className }) => {
   return (
     <div
       className={cx([
-        "absolute top-0 right-0 px-2 pt-2 lg:pt-5 pb-4 lg:pl-6 lg:pr-6 bg-graye-darkest md:rounded-bl-lg min-w-[280px] w-full md:w-auto",
+        "absolute top-0 right-0 px-2 pt-2 lg:pt-3 pb-4 lg:pl-6 lg:pr-4 bg-graye-darkest md:rounded-bl-lg min-w-[280px] w-full md:w-auto",
         className,
       ])}
     >

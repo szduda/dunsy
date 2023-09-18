@@ -33,7 +33,7 @@ const StoryPage: FC = () => (
     </Paragraph>
     <H2>Then you realize which century you live in</H2>
     <Paragraph>
-      Let the modern tech be helpful one more time. You browse the depths of the
+      Let the modern tech be helpful this one time. You browse the depths of the
       Internet in search for the app that will make you fully prepared to follow
       the path of the fola. But no app is realy satisfactory. None is enough.
       Just a few rhythms? No new content? No customisation? No editing? Too
@@ -55,7 +55,9 @@ const StoryPage: FC = () => (
     {/* <Paragraph>
       (more about GroovyPlayer project)
     </Paragraph> */}
-    <H2>I&rsqo;d rather play with the...</H2>
+    <H2>
+      <>I&rsquo;d rather play with the...</>
+    </H2>
     <Paragraph>
       People. It&rsquo;s always better to play with people, together. To let
       your tones speak, your slaps laugh, your bases banter. If for any reason

@@ -67,6 +67,8 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
         <form className="grid grid-flow-row gap-8">
           <div className="flex w-full justify-center">
             <Image
+              placeholder="blur"
+              blurDataURL="/logo.svg"
               src={initialData ? "/godess2.avif" : "/host.avif"}
               alt="The rhythm vault host in person"
               width={450}
@@ -206,6 +208,8 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
                 </div>
                 <div className="py-4 md:pr-8">
                   <Image
+                    placeholder="blur"
+                    blurDataURL="/logo.svg"
                     src="/dictator.avif"
                     alt="The Great Validator"
                     width={165}

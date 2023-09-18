@@ -53,13 +53,13 @@ export const GroovyPlayer: FC<Props> = ({
             mini
             ninja
             padding="0"
-            className="min-w-[58px] text-4xl leading-3 bg-transparent -mr-4"
+            className="text-4xl leading-3 bg-transparent -mr-4"
             onClick={(e) => {
               e.preventDefault();
               setSettingsOpen(true);
             }}
           >
-            <GearIcon className="stroke-graye hover:animate-spin-once border-box p-1" />
+            <GearIcon className="hover:animate-spin-once border-box p-1" />
           </Button>
         </div>
         {tracks.length

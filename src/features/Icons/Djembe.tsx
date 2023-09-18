@@ -1,3 +1,4 @@
+import { cx } from "@/utils";
 import { FancyIcon } from "./types";
 
 export const DjembeIcon: FancyIcon = ({
@@ -12,7 +13,7 @@ export const DjembeIcon: FancyIcon = ({
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
-    className={innerClass}
+    className={cx([props.className, innerClass])}
   >
     <rect
       x="20"

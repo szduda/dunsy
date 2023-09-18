@@ -25,7 +25,7 @@ export const GearIcon: Icon = (props) => (
         />
       </mask>
       <g mask="url(#mask0_317_77)">
-        <circle cx="18" cy="18" r="11" stroke="#D0DCDB" strokeWidth="12" />
+        <circle cx="18" cy="18" r="11" stroke="#455F5D" strokeWidth="12" />
       </g>
     </g>
   </svg>

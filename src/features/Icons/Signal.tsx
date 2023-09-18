@@ -1,4 +1,5 @@
-import { FancyIcon, Icon } from "./types";
+import { cx } from "@/utils";
+import { FancyIcon } from "./types";
 
 export const SignalIcon: FancyIcon = ({
   innerClass,
@@ -12,6 +13,7 @@ export const SignalIcon: FancyIcon = ({
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
+    className={cx(["overflow-visible", props.className])}
   >
     <path
       d="M8.5 2H25.5C25 9.5 24.7493 11.5055 24.5 13.5C24 17.5 23.5 18.5 23.5 18.5C23.5 18.5 23 19.5 21.5 19.7692C21.2222 27 22 30 23.5 35H11C12.8056 28.5 12.5648 22.0128 12.5 19.7692C11.7985 19.7692 11 19 11 19C10 18 10 17.5 9.5 15C9 11.5 9 11.5 8.5 2.50001L8.5 2.5C8.46679 2.00645 8.53376 2.52196 8.5 2Z"

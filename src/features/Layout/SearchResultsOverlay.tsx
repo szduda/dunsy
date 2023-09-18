@@ -1,12 +1,14 @@
 import { ComponentProps, FC } from "react";
 import { cx, useSearch } from "@/utils";
 import { Button, Card } from "@/features";
-import { CloseIcon } from "../Icons";
+import { CloseIcon, SearchIcon } from "../Icons";
 import Link from "next/link";
 
 export const SearchResultsOverlay: FC = () => {
-  const { searchResults, clearSearch, term, searchQuery } = useSearch();
-  const noResults = searchQuery && searchResults && searchResults.length === 0;
+  const { searchResults, clearSearch, term, searchQuery, loading } =
+    useSearch();
+  const noResults =
+    !loading && searchQuery && searchResults && searchResults.length === 0;
   return (
     <aside
       className={cx([
@@ -16,7 +18,7 @@ export const SearchResultsOverlay: FC = () => {
           : "translate-y-32 opacity-0 pointer-events-none h-[0px]",
       ])}
     >
-      {searchResults?.length && (
+      {(searchResults?.length ?? 0) > 0 && (
         <div className="pt-6 md:pt-14 tracking-wide text-xl text-graye flex items-center justify-center">
           <div className="flex flex-col md:flex-row">
             <span className="opacity-75 pr-2 self-baseline">
@@ -34,17 +36,31 @@ export const SearchResultsOverlay: FC = () => {
           <Card key={card.id} {...card} />
         ))}
         {noResults && (
-          <div className="col-span-4 flex flex-col items-center text-center mt-16 lg:mt-32">
+          <div className="col-span-4 flex flex-col items-center text-center mt-32">
             <div className="text-3xl lg:text-4xl text-graye">{term}?</div>
-            <div className="mt-2 lg:mt-4 text-lg lg:text-xl">
+            <div className="mt-6 lg:mt-12 text-lg lg:text-xl">
               I don&rsquo;t know a rhytm called {term} yet.
             </div>
             <Link href="/grooves">
-              <Button className="mt-16 lg:mt-24">Show all tracks</Button>
+              <Button className="mt-8 lg:mt-16">Show all tracks</Button>
             </Link>
             <CloseButton onClick={clearSearch} />
           </div>
         )}
+      </div>
+      <div
+        className={cx([
+          "h-screen fixed top-[120px] left-0 right-0 md:top-[160px] flex justify-center bg-greeny-darker/75 pt-32 md:pt-40 transition-all duration-500 origin-center pointer-events-none",
+          !loading && "opacity-0",
+        ])}
+      >
+        <SearchIcon
+          height={128}
+          className={cx([
+            !loading && "opacity-0",
+            "delay-100 duration-500 animate-swaye origin-bottom-right fill-yellowy/50",
+          ])}
+        />
       </div>
     </aside>
   );

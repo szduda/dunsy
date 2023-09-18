@@ -120,7 +120,7 @@ export const PlayerControls: FC<Props> = ({
         innerClass2={cx([
           (signalActive || signalRequested) &&
             playing &&
-            "-translate-x-4 origin-center animate-sway-fast",
+            "animate-ping origin-center",
         ])}
       />
     </Button>

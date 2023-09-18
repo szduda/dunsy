@@ -1,7 +1,7 @@
 import { cx } from "@/utils";
 import { ComponentProps, FC, ReactNode } from "react";
 
-type Props = ComponentProps<"div"> & {
+type Props = Omit<ComponentProps<"div">, "title"> & {
   title: ReactNode;
   description?: ReactNode;
   padding?: string;

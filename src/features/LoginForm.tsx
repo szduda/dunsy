@@ -1,7 +1,7 @@
 import { FC, FormEvent, useState } from "react";
 import { Button, Input, useAuth } from ".";
 import Image from "next/image";
-import { cx } from "@/utils"
+import { cx } from "@/utils";
 
 export const LoginForm: FC = () => {
   const [email, setEmail] = useState("");
@@ -21,6 +21,8 @@ export const LoginForm: FC = () => {
   return (
     <form className="grid grid-flow-row gap-4 md:gap-6" onSubmit={handleSubmit}>
       <Image
+        placeholder="blur"
+        blurDataURL="/logo.svg"
         className="rounded-lg"
         src={error ? "/dictator.avif" : "/god2.avif"}
         width={480}
@@ -31,8 +33,7 @@ export const LoginForm: FC = () => {
         className={cx([
           "my-4 md:mt-8 w-full text-center text-xl tracking-wider italic h-[84px]",
           error ? "text-redy-dark" : "text-graye",
-        ]
-  )}
+        ])}
       >
         {error ? (
           <>

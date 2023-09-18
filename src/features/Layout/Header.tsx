@@ -59,6 +59,7 @@ const InfoButton: FC<Omit<ComponentProps<typeof Link>, "href">> = (props) => (
       colorClasses="hover:bg-graye-dark"
       className="ml-1"
       padding="p-2"
+      aria-label="help"
     >
       <InfoIcon />
     </Button>

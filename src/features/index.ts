@@ -14,6 +14,7 @@ export { GroovyPlayer } from "./GroovyPlayer/GroovyPlayer";
 export { Bars } from "./GroovyPlayer/Track";
 export { Logo } from "./Logo/Logo";
 export { Layout } from "./Layout/Layout";
+export { SearchResultsOverlay } from "./Layout/SearchResultsOverlay";
 export { Tags } from "./Tags/Tags";
 export { Card } from "./Card/Card";
 export { Grooves } from "./Grooves/Grooves";
