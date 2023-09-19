@@ -1,6 +1,6 @@
 import { Icon } from "./types";
 
-export const SoundHigh: Icon = (props) => (
+export const SoundHighIcon: Icon = (props) => (
   <svg
     viewBox="0 0 18 18"
     fill="none"

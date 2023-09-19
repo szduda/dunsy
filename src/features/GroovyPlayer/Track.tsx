@@ -1,7 +1,12 @@
 import { FC, ReactNode, memo, useMemo } from "react";
 import { cx } from "@/utils";
 import { usePlayerSettings } from "./PlayerSettingsContext";
-import { SoundLowIcon, SoundMidIcon, SoundHighIcon } from "@/features/Icons";
+import {
+  SoundLowIcon,
+  SoundMidIcon,
+  SoundHighIcon,
+  SoundHalfIcon,
+} from "@/features/Icons";
 
 type Props = {
   title?: string;
@@ -147,4 +152,5 @@ const font: Record<string, ReactNode> = {
   o: <SoundLowIcon className="w-full" />,
   x: <SoundHighIcon className="w-full" />,
   i: <SoundMidIcon className="w-full" />,
+  b: <SoundHalfIcon className="w-full" />,
 };

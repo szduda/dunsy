@@ -1,6 +1,12 @@
-import { FancyIcon } from "./types";
+import { FC } from "react";
+import { FancyIconProps } from "./types";
 
-export const LogoIcon: FancyIcon = ({ innerClass, innerClass2, ...props }) => (
+export const LogoIcon: FC<FancyIconProps & { onStickClick(): void }> = ({
+  onStickClick,
+  innerClass,
+  innerClass2,
+  ...props
+}) => (
   <svg
     height="36"
     viewBox="-4 0 76 52"
@@ -33,6 +39,7 @@ export const LogoIcon: FancyIcon = ({ innerClass, innerClass2, ...props }) => (
           fill="#455F5D"
           stroke="#121211AA"
           strokeWidth="1"
+          onClick={onStickClick}
         />
       </g>
     </g>

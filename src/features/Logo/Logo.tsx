@@ -1,18 +1,21 @@
 import { LogoIcon, DundunSetIcon } from "@/features/Icons";
 import { Icon } from "../Icons/types";
 import { cx } from "@/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const Logo: Icon = (props) => {
-  const [dundunTime, itsDundunTime] = useState(false);
-  let timeout: NodeJS.Timeout | null;
+  const [dundunTime, itsDundunTime] = useState(0);
+  const [hint, setHint] = useState("");
+  const [hintVisible, setHintVisible] = useState(false);
 
-  useEffect(
-    () => () => {
-      if (timeout) clearTimeout(timeout);
-    },
-    []
-  );
+  let timeout: NodeJS.Timeout;
+  const showHint = (data: unknown) => {
+    setHint(String(data));
+    if (data) {
+      setHintVisible(true);
+      timeout = setTimeout(() => setHintVisible(false), 500);
+    }
+  };
 
   return (
     <div className="flex items-center scale-75 md:scale-100">
@@ -23,10 +26,10 @@ export const Logo: Icon = (props) => {
           {...props}
           className={cx([
             props.className,
-            !dundunTime
+            dundunTime < 4
               ? "opacity-0 pointer-events-none"
               : "animate-spin-logo-once",
-            "absolute origin-center transition-all duration-500 -rotate-[30deg]",
+            "absolute origin-center transition-all duration-500 delay-100 -rotate-[30deg]",
           ])}
         />
         <LogoIcon
@@ -35,28 +38,35 @@ export const Logo: Icon = (props) => {
           {...props}
           className={cx([
             props.className,
-            dundunTime && "opacity-0",
-            "origin-center hover:animate-spin-logo transition-all duration-500",
+            dundunTime > 3 && "opacity-0 animate-spin",
+            "origin-center transition-all duration-500",
           ])}
-          onMouseEnter={(e) => {
-            if (timeout) return;
-
-            timeout = setTimeout(() => {
-              itsDundunTime(true);
-            }, 3300);
-          }}
-          onMouseLeave={() => {
-            if (timeout) {
-              clearTimeout(timeout);
-            }
-            timeout = null;
+          onStickClick={() => {
+            itsDundunTime(dundunTime + 1);
+            showHint(dundunTime + 1);
           }}
         />
+        <div
+          className={cx([
+            "text-yellowy font-bold absolute transition ease-in-out",
+            hint === "4" ? "duration-1000" : "duration-500",
+            !hintVisible && "opacity-0",
+            hint === "2"
+              ? "translate-x-4"
+              : hint === "3"
+              ? "translate-x-8"
+              : hint === "4"
+              ? "-translate-x-96"
+              : "",
+          ])}
+        >
+          {hint}
+        </div>
       </div>
       <h1
         className={cx([
           "font-black text-5xl text-graye tracking-wide transition duration-500 ease-in-out",
-          dundunTime && "translate-y-12 -translate-x-1",
+          dundunTime > 3 && "translate-y-12 -translate-x-1",
         ])}
       >
         dunsy<small className="text-2xl opacity-50">.app</small>

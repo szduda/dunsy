@@ -1,7 +1,4 @@
-"use strict";
-
 import { africanSounds } from "./africanSounds";
-import { drumKeys, drumNames } from "./builtinSounds";
 
 var WebAudioFontChannel = /** @class */ (function () {
   function WebAudioFontChannel(audioContext) {
@@ -39,7 +36,7 @@ var WebAudioFontLoader = /** @class */ (function () {
       return;
     }
     for (var i = 0; i < this.cached.length; i++) {
-      if (this.cached[i].variableName == variableName) {
+      if (this.cached[i].variableName === variableName) {
         return;
       }
     }
@@ -49,6 +46,7 @@ var WebAudioFontLoader = /** @class */ (function () {
     });
     var r = document.createElement("script");
     r.setAttribute("type", "text/javascript");
+    r.setAttribute("async", "true");
     r.setAttribute("src", filePath);
     document.getElementsByTagName("head")[0].appendChild(r);
     this.decodeAfterLoading(audioContext, variableName);
@@ -109,31 +107,10 @@ var WebAudioFontLoader = /** @class */ (function () {
       }, 333);
     }
   };
-  WebAudioFontLoader.prototype.drumTitles = function () {
-    if (this.drumNamesArray.length == 0) {
-      this.drumNamesArray = drumNames;
-    }
-    return this.drumNamesArray;
-  };
-  WebAudioFontLoader.prototype.drumKeys = function () {
-    if (this.drumKeyArray.length == 0) {
-      this.drumKeyArray = drumKeys;
-    }
-    return this.drumKeyArray;
-  };
   WebAudioFontLoader.prototype.drumInfo = function (n) {
     if (n in africanSounds) {
       return africanSounds[n];
     }
-
-    var key = this.drumKeys()[n];
-    var p = 1 * parseInt(key.substring(0, 2));
-    return {
-      variable: "_drum_" + key,
-      url: "https://surikov.github.io/webaudiofontdata/sound/128" + key + ".js",
-      pitch: p,
-      title: this.drumTitles()[p],
-    };
   };
   return WebAudioFontLoader;
 })();
@@ -221,7 +198,7 @@ var WebAudioFontPlayer = /** @class */ (function () {
   };
   WebAudioFontPlayer.prototype.resumeContext = function (audioContext) {
     try {
-      if (audioContext.state == "suspended") {
+      if (audioContext.state === "suspended") {
         audioContext.resume();
       }
     } catch (e) {
@@ -422,7 +399,7 @@ var WebAudioFontPlayer = /** @class */ (function () {
     for (var i = 0; i < this.envelopes.length; i++) {
       var e = this.envelopes[i];
       if (
-        e.target == target &&
+        e.target === target &&
         audioContext.currentTime > e.when + e.duration + 0.001
       ) {
         try {

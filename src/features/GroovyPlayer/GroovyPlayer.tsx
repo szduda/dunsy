@@ -42,7 +42,7 @@ export const GroovyPlayer: FC<Props> = ({
           settingsOpen && "blur-sm brightness-75 pointer-events-none",
         ])}
       >
-        <div className="px-1 md:px-3 lg:px-8 py-4 flex justify-between items-center text-3xl">
+        <div className="pr-4 pl-8 py-4 flex justify-between items-center text-3xl">
           <div
             className="text-greeny-darker tracking-tighter opacity-50"
             style={{ textShadow: "0 0 2px #000" }}
@@ -53,7 +53,7 @@ export const GroovyPlayer: FC<Props> = ({
             mini
             ninja
             padding="0"
-            className="text-4xl leading-3 bg-transparent -mr-4"
+            className="text-4xl leading-3 bg-transparent"
             onClick={(e) => {
               e.preventDefault();
               setSettingsOpen(true);

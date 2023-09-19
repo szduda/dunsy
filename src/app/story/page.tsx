@@ -1,4 +1,5 @@
-import { H2, Paragraph, TextLink } from "@/features";
+import { Button, H2, Paragraph, TextLink } from "@/features";
+import Link from "next/link";
 import { FC } from "react";
 
 const StoryPage: FC = () => (
@@ -67,6 +68,9 @@ const StoryPage: FC = () => (
     <h3 className="text-greeny text-5xl mt-6 font-bold drop-shadow-lg">
       Be my guest and enjoy the app.
     </h3>
+    <Link href="/grooves">
+      <Button className="mt-8">Go where dundunfolas go</Button>
+    </Link>
   </main>
 );
 

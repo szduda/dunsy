@@ -18,7 +18,8 @@ const GroovesPage: FC = async () => {
 
   return (
     <main className="flex mx-auto flex-col items-center justify-center px-2 pb-8 max-w-[1024px]">
-      <h1 className="text-graye text-3xl my-16">All Grooves</h1>
+      <h1 className="text-greeny text-3xl mt-16">Grooves Garage</h1>
+      <sub className="text-graye text-lg mb-16">all rhythms live here</sub>
       <Grooves data={data} />
     </main>
   );

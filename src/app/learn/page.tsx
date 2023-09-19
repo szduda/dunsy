@@ -6,6 +6,7 @@ import {
   SearchIcon,
   ShekereIcon,
   SignalIcon,
+  SoundHalfIcon,
   SoundHighIcon,
   SoundLowIcon,
 } from "@/features/Icons";
@@ -21,7 +22,7 @@ const AboutPage: FC = () => (
     <Legend
       title="Search By Tag"
       description={
-        <>
+        <p>
           Search only works if you type the full tag name. If you don&rsquo;t
           know what to search for you can{" "}
           <Link
@@ -31,7 +32,7 @@ const AboutPage: FC = () => (
             browse all rhythms
           </Link>{" "}
           at the grooves page.
-        </>
+        </p>
       }
       icon={<SearchIcon className="w-24 h-24 fill-whitey" />}
     />
@@ -77,12 +78,12 @@ const AboutPage: FC = () => (
     <Legend
       title="Player Settings"
       description={
-        <>
+        <p>
           Inside you can increse the size of the bars (the player will display
           less bars per line) or turn on the Video Sync, which might be helpful
           if your bluetooth audio device has a delay in reference to the
           highlighted bar.
-        </>
+        </p>
       }
       icon={
         <GearIcon className="w-24 h-24 stroke-graye hover:animate-spin-once" />
@@ -96,10 +97,10 @@ const AboutPage: FC = () => (
     <Legend
       title="Bar & Beats"
       description={
-        <>
+        <p>
           Beats are where you stamp your foot. One bar contains two beats marked
           with a darker background. One beat is followed by 2 or 3 off-beats.
-        </>
+        </p>
       }
       icon={
         <div className="flex flex-col items-center">
@@ -114,10 +115,10 @@ const AboutPage: FC = () => (
     <Legend
       title="Open Sound"
       description={
-        <>
+        <p>
           The default sound of dun dun. You play it by striking the drum, then
           letting your hand bounce up right after it touch the skin.
-        </>
+        </p>
       }
       icon={<SoundLowIcon height={96} />}
     />
@@ -125,13 +126,21 @@ const AboutPage: FC = () => (
     <Legend
       title="Closed Sound"
       description={
-        <>
+        <p>
           You play it by striking the drum and slightly pressing the stick
           against the membrane to mute the sound. Don&rsquo;t press too strong.
           Keep the stick pressed until you need to play the next note.
-        </>
+        </p>
       }
       icon={<SoundHighIcon height={96} />}
+    />
+
+    <Legend
+      title="Bell Sound"
+      description={
+        <p>Metal hits metal. The first you call a nail, the other a bell.</p>
+      }
+      icon={<SoundHalfIcon height={96} />}
     />
 
     <h3 className="text-graye text-3xl drop-shadow-lg mt-48">
@@ -153,7 +162,7 @@ const AboutPage: FC = () => (
       className="pt-48"
       title="Background photo"
       description={
-        <>
+        <p>
           Great people playing drums in the amazing old house. Check out both{" "}
           <TextLink href="https://www.moribaya.pl/?lang=en" target="_blank">
             Moribaya
@@ -166,7 +175,7 @@ const AboutPage: FC = () => (
             Kamionki
           </TextLink>{" "}
           fanpage.
-        </>
+        </p>
       }
       leftCol={
         <Image

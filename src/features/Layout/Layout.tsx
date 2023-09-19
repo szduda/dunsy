@@ -7,6 +7,7 @@ import { AuthContextProvider, SearchResultsOverlay } from "@/features";
 type Props = {
   children: ReactNode;
 };
+
 export const Layout: FC<Props> = ({ children }) => {
   const pathname = usePathname();
   const { searchQuery } = useSearch();

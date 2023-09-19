@@ -20,7 +20,7 @@ export const SearchResultsOverlay: FC = () => {
     >
       {(searchResults?.length ?? 0) > 0 && (
         <div className="pt-6 md:pt-14 tracking-wide text-xl text-graye flex items-center justify-center">
-          <div className="flex flex-col md:flex-row">
+          <div className="flex flex-1 md:flex-none flex-col md:flex-row">
             <span className="opacity-75 pr-2 self-baseline">
               Search results for
             </span>

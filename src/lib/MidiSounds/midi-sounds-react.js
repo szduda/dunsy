@@ -8,7 +8,7 @@ export class MIDISounds extends Component {
     this.state = {
       drums: this.props.drums,
       master: 1.0,
-      echo: 0.5,
+      echo: 0.05,
     };
 
     this.midiStatus = "?";
@@ -22,11 +22,6 @@ export class MIDISounds extends Component {
     return this.audioContext.currentTime;
   }
   refreshCache() {
-    if (this.state.instruments) {
-      for (var i = 0; i < this.state.instruments.length; i++) {
-        this.cacheInstrument(this.state.instruments[i]);
-      }
-    }
     if (this.state.drums) {
       for (var k = 0; k < this.state.drums.length; k++) {
         this.cacheDrum(this.state.drums[k]);

@@ -10,10 +10,10 @@ import {
 
 import { MIDISounds } from "./midi-sounds-react";
 
-const bell = 227;
+const bell = 3306;
 const sangbanClosed = 3311;
 const sangban = 3310;
-const shaker = 173;
+const shaker = 3305;
 const dundunbaOpen = 3312;
 const dundunbaClosed = 3313;
 const kenkeniOpen = 3314;

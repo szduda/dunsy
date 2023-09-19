@@ -5,10 +5,26 @@ type DrumInfo = {
   title: string;
 };
 
-const getUrl = (filename: string) =>
-  `https://firebasestorage.googleapis.com/v0/b/creactive-83d83.appspot.com/o/${filename}.js?alt=media`;
+const getUrl = (filename: string) => `/sounds/${filename}.js`;
+// `https://firebasestorage.googleapis.com/v0/b/creactive-83d83.appspot.com/o/${filename}.js.gz?alt=media`;
 
 export const africanSounds: Record<number, DrumInfo> = {
+  //shaker
+  3305: {
+    variable: "_shaker",
+    url: getUrl("shaker"),
+    pitch: 78,
+    title: "shaker",
+  },
+
+  //bell
+  3306: {
+    variable: "_bell",
+    url: getUrl("bell"),
+    pitch: 78,
+    title: "bell",
+  },
+
   // dunduns
 
   3310: {

@@ -140,7 +140,6 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
   // adjust volumes on mount
   // stop playback if player is closed
   useEffect(() => {
-    midiSounds?.current?.setEchoLevel(0.05);
     // shaker
     midiSounds?.current?.setDrumVolume(173, 0.3);
     // bell
