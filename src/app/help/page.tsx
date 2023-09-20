@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 
-const AboutPage: FC = () => (
+const HelpPage: FC = () => (
   <main className="flex mx-auto flex-col items-center justify-center px-2 pt-8 pb-8 max-w-[1024px]">
     <h2 className="text-4xl tracking-wider text-greeny mt-12 mb-8 drop-shadow-lg">
       Website Features
@@ -192,4 +192,4 @@ const AboutPage: FC = () => (
   </main>
 );
 
-export default AboutPage;
+export default HelpPage;

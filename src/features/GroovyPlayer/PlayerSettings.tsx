@@ -43,7 +43,7 @@ export const PlayerSettings: FC<Props> = ({ onClose, className }) => {
           />
           <div className="pl-3">Zoom In</div>
         </label>
-        <label className="cursor-pointer p-2 w-full flex leading-loose hover:bg-whitey/10 rounded-md">
+        <label className="cursor-pointer p-2 w-full flex hover:bg-whitey/10 rounded-md">
           <input
             className="flex w-[20px]"
             type="checkbox"

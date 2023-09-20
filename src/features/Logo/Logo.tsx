@@ -38,7 +38,7 @@ export const Logo: Icon = (props) => {
           {...props}
           className={cx([
             props.className,
-            dundunTime > 3 && "opacity-0 animate-spin",
+            dundunTime > 3 && "opacity-0 animate-spin pointer-events-none",
             "origin-center transition-all duration-500",
           ])}
           onStickClick={() => {

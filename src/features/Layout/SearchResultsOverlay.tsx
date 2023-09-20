@@ -15,8 +15,7 @@ export const SearchResultsOverlay: FC<Props> = (props) => (
 );
 
 const SearchResultsOverlayClient: FC<Props> = ({ onOpen = () => null }) => {
-  const { searchResults, clearSearch, term, searchQuery, loading } =
-    useSearch();
+  const { searchResults, clearSearch, searchQuery, loading } = useSearch();
   const noResults =
     !loading && searchQuery && searchResults && searchResults.length === 0;
 
@@ -52,9 +51,11 @@ const SearchResultsOverlayClient: FC<Props> = ({ onOpen = () => null }) => {
         ))}
         {noResults && (
           <div className="col-span-4 flex flex-col items-center text-center mt-32">
-            <div className="text-3xl lg:text-4xl text-graye">{term}?</div>
+            <div className="text-3xl lg:text-4xl text-graye">
+              {searchQuery}?
+            </div>
             <div className="mt-6 lg:mt-12 text-lg lg:text-xl">
-              I don&rsquo;t know a rhytm called {term} yet.
+              I don&rsquo;t know a rhytm called {searchQuery} yet.
             </div>
             <Link href="/grooves">
               <Button className="mt-8 lg:mt-16">Show all tracks</Button>

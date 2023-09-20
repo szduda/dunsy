@@ -1,4 +1,4 @@
-import { ComponentProps, FC, Suspense } from "react";
+import { ComponentProps, FC, Suspense, useState } from "react";
 import { Button } from "@/features";
 import { SearchIcon } from "@/features/Icons";
 import { useSearch } from "@/utils";
@@ -10,18 +10,19 @@ export const Search = () => (
 );
 
 const ClientSearch = () => {
-  const { search, term, setTerm } = useSearch();
+  const { search, searchQuery } = useSearch();
+  const [term, setTerm] = useState(searchQuery);
 
   return (
     <form
       className="flex-1 flex"
       onSubmit={(e) => {
         e.preventDefault();
-        search();
+        search(term);
       }}
     >
       <SearchInput value={term} onChange={(e) => setTerm(e.target.value)} />
-      <SearchButton onClick={() => search()} />
+      <SearchButton type="submit" />
     </form>
   );
 };

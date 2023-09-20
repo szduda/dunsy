@@ -1,17 +1,18 @@
 import { cx, useSearch } from "@/utils";
 import { ComponentProps, FC, Suspense } from "react";
 
-type Props = ComponentProps<"button"> &
-  (
-    | {
-        tagString: string;
-        tags?: never;
-      }
-    | {
-        tagString?: never;
-        tags: string[];
-      }
-  );
+type Props = {
+  onClick?(tag: string): void;
+} & (
+  | {
+      tagString: string;
+      tags?: never;
+    }
+  | {
+      tagString?: never;
+      tags: string[];
+    }
+);
 
 export const Tags: FC<Props> = (props) => (
   <Suspense fallback={<ServerTags {...props} />}>
@@ -22,10 +23,10 @@ export const Tags: FC<Props> = (props) => (
 const ClientTags: FC<Props> = (props) => {
   const { search } = useSearch();
 
-  return <ServerTags {...props} onClick={() => search()} />;
+  return <ServerTags {...props} onClick={search} />;
 };
 
-const ServerTags: FC<Props> = ({ tagString, tags, ...props }) => {
+const ServerTags: FC<Props> = ({ tagString, tags, onClick }) => {
   if (typeof tags === "undefined") {
     tags = tagString.split(",");
   }
@@ -40,7 +41,7 @@ const ServerTags: FC<Props> = ({ tagString, tags, ...props }) => {
             "bg-yellowy-light hover:bg-orangey-dark border-yellowy text-blacky",
             "text-lg font-medium px-2",
           ])}
-          {...props}
+          onClick={onClick ? () => onClick(tag) : undefined}
         >
           {tag.trim().toLowerCase()}
         </button>

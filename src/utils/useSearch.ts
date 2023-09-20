@@ -9,42 +9,50 @@ export const useSearch = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
-  const [term, setTerm] = useState(searchQuery);
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState<SnippetCard[] | null>();
-
-  useEffect(() => {}, [searchQuery]);
+  const [lastQuery, setLastQuery] = useState("");
 
   useEffect(() => {
-    setTerm(searchQuery);
-    if (searchQuery.length < 3) {
-      search("");
+    if (searchQuery === lastQuery) {
+      return;
     }
-    document.body.classList.toggle("overflow-y-hidden", searchQuery.length > 2);
-  }, [searchQuery]);
 
-  useEffect(() => {
-    if (!term) {
+    if (searchQuery.length < 3) {
+      document.body.classList.remove("overflow-y-hidden");
       setSearchResults(null);
+      setLastQuery("");
+      search("");
+      return;
+    }
+
+    if (["all", "grooves", "groves"].includes(searchQuery)) {
+      router.push("/grooves");
+    } else if (["help", "learn", "contact"].includes(searchQuery)) {
+      router.push("/help");
+    } else if (["story", "about", "clickbait"].includes(searchQuery)) {
+      router.push("/story");
     } else {
       const asyncEffect = async () => {
-        const snippets = await getSnippets(term, { limit: 50 });
+        const snippets = await getSnippets(searchQuery, { limit: 50 });
         setSearchResults(snippets || []);
         setLoading(false);
+        setLastQuery(searchQuery);
       };
+
       setLoading(true);
+      document.body.classList.add("overflow-y-hidden");
       asyncEffect();
     }
-  }, [term]);
+  }, [searchQuery]);
 
-  const search = (newTerm?: string) => {
+  const search = (term?: string) => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
-    const _term = typeof newTerm === "undefined" ? term : newTerm;
 
-    if (!_term) {
+    if (!term) {
       params.delete("search");
-    } else if (_term.length > 2) {
-      params.set("search", _term);
+    } else if (term.length > 2) {
+      params.set("search", term);
     }
 
     const query = params ? `?${params}` : "";
@@ -56,8 +64,6 @@ export const useSearch = () => {
     clearSearch: () => search(""),
     searchQuery,
     searchResults,
-    term,
-    setTerm,
     loading,
   };
 };

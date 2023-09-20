@@ -42,7 +42,7 @@ const HomePage: FC = async () => {
       <h2 className="text-greeny text-3xl mt-32">Need help?</h2>
       <IconLink
         className="mt-12 font-bold text-xl"
-        href="/learn"
+        href="/help"
         icon="question"
         iconSize={96}
         text={
@@ -63,7 +63,7 @@ const HomePage: FC = async () => {
           <>
             <span className="text-xl font-bold">44 drummers </span>
             <span className="text-lg">
-              became rich when
+              became rich after
               <br />
               they read this story
             </span>

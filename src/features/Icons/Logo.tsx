@@ -40,6 +40,7 @@ export const LogoIcon: FC<FancyIconProps & { onStickClick?(): void }> = ({
           fill="#4A2317"
           stroke="#121211AA"
           strokeWidth="1"
+          style={{ cursor: "pointer" }}
           onClick={onStickClick}
         />
       </g>
