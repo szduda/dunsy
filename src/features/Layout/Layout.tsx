@@ -1,6 +1,6 @@
 import { FC, ReactNode, useState } from "react";
 import { usePathname } from "next/navigation";
-import { AuthContextProvider, SearchResultsOverlay } from "@/features";
+import { SearchResultsOverlay } from "@/features";
 import { cx } from "@/utils";
 import { Header } from "./Header";
 
@@ -10,7 +10,6 @@ type Props = {
 
 export const Layout: FC<Props> = ({ children }) => {
   const pathname = usePathname();
-  // const { searchQuery } = useSearch();
   const [searchOpen, setSearchOpen] = useState(false);
   // const [hasScrolled, setHasScrolled] = useState(false);
   const isHome = pathname === "/";
@@ -26,7 +25,7 @@ export const Layout: FC<Props> = ({ children }) => {
   // }, []);
 
   if (pathname.startsWith("/admin")) {
-    return <AuthContextProvider>{children}</AuthContextProvider>;
+    return children;
   }
 
   return (

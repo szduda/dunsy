@@ -1,6 +1,5 @@
-import { Button } from "@/features";
-import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/features";
 
 export default function NotFound() {
   return (

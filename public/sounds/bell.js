@@ -1,4 +1,4 @@
-console.log("load bell");
+
 var _bell = {
   zones: [
     {

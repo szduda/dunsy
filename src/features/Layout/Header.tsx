@@ -1,4 +1,4 @@
-import { ComponentProps, FC, Suspense } from "react";
+import { ComponentProps, FC } from "react";
 import Link from "next/link";
 import { Button, Logo } from "@/features";
 import { InfoIcon, LogoIcon } from "@/features/Icons";
@@ -10,36 +10,30 @@ type Props = {
 };
 
 export const Header: FC<Props> = ({ compact }) => (
-  <Suspense fallback="Loading">
-    <header
+  <header
+    className={cx([
+      "sticky",
+      compact ? "top-0" : "-top-[185px] md:-top-[225px]",
+    ])}
+    style={{ zIndex: 100 }}
+  >
+    <div className="flex justify-center items-center pt-8 md:pt-14 pb-6 md:pb-10 px-4 w-full">
+      <Logo />
+    </div>
+    <nav
       className={cx([
-        "sticky",
-        compact ? "top-0" : "-top-[185px] md:-top-[225px]",
+        "flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md",
       ])}
-      style={{ zIndex: 100 }}
     >
-      <div className="flex justify-center items-center pt-8 md:pt-14 pb-6 md:pb-10 px-4 w-full">
-        <Logo />
+      <div className="flex items-center w-[64px] h-fit">
+        {compact ? <SmallLogo /> : <InfoButton className="flex md:opacity-0" />}
       </div>
-      <nav
-        className={cx([
-          "flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md",
-        ])}
-      >
-        <div className="flex items-center w-[64px] h-fit">
-          {compact ? (
-            <SmallLogo />
-          ) : (
-            <InfoButton className="flex md:opacity-0" />
-          )}
-        </div>
-        <div className="flex items-center pl-2 flex-1 md:flex-none md:w-[400px]">
-          <Search />
-        </div>
-        <InfoButton className="hidden md:flex" />
-      </nav>
-    </header>
-  </Suspense>
+      <div className="flex items-center pl-2 flex-1 md:flex-none md:w-[400px]">
+        <Search />
+      </div>
+      <InfoButton className="hidden md:flex" />
+    </nav>
+  </header>
 );
 
 const SmallLogo: FC = () => (

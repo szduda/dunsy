@@ -1,4 +1,4 @@
-console.log('load _drum_djembe_open_bass');
+
 var _drum_djembe_open_bass = {
   zones: [
     {

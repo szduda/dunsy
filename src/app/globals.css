@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --green-light: #445f5d;
-  --whitey: #cfdcdb;
-  --green-dark: #0f2723;
+  --whitey: #D0DCDB;
+  --greeny-darkest: #0a1a18;
 }
 
 body {
   min-height: 100dvh;
   color: var(--whitey);
-  background: var(--green-dark);
+  background: var(--greeny-darkest);
 }

@@ -1,4 +1,4 @@
-console.log('load _drum_dundunba_open')
+
 var _drum_dundunba_open = {
   zones: [
     {

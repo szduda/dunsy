@@ -14,7 +14,6 @@ const HomePage: FC = async () => {
       <h2 className="text-graye text-3xl mt-6 text-center">
         Practicing your djembe?
       </h2>
-      {/* <p className="mt-8 lg:mt-12 mx-auto max-w-[640px]">   </p> */}
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 max-w-[640px] mx-auto mt-12 font-bold text-xl">
         <IconLink
           icon="dundun"
@@ -64,9 +63,9 @@ const HomePage: FC = async () => {
           <>
             <span className="text-xl font-bold">44 drummers </span>
             <span className="text-lg">
-              became rich
+              became rich when
               <br />
-              when read this story
+              they read this story
             </span>
           </>
         }

@@ -1,28 +1,31 @@
 import { cx, useSearch } from "@/utils";
-import { FC, Suspense } from "react";
+import { ComponentProps, FC, Suspense } from "react";
 
-type Props = {
-  dimmed?: boolean;
-  small?: boolean;
-} & (
-  | {
-      tagString: string;
-      tags?: never;
-    }
-  | {
-      tagString?: never;
-      tags: string[];
-    }
-);
+type Props = ComponentProps<"button"> &
+  (
+    | {
+        tagString: string;
+        tags?: never;
+      }
+    | {
+        tagString?: never;
+        tags: string[];
+      }
+  );
 
 export const Tags: FC<Props> = (props) => (
-  <Suspense fallback="Loading">
+  <Suspense fallback={<ServerTags {...props} />}>
     <ClientTags {...props} />
   </Suspense>
 );
 
-const ClientTags: FC<Props> = ({ tagString, tags }) => {
+const ClientTags: FC<Props> = (props) => {
   const { search } = useSearch();
+
+  return <ServerTags {...props} onClick={() => search()} />;
+};
+
+const ServerTags: FC<Props> = ({ tagString, tags, ...props }) => {
   if (typeof tags === "undefined") {
     tags = tagString.split(",");
   }
@@ -31,13 +34,13 @@ const ClientTags: FC<Props> = ({ tagString, tags }) => {
     <div className="flex flex-wrap w-full">
       {tags.map((tag) => (
         <button
-          onClick={() => search(tag)}
           key={tag}
           className={cx([
             "mt-1 mx-0.5 tracking-wide rounded-md border",
             "bg-yellowy-light hover:bg-orangey-dark border-yellowy text-blacky",
             "text-lg font-medium px-2",
           ])}
+          {...props}
         >
           {tag.trim().toLowerCase()}
         </button>

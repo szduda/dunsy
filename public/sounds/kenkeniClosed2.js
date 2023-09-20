@@ -1,4 +1,4 @@
-console.log('load _drum_kenkeni_closed_2')
+
 var _drum_kenkeni_closed_2 = {
   zones: [
     {

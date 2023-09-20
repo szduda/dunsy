@@ -3,7 +3,13 @@ import { Button } from "@/features";
 import { SearchIcon } from "@/features/Icons";
 import { useSearch } from "@/utils";
 
-export const Search = () => {
+export const Search = () => (
+  <Suspense fallback={<SearchFallback />}>
+    <ClientSearch />
+  </Suspense>
+);
+
+const ClientSearch = () => {
   const { search, term, setTerm } = useSearch();
 
   return (
@@ -19,6 +25,13 @@ export const Search = () => {
     </form>
   );
 };
+
+const SearchFallback = () => (
+  <div className="flex-1 flex">
+    <SearchInput />
+    <SearchButton />
+  </div>
+);
 
 const SearchInput: FC<ComponentProps<"input">> = (props) => (
   <input

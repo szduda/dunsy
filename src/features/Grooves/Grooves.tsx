@@ -1,4 +1,4 @@
-import { FC, Suspense } from "react";
+import { ComponentProps, FC, Suspense } from "react";
 import { cx, useSearch } from "@/utils";
 
 type GrooveTag = {
@@ -11,13 +11,21 @@ type Props = {
 };
 
 export const Grooves: FC<Props> = (props) => (
-  <Suspense fallback="Loading">
+  <Suspense fallback={<ServerGrooves {...props} />}>
     <ClientGrooves {...props} />
   </Suspense>
 );
 
-const ClientGrooves: FC<Props> = ({ data }) => {
+const ClientGrooves: FC<Props> = (props) => {
   const { search } = useSearch();
+
+  return <ServerGrooves {...props} search={search} />;
+};
+
+const ServerGrooves: FC<Props & { search?(term: string): void }> = ({
+  data,
+  search = undefined,
+}) => {
   const maxStrength = Math.max(...data.map((item) => item.strength));
 
   return (
@@ -26,7 +34,7 @@ const ClientGrooves: FC<Props> = ({ data }) => {
         const str = strength / maxStrength;
         return (
           <button
-            onClick={() => search(tag)}
+            onClick={search ? () => search(tag) : undefined}
             key={tag}
             className={cx([
               "break-all",

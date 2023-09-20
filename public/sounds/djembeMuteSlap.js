@@ -1,4 +1,4 @@
-console.log('load _drum_djembe_mute_slap');
+
 var _drum_djembe_mute_slap = {
   zones: [
     {

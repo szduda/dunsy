@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { Layout } from "@/features";
 import { MidiSounds } from "@/lib/MidiSounds";
 import "./globals.css";
+import { cx } from "@/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,12 +30,10 @@ export const metadata: Metadata = {
 const RootLayout: FC<ComponentProps<typeof Layout>> = (props) => (
   <html lang="en">
     <body
-      className={inter.className}
-      style={{
-        backgroundImage: `url('/bg.jpg')`,
-        backgroundSize: "cover",
-        backgroundAttachment: "fixed",
-      }}
+      className={cx([
+        inter.className,
+        "bg-[url('/bg_mobile.jpg')] md:bg-[url('/bg.jpg')] bg-cover bg-fixed",
+      ])}
     >
       <MidiSounds>
         <Layout {...props} />

@@ -1,4 +1,4 @@
-console.log("load shaker");
+
 var _shaker = {
   zones: [
     {

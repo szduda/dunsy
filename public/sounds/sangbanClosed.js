@@ -1,4 +1,4 @@
-console.log('load _drum_sangban_closed')
+
 var _drum_sangban_closed = {
   zones: [
     {

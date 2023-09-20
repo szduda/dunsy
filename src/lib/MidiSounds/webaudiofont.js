@@ -117,7 +117,7 @@ var WebAudioFontLoader = /** @class */ (function () {
 
 var WebAudioFontPlayer = /** @class */ (function () {
   function WebAudioFontPlayer() {
-    console.log("WebAudioFont Engine v3.0.04 GPL3");
+    console.log("WebAudioFont Engine v3.0.04 GPL. African sounds mod.");
     this.envelopes = [];
     this.loader = new WebAudioFontLoader(this);
     this.afterTime = 0.05;

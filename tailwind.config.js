@@ -25,7 +25,7 @@ module.exports = {
 
         greeny: "#2E8269",
         "greeny-dark": "#205A4A",
-        "greeny-darkest": "#0f2723",
+        "greeny-darkest": "#0a1a18",
         "greeny-darker": "#142926",
         "greeny-light": "#35977A",
         "greeny-lighter": "#69A197",

@@ -1,4 +1,4 @@
-console.log('load _drum_sangban_open');
+
 var _drum_sangban_open = {
   zones: [
     {

@@ -4,7 +4,7 @@ import WebAudioFontPlayer from "./webaudiofont";
 export class MIDISounds extends Component {
   constructor(props) {
     super(props);
-    console.log("MIDISounds v1.2.48");
+    console.log("MIDISounds v1.2.48. African groove mod.");
     this.state = {
       drums: this.props.drums,
       master: 1.0,

@@ -46,9 +46,7 @@ const RhythmPage: FC<Props> = async ({ params }) => {
 
 export async function generateStaticParams() {
   const snippets = await getSnippets(undefined, { limit: 1000 });
-  return snippets.map(async ({ slug }) => ({
-    slug,
-  }));
+  return snippets.map(async ({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata(
