@@ -1,8 +1,10 @@
+"use client";
+
 import { FC } from "react";
 import { FancyIconProps } from "./types";
 
-export const LogoIcon: FC<FancyIconProps & { onStickClick(): void }> = ({
-  onStickClick,
+export const LogoIcon: FC<FancyIconProps & { onStickClick?(): void }> = ({
+  onStickClick = () => null,
   innerClass,
   innerClass2,
   ...props
@@ -35,8 +37,7 @@ export const LogoIcon: FC<FancyIconProps & { onStickClick(): void }> = ({
           height="4"
           rx="2"
           transform="rotate(-137.518 43.5661 29.2281)"
-          // fill="#f9c926"
-          fill="#455F5D"
+          fill="#4A2317"
           stroke="#121211AA"
           strokeWidth="1"
           onClick={onStickClick}

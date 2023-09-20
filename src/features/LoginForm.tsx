@@ -22,7 +22,7 @@ export const LoginForm: FC = () => {
     <form className="grid grid-flow-row gap-4 md:gap-6" onSubmit={handleSubmit}>
       <Image
         placeholder="blur"
-        blurDataURL="/logo.svg"
+        blurDataURL="favicons/fav-64.png"
         className="rounded-lg"
         src={error ? "/dictator.avif" : "/god2.avif"}
         width={480}

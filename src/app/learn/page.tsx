@@ -180,7 +180,7 @@ const AboutPage: FC = () => (
       leftCol={
         <Image
           placeholder="blur"
-          blurDataURL="/logo.svg"
+          blurDataURL="favicons/fav-64.png"
           alt="people playing drums"
           src="/bg_.jpg"
           className="rounded-3xl"

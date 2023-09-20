@@ -2,11 +2,14 @@
 module.exports = {
   content: [
     "./src/features/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/utils/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
+        browny: "#4A2317",
+
         redy: "#ED3C19",
         "redy-dark": "#BD2C0F",
         "redy-light": "#EE4F2F",

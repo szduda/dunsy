@@ -1,4 +1,4 @@
-import { ComponentProps, FC } from "react";
+import { ComponentProps, FC, Suspense } from "react";
 import { Button } from "@/features";
 import { SearchIcon } from "@/features/Icons";
 import { useSearch } from "@/utils";

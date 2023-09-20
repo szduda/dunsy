@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Crossroad } from "@/features";
 import { LogoIcon } from "@/features/Icons";
 

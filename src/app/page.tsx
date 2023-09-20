@@ -56,17 +56,18 @@ const HomePage: FC = async () => {
       />
       <h2 className="text-orangey/75 text-3xl mt-32">Enjoy clickbaits?</h2>
       <IconLink
-        className="mt-12 font-bold text-xl"
+        className="mt-12"
         href="/story"
         icon="story"
         iconSize={96}
         text={
           <>
-            OMG
-            <br />
-            You won&rsquo;t believe
-            <br />
-            that story
+            <span className="text-xl font-bold">44 drummers </span>
+            <span className="text-lg">
+              became rich
+              <br />
+              when read this story
+            </span>
           </>
         }
       />

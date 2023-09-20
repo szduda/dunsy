@@ -1,8 +1,8 @@
-import { FC, ReactNode, useEffect } from "react";
-import { Header } from "./Header";
-import { cx, useSearch } from "@/utils";
+import { FC, ReactNode, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AuthContextProvider, SearchResultsOverlay } from "@/features";
+import { cx } from "@/utils";
+import { Header } from "./Header";
 
 type Props = {
   children: ReactNode;
@@ -10,12 +10,20 @@ type Props = {
 
 export const Layout: FC<Props> = ({ children }) => {
   const pathname = usePathname();
-  const { searchQuery } = useSearch();
-  const sticky = Boolean(pathname && pathname !== "/") || Boolean(searchQuery);
+  // const { searchQuery } = useSearch();
+  const [searchOpen, setSearchOpen] = useState(false);
+  // const [hasScrolled, setHasScrolled] = useState(false);
+  const isHome = pathname === "/";
 
-  useEffect(() => {
-    document.body.classList.toggle("overflow-y-hidden", Boolean(searchQuery));
-  }, [searchQuery]);
+  const compact = searchOpen || !isHome;
+
+  // console.log("szd", searchOpen, isHome);
+
+  // useEffect(() => {
+  //   addEventListener("scroll", () => {
+  //     setHasScrolled(window.scrollY > 240);
+  //   });
+  // }, []);
 
   if (pathname.startsWith("/admin")) {
     return <AuthContextProvider>{children}</AuthContextProvider>;
@@ -24,15 +32,14 @@ export const Layout: FC<Props> = ({ children }) => {
   return (
     <div
       className={cx([
-        !(sticky && pathname !== "/") &&
-          "transition-all duration-500 ease-in-out",
-        sticky && "-translate-y-[184px] md:-translate-y-[224px]",
+        compact ? "-translate-y-[184px] md:-translate-y-[224px]" : "",
+        "transition-all duration-500 ease-in-out",
       ])}
     >
-      <Header sticky={sticky} />
+      <Header compact={compact} />
       <div className="relative">
         {children}
-        <SearchResultsOverlay />
+        <SearchResultsOverlay onOpen={setSearchOpen} />
       </div>
     </div>
   );

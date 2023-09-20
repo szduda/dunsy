@@ -13,11 +13,14 @@ export const useSearch = () => {
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState<SnippetCard[] | null>();
 
+  useEffect(() => {}, [searchQuery]);
+
   useEffect(() => {
     setTerm(searchQuery);
     if (searchQuery.length < 3) {
       search("");
     }
+    document.body.classList.toggle("overflow-y-hidden", searchQuery.length > 2);
   }, [searchQuery]);
 
   useEffect(() => {

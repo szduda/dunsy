@@ -1,4 +1,4 @@
-import { ComponentProps, FC } from "react";
+import { ComponentProps, FC, Suspense } from "react";
 import Link from "next/link";
 import { Button, Logo } from "@/features";
 import { InfoIcon, LogoIcon } from "@/features/Icons";
@@ -6,15 +6,15 @@ import { cx } from "@/utils";
 import { Search } from "./Search";
 
 type Props = {
-  sticky: boolean;
+  compact: boolean;
 };
 
-export const Header: FC<Props> = ({ sticky }) => {
-  return (
+export const Header: FC<Props> = ({ compact }) => (
+  <Suspense fallback="Loading">
     <header
       className={cx([
         "sticky",
-        sticky ? "top-0" : "-top-[185px] md:-top-[225px]",
+        compact ? "top-0" : "-top-[185px] md:-top-[225px]",
       ])}
       style={{ zIndex: 100 }}
     >
@@ -27,7 +27,7 @@ export const Header: FC<Props> = ({ sticky }) => {
         ])}
       >
         <div className="flex items-center w-[64px] h-fit">
-          {sticky ? (
+          {compact ? (
             <SmallLogo />
           ) : (
             <InfoButton className="flex md:opacity-0" />
@@ -39,8 +39,8 @@ export const Header: FC<Props> = ({ sticky }) => {
         <InfoButton className="hidden md:flex" />
       </nav>
     </header>
-  );
-};
+  </Suspense>
+);
 
 const SmallLogo: FC = () => (
   <Link

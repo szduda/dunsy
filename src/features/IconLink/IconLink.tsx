@@ -38,7 +38,7 @@ export const IconLink: FC<Props> = ({
       {typeof Icon === "string" ? (
         <Image
           placeholder="blur"
-          blurDataURL="/logo.svg"
+          blurDataURL="favicons/fav-64.png"
           src={`/${Icon}`}
           width={96}
           height={96}

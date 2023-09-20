@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import { cx, useSearch } from "@/utils";
 
 type GrooveTag = {
@@ -10,7 +10,13 @@ type Props = {
   data: GrooveTag[];
 };
 
-export const Grooves: FC<Props> = ({ data }) => {
+export const Grooves: FC<Props> = (props) => (
+  <Suspense fallback="Loading">
+    <ClientGrooves {...props} />
+  </Suspense>
+);
+
+const ClientGrooves: FC<Props> = ({ data }) => {
   const { search } = useSearch();
   const maxStrength = Math.max(...data.map((item) => item.strength));
 
@@ -56,5 +62,4 @@ export const Grooves: FC<Props> = ({ data }) => {
   );
 };
 
-const byStrength = (t1: GrooveTag, t2: GrooveTag) => t1.strength - t2.strength;
 const byTag = (t1: GrooveTag, t2: GrooveTag) => (t1.tag > t2.tag ? 1 : -1);

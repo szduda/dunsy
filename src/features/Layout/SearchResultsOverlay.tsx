@@ -1,14 +1,29 @@
-import { ComponentProps, FC } from "react";
-import { cx, useSearch } from "@/utils";
-import { Button, Card } from "@/features";
-import { CloseIcon, SearchIcon } from "../Icons";
+import { ComponentProps, FC, Suspense, useEffect } from "react";
 import Link from "next/link";
+import { Button, Card } from "@/features";
+import { cx, useSearch } from "@/utils";
+import { CloseIcon, SearchIcon } from "../Icons";
 
-export const SearchResultsOverlay: FC = () => {
+type Props = {
+  onOpen?(open: boolean): void;
+};
+
+export const SearchResultsOverlay: FC<Props> = (props) => (
+  <Suspense>
+    <SearchResultsOverlayClient {...props} />
+  </Suspense>
+);
+
+const SearchResultsOverlayClient: FC<Props> = ({ onOpen = () => null }) => {
   const { searchResults, clearSearch, term, searchQuery, loading } =
     useSearch();
   const noResults =
     !loading && searchQuery && searchResults && searchResults.length === 0;
+
+  useEffect(() => {
+    onOpen?.(searchQuery.length > 2);
+  }, [searchQuery]);
+
   return (
     <aside
       className={cx([
