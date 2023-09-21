@@ -18,6 +18,17 @@ import { validate } from "./validate";
 
 const DRUMS_COLLECTION = "drums";
 
+export const readSnippets = () => {
+  const raw = localStorage.getItem("cards");
+  if (!raw) return [];
+
+  return JSON.parse(raw) as SnippetCard[];
+};
+
+export const writeSnippets = (cards: SnippetCard[]) => {
+  localStorage.setItem("cards", JSON.stringify(cards));
+};
+
 export const getSnippets = async (search?: string, options = { limit: 5 }) => {
   const col = collection(db, DRUMS_COLLECTION);
   const response = await getDocs(

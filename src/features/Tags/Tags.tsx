@@ -1,5 +1,6 @@
-import { cx, useSearch } from "@/utils";
-import { ComponentProps, FC, Suspense } from "react";
+import { FC, Suspense } from "react";
+import { useSearch } from "@/features";
+import { cx } from "@/utils";
 
 type Props = {
   onClick?(tag: string): void;

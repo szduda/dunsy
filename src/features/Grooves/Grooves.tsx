@@ -1,5 +1,6 @@
-import { ComponentProps, FC, Suspense } from "react";
-import { cx, useSearch } from "@/utils";
+import { FC, Suspense } from "react";
+import { useSearch } from "@/features";
+import { cx } from "@/utils";
 
 type GrooveTag = {
   tag: string;

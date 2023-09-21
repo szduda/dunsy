@@ -1,10 +1,12 @@
-import { ComponentProps, FC } from "react";
+import { FC, ReactNode } from "react";
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
 import { Layout } from "@/features";
+import { SnippetCard, getSnippets } from "@/features/SnippetApi";
 import { MidiSounds } from "@/lib/MidiSounds";
-import "./globals.css";
 import { cx } from "@/utils";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,19 +29,33 @@ export const metadata: Metadata = {
   ],
 };
 
-const RootLayout: FC<ComponentProps<typeof Layout>> = (props) => (
-  <html lang="en">
-    <body
-      className={cx([
-        inter.className,
-        "bg-[url('/bg_mobile.jpg')] md:bg-[url('/bg.jpg')] bg-cover bg-fixed",
-      ])}
-    >
-      <MidiSounds>
-        <Layout {...props} />
-      </MidiSounds>
-    </body>
-  </html>
-);
+const RootLayout: FC<{ children: ReactNode }> = async (props) => {
+  const biscuits = cookies();
+  const lastFetchAt = biscuits.has("lastFetchAt")
+    ? Number(biscuits.get("lastFetchAt"))
+    : -1;
+  const needRefetch = Date.now() > lastFetchAt + 24 * 3600 * 1000;
+
+  const fetchedSnippets = needRefetch
+    ? await getSnippets(undefined, { limit: 1000 })
+    : null;
+
+  console.log(fetchedSnippets?.length, "grooves fetched");
+
+  return (
+    <html lang="en">
+      <body
+        className={cx([
+          inter.className,
+          "bg-[url('/bg_mobile.jpg')] md:bg-[url('/bg.jpg')] bg-cover bg-fixed",
+        ])}
+      >
+        <MidiSounds>
+          <Layout {...props} data={fetchedSnippets} />
+        </MidiSounds>
+      </body>
+    </html>
+  );
+};
 
 export default RootLayout;

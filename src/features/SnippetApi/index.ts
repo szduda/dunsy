@@ -1,4 +1,6 @@
 export {
+  readSnippets,
+  writeSnippets,
   getSnippets,
   getSnippet,
   getSnippetBySlug,

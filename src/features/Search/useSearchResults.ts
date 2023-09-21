@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSearch } from "@/features";
 import { SnippetCard, getSnippets } from "@/features/SnippetApi";
-import { useSearch } from "@/utils";
 
 export const useSearchResults = () => {
   const router = useRouter();
@@ -27,7 +27,6 @@ export const useSearchResults = () => {
       router.push("/story");
     } else {
       const asyncEffect = async () => {
-        console.log("search");
         const snippets = await getSnippets(searchQuery.toLowerCase(), {
           limit: 50,
         });

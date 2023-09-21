@@ -80,6 +80,10 @@ module.exports = {
           "0%": { transform: "rotate(-180deg)" },
           "100%": { transform: "rotate(-35deg)" },
         },
+        fadein: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
       },
       animation: {
         shake: "wiggle 500ms ease-in-out infinite",
@@ -90,6 +94,7 @@ module.exports = {
         "sway-fast": "sway 1s ease-in-out infinite",
         screw: "spin 800ms ease-in-out infinite",
         dance: "dance 1s ease-in-out infinite",
+        fadein: "fadein 300ms ease-in-out",
         "spin-once": "spin 1s ease-in-out",
         "spin-logo-once": "spin-logo 500ms ease-out",
         "spin-logo": "spin 100ms ease-in-out 3s infinite",

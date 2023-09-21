@@ -1,7 +1,7 @@
 import { ComponentProps, FC, Suspense, useEffect } from "react";
 import Link from "next/link";
-import { Button, Card } from "@/features";
-import { cx, useSearch, useSearchResults } from "@/utils";
+import { Button, Card, useSearch, useSearchResults } from "@/features";
+import { cx } from "@/utils";
 import { CloseIcon, SearchIcon } from "../Icons";
 
 type Props = {

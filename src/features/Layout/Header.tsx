@@ -1,9 +1,8 @@
 import { ComponentProps, FC } from "react";
 import Link from "next/link";
-import { Button, Logo } from "@/features";
+import { Button, Logo, Search } from "@/features";
 import { InfoIcon, LogoIcon } from "@/features/Icons";
 import { cx } from "@/utils";
-import { Search } from "./Search";
 
 type Props = {
   compact: boolean;
