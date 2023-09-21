@@ -65,7 +65,7 @@ const HomePage: FC = async () => {
             <span className="text-lg">
               became rich after
               <br />
-              they read this story
+              reading this story
             </span>
           </>
         }

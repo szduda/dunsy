@@ -27,7 +27,7 @@ export const Layout: FC<Props> = ({ children }) => {
       <Header compact={compact} />
       <div className="relative">
         {children}
-        <SearchResultsOverlay onOpen={setSearchOpen} />
+        <SearchResultsOverlay onToggle={setSearchOpen} />
       </div>
     </div>
   );

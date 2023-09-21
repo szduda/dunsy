@@ -11,7 +11,7 @@ export const Search = () => (
 
 const ClientSearch = () => {
   const { search, searchQuery } = useSearch();
-  const [term, setTerm] = useState(searchQuery);
+  const [term, setTerm] = useState(searchQuery.length > 2 ? searchQuery : "");
 
   return (
     <form

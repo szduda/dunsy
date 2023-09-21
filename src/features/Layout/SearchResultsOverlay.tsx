@@ -1,11 +1,11 @@
 import { ComponentProps, FC, Suspense, useEffect } from "react";
 import Link from "next/link";
 import { Button, Card } from "@/features";
-import { cx, useSearch } from "@/utils";
+import { cx, useSearch, useSearchResults } from "@/utils";
 import { CloseIcon, SearchIcon } from "../Icons";
 
 type Props = {
-  onOpen?(open: boolean): void;
+  onToggle?(open: boolean): void;
 };
 
 export const SearchResultsOverlay: FC<Props> = (props) => (
@@ -14,13 +14,18 @@ export const SearchResultsOverlay: FC<Props> = (props) => (
   </Suspense>
 );
 
-const SearchResultsOverlayClient: FC<Props> = ({ onOpen = () => null }) => {
-  const { searchResults, clearSearch, searchQuery, loading } = useSearch();
+const SearchResultsOverlayClient: FC<Props> = ({ onToggle = () => null }) => {
+  const { clearSearch, searchQuery } = useSearch();
+  const { searchResults, loading } = useSearchResults();
   const noResults =
     !loading && searchQuery && searchResults && searchResults.length === 0;
 
   useEffect(() => {
-    onOpen?.(searchQuery.length > 2);
+    const isOpen = searchQuery.length > 2;
+    onToggle?.(isOpen);
+    if (!isOpen) {
+      clearSearch();
+    }
   }, [searchQuery]);
 
   return (
