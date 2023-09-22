@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CardTags } from "@/features";
 import { SnippetCard } from "@/features/SnippetApi";
 
-export const Card: FC<SnippetCard> = ({ id, slug, title, tags }) => (
+export const Card: FC<SnippetCard> = ({ slug, title, tags }) => (
   <Link
     href={{ pathname: slug }}
     scroll={false}

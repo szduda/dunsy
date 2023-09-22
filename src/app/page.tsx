@@ -1,13 +1,8 @@
 import { FC } from "react";
 import Link from "next/link";
 import { getRecentlyAdded } from "@/features/SnippetApi";
-import {
-  Button,
-  Card,
-  IconLink,
-  RandomGrooveButton,
-  TopScrollGuard,
-} from "@/features";
+import { IconLink, RandomGrooveButton, TopScrollGuard } from "@/features";
+import { Button, Card } from "@/features/rsc";
 
 const HomePage: FC = async () => {
   const recentlyAdded = await getRecentlyAdded();

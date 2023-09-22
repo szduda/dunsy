@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
-import { Button, PickSnippetModal, SnippetForm } from "@/features";
+import { PickSnippetModal, SnippetForm } from "@/features";
+import { Button } from "@/features/rsc";
 import { getSnippet } from "@/features/SnippetApi";
 import { FormData } from "../SnippetForm/useSnippetForm";
 

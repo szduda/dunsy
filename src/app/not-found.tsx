@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/features";
+import { Button } from "@/features/rsc";
 
 export default function NotFound() {
   return (

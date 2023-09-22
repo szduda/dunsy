@@ -1,8 +1,8 @@
 import { ComponentProps, FC, ReactNode, useState } from "react";
-import Link from "next/link";
-import { DjembeIcon, DundunIcon, InfoIcon, PepperIcon } from "../Icons";
-import { cx } from "@/utils";
 import Image from "next/image";
+import Link from "next/link";
+import { DjembeIcon, DundunIcon, InfoIcon } from "@/features/Icons";
+import { cx } from "@/utils";
 
 type Props = {
   icon: "djembe" | "dundun" | "question" | "story";

@@ -1,6 +1,9 @@
+"use client";
+
 import { FC, ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { SearchResultsOverlay, GroovyContext } from "@/features";
+import { GroovyContext } from "@/features";
+import { SearchResultsOverlay } from "@/features/rsc";
 import { Header } from "./Header";
 
 type Props = {

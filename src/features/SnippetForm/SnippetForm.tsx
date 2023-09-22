@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Button, Input, Radios, useAuth, GroovyPlayer } from "@/features";
+import { Radios, useAuth, GroovyPlayer } from "@/features";
+import { Button, Input } from "@/features/rsc";
 import { useSnippetForm, FormData } from "./useSnippetForm";
 import { cx } from "@/utils";
 import { ArrowIcon } from "../Icons";

@@ -1,5 +1,5 @@
-import { Button, Legend, TextLink, TopScrollGuard } from "@/features";
-import { Bars } from "@/features";
+import { TopScrollGuard } from "@/features";
+import { Bars, Button, Legend, TextLink } from "@/features/rsc";
 import {
   GearIcon,
   PepperIcon,

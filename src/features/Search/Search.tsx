@@ -1,14 +1,15 @@
 import { ComponentProps, FC, Suspense, useState } from "react";
-import { Button, useSearchForm } from "@/features";
+import { useSearchForm } from "@/features";
 import { SearchIcon } from "@/features/Icons";
+import { Button } from "@/features/rsc";
 
-export const Search = () => (
+export const Search: FC = () => (
   <Suspense fallback={<SearchFallback />}>
     <ClientSearch />
   </Suspense>
 );
 
-const ClientSearch = () => {
+const ClientSearch: FC = () => {
   const { suggestions, term, setTerm, submitSearch, search } = useSearchForm();
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
 

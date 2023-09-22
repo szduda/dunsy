@@ -1,4 +1,4 @@
-import { Button } from "@/features";
+import { Button } from "@/features/rsc";
 import { usePlayerSettings } from "./PlayerSettingsContext";
 import { ComponentProps, FC } from "react";
 import { CloseIcon } from "../Icons";

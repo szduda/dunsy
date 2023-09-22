@@ -1,4 +1,5 @@
-import { Button, H2, Paragraph, TextLink, TopScrollGuard } from "@/features";
+import { TopScrollGuard } from "@/features";
+import { Button, H2, Paragraph, TextLink } from "@/features/rsc";
 import Link from "next/link";
 import { FC } from "react";
 

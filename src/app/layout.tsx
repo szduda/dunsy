@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { MidiSounds } from "@/lib/MidiSounds";
 import { cx } from "@/utils";
 import "./globals.css";
-import { Layout } from "@/features";
+import { Layout } from "@/features/rsc";
 
 const inter = Inter({ subsets: ["latin"] });
 

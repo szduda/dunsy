@@ -1,6 +1,7 @@
 import { ComponentProps, FC, Suspense, useEffect } from "react";
 import Link from "next/link";
-import { Button, Card, Search, useSearch, useSearchResults } from "@/features";
+import { useSearch, useSearchResults } from "@/features";
+import { Button, Card, Search } from "@/features/rsc";
 import { CloseIcon } from "@/features/Icons";
 import { cx } from "@/utils";
 

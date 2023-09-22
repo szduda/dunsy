@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import { SwingStyle } from "../SnippetApi/types";
-import { Button, Input } from "@/features";
+import { Button, Input } from "@/features/rsc";
 import { cx } from "@/utils";
 import {
   PepperIcon,

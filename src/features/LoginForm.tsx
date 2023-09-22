@@ -1,5 +1,6 @@
 import { FC, FormEvent, useState } from "react";
-import { Button, Input, useAuth } from ".";
+import { useAuth } from ".";
+import { Button, Input } from "@/features/rsc";
 import Image from "next/image";
 import { cx } from "@/utils";
 
