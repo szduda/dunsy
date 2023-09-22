@@ -1,9 +1,7 @@
-"use client";
-
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGrooves, useSearch } from "@/features";
-import { SnippetCard, getSnippets } from "@/features/SnippetApi";
+import { SnippetCard } from "@/features/SnippetApi";
 
 export const useSearchResults = () => {
   const router = useRouter();
@@ -27,9 +25,6 @@ export const useSearchResults = () => {
       router.push("/story");
     } else {
       const asyncEffect = async () => {
-        // const snippets = await getSnippets(searchQuery.toLowerCase(), {
-        //   limit: 50,
-        // });
         const snippets = cards.filter((card) =>
           [card.title, card.slug, ...card.tags].some((prop) =>
             prop.toLowerCase().includes(searchQuery.toLowerCase())
