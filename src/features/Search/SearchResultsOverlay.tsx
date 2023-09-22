@@ -30,7 +30,7 @@ const SearchResultsOverlayClient: FC<Props> = ({ onToggle = () => null }) => {
 
   return (
     <aside
-      style={{ zIndex: 10000 }}
+      style={{ zIndex: 1000 }}
       className={cx([
         "fixed top-0 left-0 right-0 bg-greeny-darker p-2 transition-all duration-500 ease-in-out",
         searchQuery

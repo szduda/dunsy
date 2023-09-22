@@ -57,8 +57,12 @@ const Suggestions: FC<{
       <div
         className="fixed top-0 bottom-0 left-0 right-0 animate-fadein bg-yellowy/5"
         onClick={onClose}
-      ></div>
-      <ul className="absolute top-full left-0 right-[46px] rounded-md py-1 overflow-hidden bg-blacky text-whitey">
+        style={{ zIndex: 10000 }}
+      />
+      <ul
+        className="absolute top-full left-0 right-[46px] rounded-md py-1 overflow-hidden bg-blacky text-whitey"
+        style={{ zIndex: 10001 }}
+      >
         {suggestions.map((suggestion) => (
           <li key={suggestion}>
             <button
@@ -78,7 +82,7 @@ const Suggestions: FC<{
 
 const SearchInput: FC<ComponentProps<"input">> = ({ ...props }) => (
   <input
-    placeholder='type e.g. djansa, 4/4'
+    placeholder="type e.g. djansa, 4/4"
     className="bg-greeny-darker flex-1 md:flex-0 brightness-125 rounded-md h-[40px] opacity-50 hover:opacity-75 focus:opacity-100 focus:bg-blacky/60 focus:outline-none px-2 py-1 text-whitey"
     {...props}
   />
