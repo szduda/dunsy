@@ -2,6 +2,7 @@ import { LogoIcon, DundunSetIcon } from "@/features/Icons";
 import { Icon } from "../Icons/types";
 import { cx } from "@/utils";
 import { useState } from "react";
+import Link from "next/link";
 
 export const Logo: Icon = (props) => {
   const [dundunTime, itsDundunTime] = useState(0);
@@ -18,7 +19,7 @@ export const Logo: Icon = (props) => {
   };
 
   return (
-    <div className="flex items-center scale-75 md:scale-100">
+    <Link href="/" className="flex items-center scale-75 md:scale-100">
       <div className="relative">
         <DundunSetIcon
           height={128}
@@ -71,6 +72,6 @@ export const Logo: Icon = (props) => {
       >
         dunsy<small className="text-2xl opacity-50">.app</small>
       </h1>
-    </div>
+    </Link>
   );
 };

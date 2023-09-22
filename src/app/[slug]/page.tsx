@@ -1,4 +1,4 @@
-import { GroovyPlayer, Tags } from "@/features";
+import { GroovyPlayer, Tags, TopScrollGuard } from "@/features";
 import { getSnippetBySlug, getSnippets } from "@/features/SnippetApi";
 import { ResolvingMetadata } from "next";
 import { FC } from "react";
@@ -18,7 +18,8 @@ const RhythmPage: FC<Props> = async ({ params }) => {
   }
 
   return (
-    <main className="flex mx-auto flex-col items-center justify-center pt-8 pb-8 max-w-[1024px]">
+    <main className="flex mx-auto flex-col items-center pt-8 max-w-[1024px] min-h-[calc(100dvh-58px)]">
+      <TopScrollGuard top={225} />
       <div className="px-2 lg:px-8 w-full md:w-3/4 self-start pt-4 md:pt-8">
         <Tags tagString={data.tags} />
         <h1 className="w-full text-5xl font-black mt-5 capitalize drop-shadow-lg">

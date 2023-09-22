@@ -6,9 +6,16 @@ export const Paragraph: FC<ComponentProps<"p">> = (props) => (
 );
 
 export const H2: FC<ComponentProps<"h2">> = (props) => (
-  <h2 className="text-graye text-3xl mt-24 drop-shadow-lg tracking-wider" {...props} />
+  <h2
+    className="text-graye text-3xl mt-24 drop-shadow-lg tracking-wider"
+    {...props}
+  />
 );
 
 export const TextLink: FC<ComponentProps<typeof Link>> = (props) => (
-  <Link className="underline hover:no-underline tracking-widest" {...props} />
+  <Link
+    className="underline hover:no-underline tracking-widest"
+    scroll={false}
+    {...props}
+  />
 );

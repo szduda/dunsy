@@ -18,7 +18,7 @@ export const useSearch = () => {
     }
 
     const query = params ? `?${params}` : "";
-    router.push(`${pathname}${query}`);
+    router.push(`${pathname}${query}`, { scroll: false });
   };
 
   return {

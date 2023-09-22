@@ -28,6 +28,7 @@ export const IconLink: FC<Props> = ({
   return (
     <Link
       {...props}
+      scroll={false}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={cx([

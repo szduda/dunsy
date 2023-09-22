@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useSearch } from "@/features";
 import { useGrooves } from "../Layout/GroovyContext";
 
@@ -17,6 +17,15 @@ export const useSearchForm = () => {
           cards.flatMap((card) => card.tags).filter((tag) => tag.includes(term))
         ),
       ].sort(byIndexOf(term));
+      setSuggestions(newSuggestions);
+    } else if (term?.length === 1) {
+      const newSuggestions = [
+        ...new Set(
+          cards
+            .flatMap((card) => card.tags)
+            .filter((tag) => tag.startsWith(term))
+        ),
+      ].sort(byTitle);
       setSuggestions(newSuggestions);
     } else {
       setSuggestions([]);
@@ -37,7 +46,9 @@ const byIndexOf = (term: string) => (s1: string, s2: string) => {
   if (idx1 > idx2) {
     return 1;
   } else if (idx1 === idx2) {
-    return s1 > s2 ? 1 : -1;
+    return byTitle(s1, s2);
   }
   return -1;
 };
+
+const byTitle = (s1: string, s2: string) => (s1 > s2 ? 1 : -1);

@@ -1,8 +1,8 @@
 import { ComponentProps, FC, Suspense, useEffect } from "react";
 import Link from "next/link";
-import { Button, Card, useSearch, useSearchResults } from "@/features";
+import { Button, Card, Search, useSearch, useSearchResults } from "@/features";
+import { CloseIcon } from "@/features/Icons";
 import { cx } from "@/utils";
-import { CloseIcon, SearchIcon } from "../Icons";
 
 type Props = {
   onToggle?(open: boolean): void;
@@ -16,27 +16,31 @@ export const SearchResultsOverlay: FC<Props> = (props) => (
 
 const SearchResultsOverlayClient: FC<Props> = ({ onToggle = () => null }) => {
   const { clearSearch, searchQuery } = useSearch();
-  const { searchResults, loading } = useSearchResults();
-  const noResults =
-    !loading && searchQuery && searchResults && searchResults.length === 0;
+  const { searchResults } = useSearchResults();
+  const noResults = searchQuery && searchResults?.length === 0;
 
   useEffect(() => {
     const isOpen = searchQuery.length > 2;
     onToggle?.(isOpen);
-    if (!isOpen) {
+    if (isOpen) {
+    } else {
       clearSearch();
     }
   }, [searchQuery]);
 
   return (
     <aside
+      style={{ zIndex: 10000 }}
       className={cx([
-        "absolute top-0 left-0 right-0 bg-greeny-darker p-2 transition-all duration-500 ease-in-out",
+        "fixed top-0 left-0 right-0 bg-greeny-darker p-2 transition-all duration-500 ease-in-out",
         searchQuery
-          ? "h-[calc(100dvh-58px)] overflow-y-auto"
-          : "translate-y-32 opacity-0 pointer-events-none h-[0px]",
+          ? "h-[calc(100dvh)] overflow-y-auto"
+          : "opacity-0 pointer-events-none h-0",
       ])}
     >
+      <div className="mx-auto flex items-center translate-x-2 pl-2 flex-1 md:flex-none md:w-[400px]">
+        <Search />
+      </div>
       {(searchResults?.length ?? 0) > 0 && (
         <div className="pt-6 md:pt-14 tracking-wide text-xl text-graye flex items-center justify-center">
           <div className="flex flex-1 md:flex-none flex-col md:flex-row">
@@ -62,26 +66,12 @@ const SearchResultsOverlayClient: FC<Props> = ({ onToggle = () => null }) => {
             <div className="mt-6 lg:mt-12 text-lg lg:text-xl">
               I don&rsquo;t know a rhytm called {searchQuery} yet.
             </div>
-            <Link href="/grooves">
+            <Link href="/grooves" scroll={false}>
               <Button className="mt-8 lg:mt-16">Show all tracks</Button>
             </Link>
             <CloseButton onClick={clearSearch} />
           </div>
         )}
-      </div>
-      <div
-        className={cx([
-          "h-screen fixed top-[120px] left-0 right-0 md:top-[160px] flex justify-center bg-greeny-darker/75 pt-32 md:pt-40 transition-all duration-500 origin-center pointer-events-none",
-          !loading && "opacity-0",
-        ])}
-      >
-        <SearchIcon
-          height={128}
-          className={cx([
-            !loading && "opacity-0",
-            "delay-100 duration-500 animate-swaye origin-bottom-right fill-yellowy/50",
-          ])}
-        />
       </div>
     </aside>
   );

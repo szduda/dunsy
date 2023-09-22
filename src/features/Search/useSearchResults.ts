@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSearch } from "@/features";
+import { useGrooves, useSearch } from "@/features";
 import { SnippetCard, getSnippets } from "@/features/SnippetApi";
 
 export const useSearchResults = () => {
   const router = useRouter();
   const { clearSearch, searchQuery } = useSearch();
-  const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState<SnippetCard[] | null>();
+  const { cards } = useGrooves();
 
   useEffect(() => {
     if (searchQuery.length < 3) {
@@ -22,19 +22,22 @@ export const useSearchResults = () => {
     if (["all", "grooves", "groves"].includes(searchQuery)) {
       router.push("/grooves");
     } else if (["help", "learn", "contact"].includes(searchQuery)) {
-      router.push("/help");
+      router.push("/help", { scroll: false });
     } else if (["story", "about", "clickbait"].includes(searchQuery)) {
       router.push("/story");
     } else {
       const asyncEffect = async () => {
-        const snippets = await getSnippets(searchQuery.toLowerCase(), {
-          limit: 50,
-        });
-        setSearchResults(snippets || []);
-        setLoading(false);
+        // const snippets = await getSnippets(searchQuery.toLowerCase(), {
+        //   limit: 50,
+        // });
+        const snippets = cards.filter((card) =>
+          [card.title, card.slug, ...card.tags].some((prop) =>
+            prop.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+        );
+        setSearchResults(snippets.slice(0, 100));
       };
 
-      setLoading(true);
       document.body.classList.add("overflow-y-hidden");
       asyncEffect();
     }
@@ -42,6 +45,5 @@ export const useSearchResults = () => {
 
   return {
     searchResults,
-    loading,
   };
 };

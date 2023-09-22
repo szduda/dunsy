@@ -1,9 +1,10 @@
-import { Button, H2, Paragraph, TextLink } from "@/features";
+import { Button, H2, Paragraph, TextLink, TopScrollGuard } from "@/features";
 import Link from "next/link";
 import { FC } from "react";
 
 const StoryPage: FC = () => (
   <main className="flex mx-auto flex-col px-3 pt-8 pb-8 max-w-[1024px]">
+    <TopScrollGuard top={225} />
     <h1 className="text-yellowy text-5xl mt-12 font-bold drop-shadow-lg">
       Our mission is to help young djembefolas grow even if the soil around them
       is dry.
@@ -68,8 +69,8 @@ const StoryPage: FC = () => (
     <h3 className="text-greeny text-5xl mt-6 font-bold drop-shadow-lg">
       Be my guest and enjoy the app.
     </h3>
-    <Link href="/grooves">
-      <Button className="mt-8">Go where dundunfolas go</Button>
+    <Link href="/grooves" scroll={false}>
+      <Button className="mt-8">Go where all dundunfolas go</Button>
     </Link>
   </main>
 );

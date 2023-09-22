@@ -13,7 +13,13 @@ const ClientSearch = () => {
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
 
   return (
-    <form className="flex-1 flex relative" onSubmit={submitSearch}>
+    <form
+      className="flex-1 flex relative"
+      onSubmit={(e) => {
+        submitSearch(e);
+        setSuggestionsOpen(false);
+      }}
+    >
       <SearchInput
         value={term}
         onChange={(e) => setTerm(e.target.value)}
@@ -72,7 +78,7 @@ const Suggestions: FC<{
 
 const SearchInput: FC<ComponentProps<"input">> = ({ ...props }) => (
   <input
-    placeholder='type "soli" or 4/4 or all'
+    placeholder='type e.g. djansa, 4/4'
     className="bg-greeny-darker flex-1 md:flex-0 brightness-125 rounded-md h-[40px] opacity-50 hover:opacity-75 focus:opacity-100 focus:bg-blacky/60 focus:outline-none px-2 py-1 text-whitey"
     {...props}
   />

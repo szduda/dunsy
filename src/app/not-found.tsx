@@ -10,7 +10,7 @@ export default function NotFound() {
           Page Not Found
         </h2>
         <h3 className="w-full text-6xl text-center text-greeny-dark">404</h3>
-        <Link href="/grooves" className="w-fit">
+        <Link href="/grooves" className="w-fit" scroll={false}>
           <Button className="my-8 md:my-16 hover:animate-pulse bg-yellowy hover:bg-yellowy-light">
             <span className="text-blacky">Find your page</span>
           </Button>

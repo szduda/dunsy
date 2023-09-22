@@ -35,7 +35,7 @@ export const Button: FC<Props> = ({
         ? "border-yellowy scale-95"
         : "border-transparent",
       ninja ? (on && !props.disabled ? "saturate-100" : "saturate-0") : "",
-      mini ? "w-min" : " w-full md:min-w-[240px] md:w-fit",
+      mini ? "w-min" : "w-full md:min-w-[240px] md:w-fit",
       circle ? "rounded-full" : "rounded-md",
       ninja &&
         "bg-transparent hover:bg-transparent hover:scale-110 active:scale-95",

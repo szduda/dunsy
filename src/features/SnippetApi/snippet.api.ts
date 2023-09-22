@@ -27,6 +27,7 @@ export const readSnippets = () => {
 
 export const writeSnippets = (cards: SnippetCard[]) => {
   localStorage.setItem("cards", JSON.stringify(cards));
+  localStorage.setItem("lastFetchAt", JSON.stringify(Date.now()));
 };
 
 export const getSnippets = async (search?: string, options = { limit: 5 }) => {

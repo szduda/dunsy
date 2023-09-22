@@ -10,13 +10,14 @@ type Props = {
 
 export const Header: FC<Props> = ({ compact }) => (
   <header
-    className={cx([
-      "sticky",
-      compact ? "top-0" : "-top-[185px] md:-top-[225px]",
-    ])}
+    className={cx(["sticky -top-[185px] md:-top-[225px]"])}
     style={{ zIndex: 100 }}
   >
-    <div className="flex justify-center items-center pt-8 md:pt-14 pb-6 md:pb-10 px-4 w-full">
+    <div
+      className={cx([
+        "flex justify-center items-center pt-8 md:pt-14 b-6 md:pb-10 px-4 w-full",
+      ])}
+    >
       <Logo />
     </div>
     <nav
@@ -38,14 +39,15 @@ export const Header: FC<Props> = ({ compact }) => (
 const SmallLogo: FC = () => (
   <Link
     href="/"
-    className="saturate-50 brightness-200 opacity-30 hover:brightness-100 hover:saturate-100 hover:opacity-100 flex"
+    scroll={false}
+    className="saturate-50 brightness-200 opacity-30 hover:brightness-100 hover:saturate-100 hover:opacity-100 flex animate-fadein"
   >
     <LogoIcon height="40" />
   </Link>
 );
 
 const InfoButton: FC<Omit<ComponentProps<typeof Link>, "href">> = (props) => (
-  <Link {...props} href="/help">
+  <Link {...props} href="/help" scroll={false}>
     <Button
       mini
       circle

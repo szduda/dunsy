@@ -1,4 +1,4 @@
-import { Button, Legend, TextLink } from "@/features";
+import { Button, Legend, TextLink, TopScrollGuard } from "@/features";
 import { Bars } from "@/features";
 import {
   GearIcon,
@@ -16,18 +16,21 @@ import { FC } from "react";
 
 const HelpPage: FC = () => (
   <main className="flex mx-auto flex-col items-center justify-center px-2 pt-8 pb-8 max-w-[1024px]">
+    <TopScrollGuard top={0} />
     <h2 className="text-4xl tracking-wider text-greeny mt-12 mb-8 drop-shadow-lg">
       Website Features
     </h2>
     <Legend
-      title="Search By Tag"
+      title="Search"
       description={
         <p>
-          Search only works if you type the full tag name. If you don&rsquo;t
-          know what to search for you can{" "}
+          Search by tag or rhythm name: e.g. <i>konkoba</i>, <i>9/8</i>,{" "}
+          <i>break</i>, or use it as navigation and type <i>all</i>, <i>help</i>{" "}
+          or <i>story</i>. If you don&rsquo;t know what to search for you can{" "}
           <Link
             href="/grooves"
             className="underline hover:no-underline tracking-widest"
+            scroll={false}
           >
             browse all rhythms
           </Link>{" "}
