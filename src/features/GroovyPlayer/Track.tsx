@@ -11,6 +11,7 @@ import {
 type Props = {
   title?: string;
   pattern?: string;
+  instrument?: string;
   muted?: boolean;
   setMuted?(muted: boolean): void;
   beat?: number;
@@ -19,12 +20,17 @@ type Props = {
 export const Track: FC<Props> = ({
   title,
   pattern = "",
+  instrument,
   muted,
   setMuted,
   beat = -1,
 }) => {
   const barSize =
     [6, 8, 9].find((length) => pattern.length % length === 0) ?? pattern.length;
+
+  if (instrument === "bell") {
+    pattern = pattern.replaceAll("x", "b");
+  }
 
   const bars = useMemo(
     () => pattern?.match(RegExp(`.{1,${barSize}}`, "g")) ?? [],
@@ -79,6 +85,7 @@ type BarsProps = {
   bars: string[];
   large?: boolean;
   activeIndex?: number;
+  instrument?: string;
 };
 
 export const Bars: FC<BarsProps> = ({

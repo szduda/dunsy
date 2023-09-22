@@ -27,7 +27,7 @@ const HomePage: FC = async () => {
         <p className="mx-auto md:col-span-2 text-center text-greeny-light font-medium tracking-wider">
           Become a better fola
           <br />
-          with only two steps
+          in just two steps
         </p>
         <IconLink
           icon="dundun"

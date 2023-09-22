@@ -2,7 +2,6 @@ import {
   FC,
   ReactNode,
   createContext,
-  use,
   useContext,
   useEffect,
   useState,
@@ -37,7 +36,7 @@ export const GroovyContext: FC<Props> = (props) => {
     if (needRefetch) {
       const asyncEffect = async () => {
         const remoteData = await getSnippets(undefined, { limit: 1000 });
-        console.log(remoteData?.length, "grooves fetched");
+        console.log(remoteData?.length, "grooves fetched now");
         writeSnippets(remoteData);
         setCards(remoteData);
       };
@@ -45,11 +44,9 @@ export const GroovyContext: FC<Props> = (props) => {
     } else {
       const localData = readSnippets();
       const when = new Date(lastFetchAt);
+      const whenStr = `${when.getDate()}.${when.getMonth()} ${when.getHours()}:${when.getMinutes()}`;
       console.log(
-        localData?.length,
-        "grooves from",
-        `${when.getDate()}.${when.getMonth()} ${when.getHours()}:${when.getMinutes()}`,
-        "read from local storage"
+        `${localData?.length} grooves from ${whenStr} read from local storage`
       );
       setCards(localData);
     }
@@ -57,9 +54,3 @@ export const GroovyContext: FC<Props> = (props) => {
 
   return <Context.Provider value={{ cards }} {...props} />;
 };
-
-const getCookie = (name: string) =>
-  document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(`${name}=`))
-    ?.replace(`${name}=`, "");

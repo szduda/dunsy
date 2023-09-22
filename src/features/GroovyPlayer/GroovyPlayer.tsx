@@ -68,6 +68,7 @@ export const GroovyPlayer: FC<Props> = ({
                 key={`${title}${index}`}
                 title={title}
                 beat={beat}
+                instrument={instrument}
                 pattern={pattern?.repeat(loopLength / pattern.length)}
                 muted={muted[instrument]}
                 setMuted={(value) =>
