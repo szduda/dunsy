@@ -35,6 +35,7 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
   const trueTempo = useRef(calcTrueTempo());
 
   const playLoop = () => {
+    console.log('tmp', trueTempo, tempo)
     midiSounds?.current?.startPlayLoop(
       currentBeats.current,
       trueTempo.current,
@@ -68,7 +69,7 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
 
   const updateBeats = () => {
     if (!tracks || !tracks[0]) return;
-
+ 
     let beats = fillBeat(
       loopLength,
       tracks,

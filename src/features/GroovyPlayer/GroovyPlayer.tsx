@@ -14,6 +14,7 @@ import { GearIcon } from "../Icons";
 export type Props = ComponentProps<"div"> & {
   tracks: TTrack[];
   swingStyle?: SwingStyle;
+  signal?: string;
   metronome?: boolean;
   tempo?: number;
 };
@@ -21,6 +22,7 @@ export type Props = ComponentProps<"div"> & {
 export const GroovyPlayer: FC<Props> = ({
   tracks,
   swingStyle = "",
+  signal,
   metronome: initialMetronome = true,
   tempo: initialTempo = 110,
   ...divProps
@@ -30,6 +32,7 @@ export const GroovyPlayer: FC<Props> = ({
     initialMetronome,
     initialTempo,
     swingStyle,
+    signal,
   });
 
   const [settingsOpen, setSettingsOpen] = useState(false);

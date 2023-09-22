@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* 
 :root {
   --whitey: #D0DCDB;
   --greeny-darkest: #0a1a18;
@@ -11,4 +11,4 @@ body {
   min-height: 100dvh;
   color: var(--whitey);
   background: var(--greeny-darkest);
-}
+} */

@@ -155,18 +155,22 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
               />
             </div>
             <div className="pt-8 lg:pt-12">
-              <GroovyPlayer
-                className="-mx-2 lg:-mx-24"
-                swingStyle={formData.swing}
-                tempo={formData.tempo ? Number(formData.tempo) : 110}
-                tracks={Object.keys(formData.patterns)
-                  .map((instrument) => ({
-                    instrument,
-                    title: instrument,
-                    pattern: formData.patterns[instrument],
-                  }))
-                  .filter((track) => Boolean(track.pattern))}
-              />
+              {/* lg:w-[min(100dvw,calc(100%+12rem))] */}
+              <div className="-mx-2 w-fill xl:-mx-24">
+                {/* <div className="-mx-2  w-[min(100dvw,calc(1024px+12rem))]"> */}
+                <GroovyPlayer
+                  signal={formData.signal}
+                  swingStyle={formData.swing}
+                  tempo={formData.tempo ? Number(formData.tempo) : 110}
+                  tracks={Object.keys(formData.patterns)
+                    .map((instrument) => ({
+                      instrument,
+                      title: instrument,
+                      pattern: formData.patterns[instrument],
+                    }))
+                    .filter((track) => Boolean(track.pattern))}
+                />
+              </div>
             </div>
           </div>
 

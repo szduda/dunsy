@@ -16,7 +16,7 @@ export const Header: FC<Props> = ({ compact }) => (
   >
     <div
       className={cx([
-        "flex justify-center items-center pt-8 md:pt-14 b-6 md:pb-10 px-4 w-full",
+        "flex justify-center items-center pt-8 md:pt-14 pb-6 md:pb-10 px-4 w-full",
       ])}
     >
       <Logo />
@@ -41,7 +41,10 @@ const SmallLogo: FC = () => (
   <Link
     href="/"
     scroll={false}
-    className="saturate-50 brightness-200 opacity-30 hover:brightness-100 hover:saturate-100 hover:opacity-100 flex animate-fadein"
+    className={cx([
+      "flex saturate-50 brightness-200 contrast-150 opacity-30 transition-all duration-300",
+      "hover:brightness-100 hover:saturate-100 hover:contrast-100 hover:opacity-100",
+    ])}
   >
     <LogoIcon height="40" />
   </Link>

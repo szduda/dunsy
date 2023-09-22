@@ -33,7 +33,7 @@ const RootLayout: FC<{ children: ReactNode }> = async (props) => {
       <body
         className={cx([
           inter.className,
-          "bg-[url('/bg_mobile.jpg')] md:bg-[url('/bg.jpg')] bg-cover bg-fixed",
+          "md:bg-[url('/bg.jpg')] bg-cover bg-center bg-fixed text-whitey bg-greeny-darker",
         ])}
       >
         <MidiSounds>

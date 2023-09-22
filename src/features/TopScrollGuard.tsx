@@ -1,8 +1,15 @@
 import { FC, useEffect } from "react";
 
-export const TopScrollGuard: FC<{ top: number }> = ({ top }) => {
+type Props = { top?: number; logoLine?: boolean };
+
+export const TopScrollGuard: FC<Props> = ({ top = 0, logoLine = false }) => {
   useEffect(() => {
-    window.scrollTo({ top, behavior: "smooth" });
+    const isMobile = window.innerWidth <= 768;
+    const logoHeight = isMobile ? 185 : 225;
+    window.scrollTo({
+      top: logoLine ? logoHeight : top,
+      behavior: "smooth",
+    });
   }, []);
 
   return null;

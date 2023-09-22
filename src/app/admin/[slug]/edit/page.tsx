@@ -1,9 +1,8 @@
-import { FC, ReactNode } from "react";
-import { AuthContextProvider } from "@/features";
+import { Crossroad } from "@/features";
 import { LogoIcon } from "@/features/Icons";
 
-const AdminLayout: FC<{ children: ReactNode }> = ({ children }) => (
-  <AuthContextProvider>
+const AdminPage = () => (
+  <>
     <header className="flex justify-center items-center pt-14 pb-8 px-4 w-full">
       <LogoIcon
         height={48}
@@ -14,8 +13,10 @@ const AdminLayout: FC<{ children: ReactNode }> = ({ children }) => (
         edundytor
       </h1>
     </header>
-    {children}
-  </AuthContextProvider>
+    <main className="flex mx-auto flex-col items-center justify-center px-2 pt-8 pb-8 max-w-[960px]">
+      <Crossroad />
+    </main>
+  </>
 );
 
-export default AdminLayout;
+export default AdminPage;

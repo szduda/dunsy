@@ -5,7 +5,7 @@ import { FC } from "react";
 
 const StoryPage: FC = () => (
   <main className="flex mx-auto flex-col px-3 pt-8 pb-8 max-w-[1024px]">
-    <TopScrollGuard top={225} />
+    <TopScrollGuard logoLine />
     <h1 className="text-yellowy text-5xl mt-12 font-bold drop-shadow-lg">
       Our mission is to help young djembefolas grow even if the soil around them
       is dry.

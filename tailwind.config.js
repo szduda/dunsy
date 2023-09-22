@@ -84,6 +84,33 @@ module.exports = {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
         },
+        swing: {
+          "0%, 100%": {
+            transform: "translateY(-30%) translateX(5%) rotate(-30deg)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "25%, 50%": {
+            transform: "translateY(-10%) translateX(5%) rotate(0deg)",
+            animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
+          },
+          "37.5%": {
+            transform: "translateY(-46%) translateX(17%) rotate(60deg)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "62.5%": {
+            transform: "translateY(-30%) translateX(20%) rotate(20deg)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+        },
+        bouncy: { "0%, 100%": {
+          transform: 'translateX(0) rotate(0deg)',
+          animationTimingFunction: "cubic-bezier(0.1, 0, 1, 1)",
+
+        }, "50%": {
+          transform: 'translateX(20%) rotate(35deg)',
+          animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+
+        } },
       },
       animation: {
         shake: "wiggle 500ms ease-in-out infinite",
@@ -98,6 +125,9 @@ module.exports = {
         "spin-once": "spin 1s ease-in-out",
         "spin-logo-once": "spin-logo 500ms ease-out",
         "spin-logo": "spin 100ms ease-in-out 3s infinite",
+        swing: "swing 2s infinite",
+        stick: "bouncy 1s infinite",
+        stick2: "bouncy 667ms infinite",
       },
       backgroundImage: {
         guard: "url('/guard.avif')",

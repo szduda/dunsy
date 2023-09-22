@@ -90,6 +90,7 @@ export class MIDISounds extends Component {
     return 1;
   }
   startPlayLoop(beats, bpm, density, fromBeat, onBeat) {
+    const MAX_LAG_MS = 5;
     this.stopPlayLoop();
     this.loopStarted = true;
     var wholeNoteDuration = (4 * 60) / bpm;
@@ -115,7 +116,7 @@ export class MIDISounds extends Component {
           onBeat(me.beatIndex);
         }
       }
-    }, 22);
+    }, MAX_LAG_MS);
   }
   stopPlayLoop() {
     this.loopStarted = false;

@@ -1,9 +1,13 @@
 import { SwingStyle } from "../SnippetApi/types";
 import { drums } from "@/lib/MidiSounds";
+import { TTrack } from "./types";
+
+// open: bts | mute: lc | flam: rf
+const DJEMBE_SOUNDS = [..."btslcrf"];
 
 export const fillBeat = (
   loopLength: number,
-  tracks: any[],
+  tracks: TTrack[],
   muted: Record<string, boolean>,
   metronome: boolean,
   signalActive: boolean,
@@ -16,30 +20,27 @@ export const fillBeat = (
     if (!pattern) return [];
 
     const prolongedPattern = pattern.repeat(loopLength / pattern.length);
-    const result: boolean[] = [];
-    for (let i = 0; i < prolongedPattern.length; i = i + 1) {
-      result.push(prolongedPattern[i] === sound);
-    }
+    const result = [...prolongedPattern].map((note) => note === sound);
 
     return result;
   };
 
   const parseDjembe = (pattern: string) => {
-    // open: bts | mute: lc | flam: rf
-    const sounds = "btslcrf".split("");
-    const prolongBy = (loopLength / pattern.length - 1) * pattern.length;
-    const results = [...Array(7)].map(() => Array<Boolean>());
-    if (prolongBy > 0)
-      results.forEach((_, i) => {
-        const silence = [...Array(prolongBy)].map(() => false);
-        results[i] = silence;
-      });
+    const prolongBy = loopLength - pattern.length;
+    const silence = [...Array<boolean>(prolongBy)].fill(false);
+    const results = [...Array(DJEMBE_SOUNDS.length)].map(() =>
+      Array<boolean>()
+    );
 
-    pattern
-      .split("")
-      .forEach((note) =>
-        sounds.forEach((sound, i) => results[i].push(note === sound))
-      );
+    if (prolongBy > 0) {
+      results.forEach((_, i) => {
+        results[i] = [...silence];
+      });
+    }
+
+    [...pattern].forEach((note) =>
+      DJEMBE_SOUNDS.forEach((sound, i) => results[i].push(note === sound))
+    );
 
     return results;
   };
