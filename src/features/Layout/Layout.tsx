@@ -2,8 +2,7 @@
 
 import { FC, ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { GroovyContext } from "@/features";
-import { SearchResultsOverlay } from "@/features/rsc";
+import { GroovyContext, SearchResultsOverlay } from "@/features";
 import { Header } from "./Header";
 
 type Props = {

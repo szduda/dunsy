@@ -1,7 +1,7 @@
 import { ComponentProps, FC } from "react";
 import Link from "next/link";
-import { Logo } from "@/features";
-import { Button, Search } from "@/features/rsc";
+import { Logo, Search } from "@/features";
+import { Button } from "@/features/rsc";
 import { InfoIcon, LogoIcon } from "@/features/Icons";
 import { cx } from "@/utils";
 
