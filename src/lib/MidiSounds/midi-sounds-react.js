@@ -112,9 +112,7 @@ export class MIDISounds extends Component {
         me.playBeatAt(nextLoopTime, beats[me.beatIndex], bpm);
         nextLoopTime = nextLoopTime + density * wholeNoteDuration;
 
-        if (onBeat) {
-          onBeat(me.beatIndex);
-        }
+        onBeat?.(me.beatIndex);
       }
     }, MAX_LAG_MS);
   }
