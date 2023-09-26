@@ -1,17 +1,20 @@
 import { FC, useEffect, useState } from "react";
 import { Button, Input } from "@/features/rsc";
-import { SnippetCard } from "../SnippetApi/types";
-import { getSnippets } from "../SnippetApi";
+import { getSnippets } from "@/features/SnippetApi";
+import { SnippetCard } from "@/features/SnippetApi/types";
+import { CloseIcon } from "@/features/Icons";
 import { cx } from "@/utils";
-import { CloseIcon } from "../Icons";
+import Link from "next/link";
+import throttle from "throttleit";
 
 type Props = {
   className?: string;
   onPick(id: string): void;
-  onClose(): void;
 };
 
-export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
+const getSnippetsThrottled = throttle(getSnippets, 1000);
+
+export const PickSnippetModal: FC<Props> = ({ onPick }) => {
   const [term, setTerm] = useState("");
   const [selectedSnippet, selectSnippet] = useState("");
 
@@ -19,31 +22,37 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const snippets = await getSnippets(term.length > 2 ? term : undefined, {
-        limit: 20,
+      if (snippets.length && term.length < 3) {
+        return;
+      }
+
+      const newSnippets = await getSnippetsThrottled(term, {
+        limit: 10,
       });
-      setSnippets(snippets);
+      setSnippets(newSnippets);
       selectSnippet("");
     };
-    asyncEffect();
+
+    const timeout = setTimeout(asyncEffect, 500);
+    return () => clearTimeout(timeout);
   }, [term]);
 
   return (
     <div
       className={cx([
         "fixed top-0 left-0 w-full h-full bg-gradient-radial from-[#0008] via-[#000C] to-[#000E] flex justify-center items-end",
-        className,
+        "",
       ])}
     >
       <div className="fixed bg-graye-dark md:rounded-lg py-3 px-4 flex flex-col w-full md:w-[500px] h-full md:h-fit">
         <div className="w-full flex justify-between items-center text-graye-light">
           <div className="text-sm">Fixin&rsquo; da mess, huh?</div>
-          <button
-            className="w-8 h-8 font-bold rounded-full hover:bg-[#0002] transition-colors"
-            onClick={onClose}
+          <Link
+            href="/admin"
+            className="w-8 h-8 flex items-center font-bold rounded-full hover:bg-[#0002] transition-colors"
           >
             <CloseIcon className="mx-auto fill-graye-light" />
-          </button>
+          </Link>
         </div>
         <form className="flex flex-col">
           <Input
@@ -52,7 +61,7 @@ export const PickSnippetModal: FC<Props> = ({ onPick, onClose, className }) => {
             value={term}
             onChange={(e) => setTerm(e.target.value)}
           />
-          <div className="my-6 overflow-y-scroll h-[calc(100dvh-224px)] md:h-[200px]">
+          <div className="my-6 overflow-y-scroll h-[calc(100dvh-224px)] md:h-[50dvh]">
             {snippets.map(({ title, id }) => (
               <label
                 key={id}

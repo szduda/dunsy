@@ -5,6 +5,7 @@ import {
   Snippet,
   getSnippet,
 } from "@/features/SnippetApi";
+import { useAuth, usePickSnippet } from "@/features/admin";
 
 const swings = {
   "": "none",
@@ -35,8 +36,10 @@ const defaultFormData: Snippet = {
 
 export type FormData = typeof defaultFormData;
 
-export const useSnippetForm = (_initialData: Partial<FormData> = {}) => {
-  const [initialData, setInitialData] = useState(_initialData);
+export const useSnippetForm = () => {
+  const { initialData, pick } = usePickSnippet();
+  const mode = initialData ? "edit" : "add";
+  const { user } = useAuth();
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,14 +48,14 @@ export const useSnippetForm = (_initialData: Partial<FormData> = {}) => {
     ...initialData,
     patterns: {
       ...defaultFormData.patterns,
-      ...initialData.patterns,
+      ...initialData?.patterns,
     },
   });
 
   const patternsDirty = Object.keys(formData.patterns).some(
     (instrument) =>
       formData.patterns[instrument] !==
-      (initialData.patterns?.[instrument] || "")
+      (initialData?.patterns?.[instrument] || "")
   );
 
   const dirty = Object.keys(formData).some((field) => {
@@ -76,7 +79,7 @@ export const useSnippetForm = (_initialData: Partial<FormData> = {}) => {
     try {
       const res = formData.id
         ? await updateSnippet(formData, patternsDirty)
-        : await addSnippet(formData);
+        : await addSnippet({ ...formData, authorUid: user?.uid! });
       if (res.ok) {
         setSuccess(true);
         setErrors([]);
@@ -110,11 +113,15 @@ export const useSnippetForm = (_initialData: Partial<FormData> = {}) => {
   };
 
   const editAgain = async () => {
+    if (!initialData?.id) {
+      return;
+    }
+
     resetForm();
     const refetched = await getSnippet(String(initialData.id));
     const newInitial = { id: initialData.id, ...refetched };
     updateFormData(newInitial);
-    setInitialData(newInitial);
+    pick(initialData.id);
   };
 
   return {
@@ -128,5 +135,6 @@ export const useSnippetForm = (_initialData: Partial<FormData> = {}) => {
     resetForm,
     editAgain,
     dirty,
+    mode,
   };
 };

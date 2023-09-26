@@ -56,13 +56,15 @@ export const fillBeat = (
         if (instrument === "shaker" && metronome) {
           return generateMetronome();
           // atm djembe sounds are only used to play the signal
-        } else if (instrument !== "djembe" && !muted[instrument]) {
-          return parse(instrument, symbol);
+        } else if (muted[instrument]) {
+          return false;
+        } else if (instrument === "djembe") {
+          return "skip";
         }
 
-        return false;
+        return parse(instrument, symbol);
       })
-      .filter(Boolean);
+      .filter((val) => val !== "skip");
 
     const signal = parseSignalAtLoopEnd();
 

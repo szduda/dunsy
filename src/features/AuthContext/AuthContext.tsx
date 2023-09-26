@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { LoginForm, logIn } from "..";
+import { LoginForm, logIn } from "@/features/admin";
 import { auth } from "@/firebase";
 
 type AuthStore = {

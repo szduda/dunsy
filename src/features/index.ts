@@ -1,12 +1,5 @@
 "use client";
 
-export { Radios } from "./Radios";
-export { SnippetForm } from "./SnippetForm/SnippetForm";
-export { LoginForm } from "./LoginForm";
-export { useAuth, AuthContextProvider } from "./AuthContext/AuthContext";
-export { logIn } from "./AuthContext/api";
-export { Crossroad } from "./Crossroad/Crossroad";
-export { PickSnippetModal } from "./Crossroad/PickSnippetModal";
 export { GroovyPlayer } from "./GroovyPlayer/GroovyPlayer";
 export { Logo } from "./Logo/Logo";
 export { useGrooves, GroovyContext } from "./Layout/GroovyContext";

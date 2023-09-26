@@ -1,19 +1,14 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Radios, useAuth, GroovyPlayer } from "@/features";
+import { GroovyPlayer } from "@/features";
+import { Radios } from "@/features/admin";
 import { Button, Input } from "@/features/rsc";
-import { useSnippetForm, FormData } from "./useSnippetForm";
+import { ArrowIcon } from "@/features/Icons";
 import { cx } from "@/utils";
-import { ArrowIcon } from "../Icons";
+import { useSnippetForm } from "./useSnippetForm";
+import Link from "next/link";
 
-type Props = {
-  initialData?: Partial<FormData>;
-  onBack?(): void;
-};
-
-export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
-  const { user } = useAuth();
-
+export const SnippetForm: FC = () => {
   const {
     loading,
     errors,
@@ -25,7 +20,8 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
     resetForm,
     editAgain,
     dirty,
-  } = useSnippetForm({ ...initialData, authorUid: user?.uid });
+    mode,
+  } = useSnippetForm();
 
   return (
     <>
@@ -34,6 +30,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
           <Image
             className="rounded-lg my-8"
             src="/gods.avif"
+            quality={25}
             width={717}
             height={403}
             alt="Happy African Gods"
@@ -41,7 +38,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
           <h2 className="my-8 md:my-16 w-full text-center text-greeny-light text-4xl tracking-wider">
             Mandé Gods are pleased with your sacrifice
           </h2>
-          {initialData ? (
+          {mode === "edit" ? (
             <Button className="mt-8" onClick={editAgain}>
               Edit this rhythm again
             </Button>
@@ -50,28 +47,28 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
               Add another rhythm
             </Button>
           )}
-          <Button
-            className="mt-8 bg-transparent md:hover:bg-transparent border-transparent hover:border-graye"
-            onClick={onBack}
-          >
-            <span className="text-graye-light">Go to the mountains</span>
-          </Button>
+          <Link href="/admin">
+            <Button className="mt-8 bg-transparent md:hover:bg-transparent border-transparent hover:border-graye">
+              <span className="text-graye-light">Go to the mountains</span>
+            </Button>
+          </Link>
         </div>
       )}
       <div className={cx(["h-fit w-full", success && "hidden"])}>
-        <button
+        <Link
           className="p-2 md:px-4 text-lg text-graye absolute top-16 left-2 tracking-wider rounded-md hover:bg-[#0002] hover:scale-110 transition-all flex items-center"
-          onClick={onBack}
+          href="/admin"
         >
           <ArrowIcon className="fill-graye rotate-180 mr-2" /> Back
-        </button>
+        </Link>
         <form className="grid grid-flow-row gap-8">
           <div className="flex w-full justify-center">
             <Image
               placeholder="blur"
               blurDataURL="favicons/fav-64.png"
-              src={initialData ? "/godess2.avif" : "/host.avif"}
+              src={mode === "edit" ? "/godess2.avif" : "/host.avif"}
               alt="The rhythm vault host in person"
+              quality={25}
               width={450}
               height={450}
               className="rounded-lg"
@@ -217,6 +214,7 @@ export const SnippetForm: FC<Props> = ({ initialData, onBack }) => {
                     blurDataURL="favicons/fav-64.png"
                     src="/dictator.avif"
                     alt="The Great Validator"
+                    quality={20}
                     width={165}
                     height={330}
                     className="rounded-md"

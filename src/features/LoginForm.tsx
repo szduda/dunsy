@@ -1,5 +1,5 @@
 import { FC, FormEvent, useState } from "react";
-import { useAuth } from ".";
+import { useAuth } from "@/features/admin";
 import { Button, Input } from "@/features/rsc";
 import Image from "next/image";
 import { cx } from "@/utils";
@@ -26,6 +26,7 @@ export const LoginForm: FC = () => {
         blurDataURL="favicons/fav-64.png"
         className="rounded-lg"
         src={error ? "/dictator.avif" : "/god2.avif"}
+        quality={25}
         width={480}
         height={480}
         alt="Dundunin The Guardian"
