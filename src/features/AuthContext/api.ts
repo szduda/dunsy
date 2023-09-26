@@ -1,4 +1,4 @@
-import { auth } from "@/firebase";
+import { auth } from "@/firebaseAuth";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 

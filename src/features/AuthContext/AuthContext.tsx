@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { LoginForm, logIn } from "@/features/admin";
-import { auth } from "@/firebase";
+import { auth } from "@/firebaseAuth";
 
 type AuthStore = {
   user: User | null;
