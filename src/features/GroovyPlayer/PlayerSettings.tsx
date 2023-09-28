@@ -1,8 +1,80 @@
-import { Button } from "@/features/rsc";
-import { usePlayerSettings } from "./PlayerSettingsContext";
 import { ComponentProps, FC } from "react";
-import { CloseIcon } from "../Icons";
+import { Button } from "@/features/rsc";
+import { CloseIcon, GearIcon } from "@/features/Icons";
 import { cx } from "@/utils";
+import { usePlayerSettings } from "./PlayerSettingsContext";
+
+export const AVSyncLabel: FC<ComponentProps<"button">> = (props) => {
+  const { videoSync, setVideoSync } = usePlayerSettings();
+  return (
+    <button
+      {...props}
+      onClick={(e) => {
+        e.preventDefault();
+        setVideoSync(!videoSync);
+        props.onClick?.(e);
+      }}
+      className={cx([
+        "text-sm px-2 h-min rounded-full text-blacky transition active:scale-95 border border-1 border-graye-dark",
+        videoSync
+          ? "bg-greeny hover:bg-greeny-lighter"
+          : "bg-graye-dark hover:bg-graye",
+        props.className,
+      ])}
+    >
+      A/V Sync
+    </button>
+  );
+};
+
+export const LargeBarsLabel: FC<ComponentProps<"button">> = (props) => {
+  const { largeBars, setLargeBars } = usePlayerSettings();
+  return (
+    <button
+      {...props}
+      onClick={(e) => {
+        e.preventDefault();
+        setLargeBars(!largeBars);
+        props.onClick?.(e);
+      }}
+      className={cx([
+        "text-sm px-2 h-min rounded-full text-blacky transition active:scale-95 border border-1 border-graye-dark",
+        largeBars
+          ? "bg-greeny hover:bg-greeny-lighter"
+          : "bg-graye-dark hover:bg-graye",
+        props.className,
+      ])}
+    >
+      Zoom
+    </button>
+  );
+};
+
+export const SettingsButton: FC<ComponentProps<"button">> = (props) => {
+  const { largeBars, videoSync } = usePlayerSettings();
+
+  return (
+    <Button
+      mini
+      ninja
+      padding="0"
+      on
+      className="text-4xl leading-3 bg-transparent"
+      {...props}
+      onClick={(e) => {
+        e.preventDefault();
+        props.onClick?.(e);
+      }}
+    >
+      <div className="relative">
+        <GearIcon className="hover:animate-spin-once border-box p-1" />
+        {(largeBars || videoSync) && (
+          <div className="absolute right-0 top-0 w-2 h-2 rounded-full bg-yellowy md:hidden" />
+        )}
+      </div>
+    </Button>
+  );
+};
 
 type Props = ComponentProps<"div"> & {
   onClose(): void;

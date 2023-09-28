@@ -39,9 +39,9 @@ export const updatePatterns = async (
     )
   );
 
-  return await Promise.all(
-    Object.keys(patterns)
-      .map((instrument) => {
+  return (
+    await Promise.all(
+      Object.keys(patterns).map((instrument) => {
         const newPattern = patterns?.[instrument];
         const pattern = existingPatterns.docs.find(
           (doc) => doc.data().instrument === instrument
@@ -71,8 +71,8 @@ export const updatePatterns = async (
           });
         }
       })
-      .filter(Boolean)
-  );
+    )
+  ).filter(Boolean) as DocumentReference[];
 };
 
 const updatePattern = async (docRef: DocumentReference, data: Pattern) => {

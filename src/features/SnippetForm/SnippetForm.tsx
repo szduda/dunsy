@@ -84,8 +84,20 @@ export const SnippetForm: FC = () => {
             value={formData.title}
             onChange={(e) => updateFormData({ title: e.target.value })}
           />
+          <div className="flex w-full flex-1 items-end">
+            <div className="text-3xl pb-1 pr-1 text-graye">/</div>
+            <div className="flex-1">
+              <Input
+                label="Slug"
+                hint="kebab case | unique | e.g. soli-sangban"
+                value={formData.slug}
+                onChange={(e) => updateFormData({ slug: e.target.value })}
+              />
+            </div>
+          </div>
           <Input
             label="Tags"
+            hint="coma-separated | min 3 required"
             value={formData.tags}
             onChange={(e) => updateFormData({ tags: e.target.value })}
           />
@@ -152,9 +164,7 @@ export const SnippetForm: FC = () => {
               />
             </div>
             <div className="pt-8 lg:pt-12">
-              {/* lg:w-[min(100dvw,calc(100%+12rem))] */}
               <div className="-mx-2 w-fill xl:-mx-24">
-                {/* <div className="-mx-2  w-[min(100dvw,calc(1024px+12rem))]"> */}
                 <GroovyPlayer
                   signal={formData.signal}
                   swingStyle={formData.swing}
@@ -183,6 +193,7 @@ export const SnippetForm: FC = () => {
           />
           <Input
             label="Tempo"
+            hint="80 - 200"
             value={formData.tempo}
             onChange={(e) => updateFormData({ tempo: e.target.value })}
           />
@@ -195,6 +206,7 @@ export const SnippetForm: FC = () => {
           />
           <Input
             label="Custom call pattern"
+            hint="open: bts | mute: lc | flam: rf"
             value={formData.signal}
             onChange={(e) => updateFormData({ signal: e.target.value })}
           />

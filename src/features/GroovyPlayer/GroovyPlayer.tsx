@@ -7,7 +7,12 @@ import { SwingStyle } from "../SnippetApi/types";
 import { TTrack } from "./types";
 import { Button } from "@/features/rsc";
 import { cx } from "@/utils";
-import { PlayerSettings } from "./PlayerSettings";
+import {
+  AVSyncLabel,
+  LargeBarsLabel,
+  PlayerSettings,
+  SettingsButton,
+} from "./PlayerSettings";
 import { PlayerSettingsProvider } from "./PlayerSettingsContext";
 import { GearIcon } from "../Icons";
 
@@ -52,18 +57,16 @@ export const GroovyPlayer: FC<Props> = ({
           >
             GroovyPlayer
           </div>
-          <Button
-            mini
-            ninja
-            padding="0"
-            className="text-4xl leading-3 bg-transparent"
-            onClick={(e) => {
-              e.preventDefault();
-              setSettingsOpen(true);
-            }}
-          >
-            <GearIcon className="hover:animate-spin-once border-box p-1" />
-          </Button>
+          <div className="flex">
+            <div className="hidden md:grid grid-cols-2 gap-1 mx-4">
+              <LargeBarsLabel />
+              <AVSyncLabel />
+            </div>
+            <SettingsButton
+              className="md:hidden"
+              onClick={() => setSettingsOpen(true)}
+            />
+          </div>
         </div>
         {tracks.length
           ? tracks.map(({ title, instrument, pattern }, index) => (

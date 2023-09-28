@@ -4,6 +4,7 @@ import { ComponentProps, FC, ReactNode } from "react";
 type Props = {
   mini?: boolean;
   label?: ReactNode;
+  hint?: ReactNode;
   className?: string;
   black?: boolean;
 } & (InputProps | TextareaProps);
@@ -20,6 +21,7 @@ export const Input: FC<Props> = ({
   mini = false,
   black = false,
   label,
+  hint,
   className,
   textarea = false,
   ...inputProps
@@ -36,9 +38,14 @@ export const Input: FC<Props> = ({
 
   return (
     <label>
-      {label && (
-        <div className="text-graye text-sm font-semibold tracking-wider mb-2 uppercase">
-          {label}
+      {(label || hint) && (
+        <div className="flex justify-between">
+          <div className="text-graye text-sm font-semibold tracking-wider mb-2 uppercase">
+            {label}
+          </div>
+          {hint && (
+            <div className="text-yellowy/50 text-sm ml-2 mb-2 text-right">{hint}</div>
+          )}
         </div>
       )}
       {textarea ? (

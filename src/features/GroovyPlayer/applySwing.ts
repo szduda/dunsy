@@ -65,18 +65,7 @@ const swingLikeKujwiedon = (beats: any[]) => {
   return swingedBeats;
 };
 
-const swingLikeSoboninkun = (beats: any[]) => {
-  const swingedBeats: number[][][] = [];
-  beats.forEach(([notes]: any, noteIndex: number) => {
-    if (noteIndex % 4 === 0) swingedBeats.push(...swing(notes, 5));
-    else if (noteIndex % 4 === 1) swingedBeats.push(...swing(notes, 5));
-    else if (noteIndex % 4 === 2) swingedBeats.push(...swing(notes, 4));
-    else if (noteIndex % 4 === 3) swingedBeats.push(...swing(notes, 6));
-  });
-  return swingedBeats;
-};
-
-const swingLikeGnawa = (beats: any) => {
+const swingLikeGnawa = (beats: any[]) => {
   const swingedBeats: number[][][] = [];
   beats.forEach(([notes]: any, noteIndex: number) => {
     if (noteIndex % 4 === 0) swingedBeats.push(...swing(notes, 5));
@@ -87,11 +76,22 @@ const swingLikeGnawa = (beats: any) => {
   return swingedBeats;
 };
 
+const swingLikeSoboninkun = (beats: any) => {
+  const swingedBeats: number[][][] = [];
+  beats.forEach(([notes]: any, noteIndex: number) => {
+    if (noteIndex % 4 === 0) swingedBeats.push(...swing(notes, 3));
+    else if (noteIndex % 4 === 1) swingedBeats.push(...swing(notes, 5));
+    else if (noteIndex % 4 === 2) swingedBeats.push(...swing(notes, 6));
+    else if (noteIndex % 4 === 3) swingedBeats.push(...swing(notes, 6));
+  });
+  return swingedBeats;
+};
+
 const swingFns: Partial<Record<SwingStyle, Function>> = {
   "<<": swingLikeSoli,
   ">>": swingLikeTiriba,
   "<": swingLikeKujwiedon,
   ">": swingLikeMadan,
-  "--<": swingLikeSoboninkun,
   "-->": swingLikeGnawa,
+  "<<<": swingLikeSoboninkun,
 };

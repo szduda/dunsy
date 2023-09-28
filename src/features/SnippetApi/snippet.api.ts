@@ -44,12 +44,16 @@ export const getSnippets = async (search?: string, options = { limit: 5 }) => {
   );
 
   const results: SnippetCard[] = response.docs.map((doc) => {
-    const { title, slug, tags } = doc.data();
+    const { title, slug, tags, createdAt, updatedAt } = doc.data();
     return {
       id: doc.id,
       title,
       slug,
       tags,
+      lastModified:
+        Math.round(updatedAt?.seconds / (3600 * 24)) * (3600 * 24000) ||
+        Math.round(createdAt?.seconds / (3600 * 24)) * (3600 * 24000) ||
+        0,
     };
   });
 
@@ -99,6 +103,7 @@ export const getSnippetBySlug = async (slug: string) => {
 export const addSnippet = async (data: Snippet) => {
   const {
     title,
+    slug,
     tags,
     patterns,
     description,
@@ -131,6 +136,7 @@ export const addSnippet = async (data: Snippet) => {
 
   const snippet = await addDrums({
     title,
+    slug,
     ...(description ? { description: description } : {}),
     ...(signal ? { signal: signal } : {}),
     ...(swing ? { swing: swing } : {}),
@@ -153,7 +159,7 @@ export const addSnippet = async (data: Snippet) => {
 };
 
 export const updateSnippet = async (data: Snippet, patternsDirty: boolean) => {
-  const { title, tags, description, swing, signal, tempo } = data;
+  const { title, slug, tags, description, swing, signal, tempo } = data;
   const messages = validate(data);
 
   if (!data.id) {
@@ -169,13 +175,11 @@ export const updateSnippet = async (data: Snippet, patternsDirty: boolean) => {
   const tagsArray = tags.split(",").map((tag: string) => tag.trim());
 
   const newPatterns =
-    patternsDirty &&
-    ((await updatePatterns(existingData, data.patterns)).filter(
-      Boolean
-    ) as DocumentReference[]);
+    patternsDirty && (await updatePatterns(existingData, data.patterns));
 
   const success = await updateDrums(document.ref, {
     ...(title && title !== existingData.title ? { title } : {}),
+    ...(slug && slug !== existingData.slug ? { slug } : {}),
     ...(description !== existingData.description ? { description } : {}),
     ...(signal !== existingData.signal ? { signal } : {}),
     ...(swing !== existingData.swing ? { swing } : {}),

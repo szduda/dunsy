@@ -64,7 +64,7 @@ export const validate = ({
     messages.push("Incorrect notation. Patterns speak only: x o -");
   }
 
-  if (tempo && (Number(tempo) < 80 || Number(tempo) > 180)) {
+  if (tempo && (Number(tempo) < 80 || Number(tempo) > 200)) {
     messages.push("Tempo between 80 and 180, sir.");
   }
 
@@ -76,7 +76,7 @@ export const validate = ({
     swing &&
     !(
       (base === 3 && [">>", "<<"].includes(swing)) ||
-      (base === 4 && [">", "<", "--<", "-->"].includes(swing))
+      (base === 4 && [">", "<", "<<<", "-->"].includes(swing))
     )
   ) {
     messages.push("Ya messed up dem swings, sir.");

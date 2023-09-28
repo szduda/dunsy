@@ -6,18 +6,21 @@ import {
   getSnippet,
 } from "@/features/SnippetApi";
 import { useAuth, usePickSnippet } from "@/features/admin";
+import { SwingStyle } from "../SnippetApi/types";
 
-const swings = {
+const swings: Record<SwingStyle, string> = {
   "": "none",
-  ">": "4/4",
-  ">>": "6/8 tiriba, djaa",
-  "<<": "6/8 soli, dunumba",
-  "-->": "4/4 gnawa",
-  "--<": "4/4 soboninkun",
+  "<<<": "4/4 rushy",
+  "<": "4/4 hasty",
+  "-->": "4/4 lilazy",
+  ">": "4/4 bluesy",
+  "<<": "6/8 hasty",
+  ">>": "6/8 lazy",
 };
 
 const defaultFormData: Snippet = {
   id: "",
+  slug: "",
   authorUid: "",
   title: "",
   description: "",

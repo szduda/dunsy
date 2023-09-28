@@ -56,6 +56,13 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ) {
   const snippet = await getSnippetBySlug(params.slug);
+
+  if (!snippet) {
+    return {
+      title: "Page Not Found",
+    };
+  }
+
   const parentMeta = await parent;
   const title = snippet?.title
     .split(" ")
@@ -63,7 +70,14 @@ export async function generateMetadata(
     .join(" ");
 
   return {
-    title: `${title ?? "Page Not Found"} - ${parentMeta.title?.absolute}`,
+    title: `${title} - ${parentMeta.title?.absolute}`,
+    description: `${(snippet?.description ?? "").substring(
+      0,
+      100
+    )} | Listen to ${title} groove and enjoy your drumming practice. Wasa wasa!`,
+    openGraph: {
+      images: ["/og_player.png"],
+    },
   };
 }
 
