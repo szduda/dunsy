@@ -12,13 +12,13 @@ import { LoginForm, logIn, getConfig } from "@/features/admin";
 
 type AuthStore = {
   user: User | null;
-  config: string;
+  config: Record<string, string> | null;
   logIn(email: string, password: string): Promise<User | undefined>;
 };
 
 export const AuthContext = createContext<AuthStore>({
   user: null,
-  config: "",
+  config: null,
   logIn: () => Promise.resolve(undefined),
 });
 export const useAuth = () => useContext(AuthContext);

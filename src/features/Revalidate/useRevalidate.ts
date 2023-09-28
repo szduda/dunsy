@@ -3,13 +3,13 @@ import { useAuth } from "../admin";
 
 export const useRevalidate = (initialPath: string = "") => {
   const [response, setResponse] = useState("");
-  const { secret } = useAuth();
+  const { config } = useAuth();
 
   const revalidate = async (path: string = initialPath) => {
     const raw = await fetch("/foladmin/paradise/revalidate", {
       body: JSON.stringify({
         path,
-        secret,
+        secret: config?.revalidationSecret,
       }),
       method: "POST",
     });
