@@ -6,17 +6,6 @@ export const RevalidateInput: FC = () => {
   const [path, setPath] = useState("");
   const { response, revalidate } = useRevalidate();
 
-  if (response === "Unauthorized") {
-    return (
-      <div
-        className="fixed w-screen h-screen top-0 left-0 right-0 bg-redy flex items-center justify-center pointer-events-none"
-        style={{ zIndex: 1000000 }}
-      >
-        <div className="text-4xl text-yellowy font-black">Good joke indeed</div>
-      </div>
-    );
-  }
-
   return (
     <label>
       <div className="flex items-center flex-wrap">

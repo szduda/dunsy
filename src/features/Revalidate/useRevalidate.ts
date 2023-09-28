@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useAuth } from "../admin";
 
 export const useRevalidate = (initialPath: string = "") => {
   const [response, setResponse] = useState("");
-  const params = useSearchParams();
-  const secret = params.get("q");
+  const { secret } = useAuth();
 
   const revalidate = async (path: string = initialPath) => {
     const raw = await fetch("/foladmin/paradise/revalidate", {
