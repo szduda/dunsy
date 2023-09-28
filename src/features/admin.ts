@@ -11,3 +11,7 @@ export { LoginForm } from "./LoginForm";
 export { useAuth, AuthContextProvider } from "./AuthContext/AuthContext";
 export { logIn } from "./AuthContext/api";
 export { EditSnippet } from "./EditSnippet/EditSnippet";
+export {
+  RevalidateInput,
+  RevalidateAll,
+} from "./Revalidate/RevalidateInput";

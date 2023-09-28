@@ -33,7 +33,7 @@ export const PickSnippetProvider: FC<{ children: ReactNode }> = ({
       setInitialData({ id, ...snippet } as any);
     } catch (error) {
       setInitialData(null);
-      router.push("/admin");
+      router.push("/foladmin");
     }
     setLoading(false);
   };

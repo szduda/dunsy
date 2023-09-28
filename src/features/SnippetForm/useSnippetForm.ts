@@ -7,6 +7,7 @@ import {
 } from "@/features/SnippetApi";
 import { useAuth, usePickSnippet } from "@/features/admin";
 import { SwingStyle } from "../SnippetApi/types";
+import { useRevalidate } from "../Revalidate/useRevalidate";
 
 const swings: Record<SwingStyle, string> = {
   "": "none",
@@ -54,6 +55,7 @@ export const useSnippetForm = () => {
       ...initialData?.patterns,
     },
   });
+  const { revalidate } = useRevalidate();
 
   const patternsDirty = Object.keys(formData.patterns).some(
     (instrument) =>
@@ -86,6 +88,17 @@ export const useSnippetForm = () => {
       if (res.ok) {
         setSuccess(true);
         setErrors([]);
+
+        if (mode === "add") {
+          revalidate("");
+          revalidate("grooves");
+        } else if (mode === "edit") {
+          if (initialData!.slug !== formData.slug) {
+            revalidate(initialData!.slug!);
+          } else {
+            revalidate(formData.slug);
+          }
+        }
       } else {
         setErrors(res.messages);
       }

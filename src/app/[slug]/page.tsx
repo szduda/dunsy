@@ -69,14 +69,17 @@ export async function generateMetadata(
     .map((word) => `${word.charAt(0).toUpperCase()}${word.substring(1)}`)
     .join(" ");
 
+  const shortDescription = (snippet?.description ?? "").substring(0, 100);
+  const description = `${
+    shortDescription ? `${shortDescription}... | ` : ""
+  }Listen to ${title} groove and enjoy your drumming practice. Wasa wasa!`;
+
   return {
     title: `${title} - ${parentMeta.title?.absolute}`,
-    description: `${(snippet?.description ?? "").substring(
-      0,
-      100
-    )} | Listen to ${title} groove and enjoy your drumming practice. Wasa wasa!`,
+    description,
     openGraph: {
       images: ["/og_player.png"],
+      description,
     },
   };
 }

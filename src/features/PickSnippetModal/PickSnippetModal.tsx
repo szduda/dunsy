@@ -48,7 +48,7 @@ export const PickSnippetModal: FC<Props> = ({ onPick }) => {
         <div className="w-full flex justify-between items-center text-graye-light">
           <div className="text-sm">Fixin&rsquo; da mess, huh?</div>
           <Link
-            href="/admin"
+            href="/foladmin"
             className="w-8 h-8 flex items-center font-bold rounded-full hover:bg-[#0002] transition-colors"
           >
             <CloseIcon className="mx-auto fill-graye-light" />

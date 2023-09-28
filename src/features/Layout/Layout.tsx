@@ -12,7 +12,7 @@ type Props = {
 export const Layout: FC<Props> = ({ children }) => {
   const pathname = usePathname();
 
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/foladmin")) {
     return children;
   }
 
