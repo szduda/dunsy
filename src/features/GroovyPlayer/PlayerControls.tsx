@@ -78,8 +78,9 @@ export const PlayerControls: FC<Props> = ({
         <StopIcon className="mx-auto" />
       </Button>
     </div>
-    <div className="md:ml-6 mb-2 lg:mx-8 flex items-center flex-1 flex-nowrap">
+    <label className="md:ml-6 mb-2 lg:mx-8 flex items-center flex-1 flex-nowrap">
       <Input
+        aria-label="BPM"
         mini
         black
         className="mr-2 w-[58px] text-center"
@@ -101,7 +102,7 @@ export const PlayerControls: FC<Props> = ({
         }}
       />
       <div>BPM</div>
-    </div>
+    </label>
 
     <Button
       mini

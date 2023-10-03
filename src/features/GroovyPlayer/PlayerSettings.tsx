@@ -55,6 +55,7 @@ export const SettingsButton: FC<ComponentProps<"button">> = (props) => {
 
   return (
     <Button
+      aria-label="Open player settings"
       mini
       ninja
       padding="0"
@@ -93,6 +94,7 @@ export const PlayerSettings: FC<Props> = ({ onClose, className }) => {
       <div className="flex justify-end items-center text-xl">
         <div className="text-graye-light pl-2 pr-4 flex-1">Player Settings</div>
         <Button
+          aria-label="Close settings"
           className="-mr-1 leading-3 fill-whitey hover:bg-whitey/10"
           mini
           circle
