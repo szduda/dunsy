@@ -14,30 +14,39 @@ const ClientSearch: FC = () => {
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
 
   return (
-    <form
-      className="flex-1 flex relative"
-      onSubmit={(e) => {
-        submitSearch(e);
-        setSuggestionsOpen(false);
-      }}
-    >
-      <SearchInput
-        value={term}
-        onChange={(e) => setTerm(e.target.value)}
-        onFocus={() => setSuggestionsOpen(true)}
-      />
-      <SearchButton type="submit" />
+    <>
       {suggestionsOpen && (
-        <Suggestions
-          suggestions={suggestions}
-          onSelect={(suggestion) => {
-            setTerm(suggestion);
-            search(suggestion);
-          }}
-          onClose={() => setSuggestionsOpen(false)}
+        <div
+          className="fixed top-0 bottom-0 left-0 right-0 animate-fadein bg-yellowy/5"
+          onClick={() => setSuggestionsOpen(false)}
+          style={{ zIndex: 10000 }}
         />
       )}
-    </form>
+      <form
+        className="flex-1 flex relative"
+        onSubmit={(e) => {
+          submitSearch(e);
+          setSuggestionsOpen(false);
+        }}
+      >
+        <SearchInput
+          value={term}
+          onChange={(e) => setTerm(e.target.value)}
+          onFocus={() => setSuggestionsOpen(true)}
+        />
+        <SearchButton type="submit" />
+        {suggestionsOpen && (
+          <Suggestions
+            suggestions={suggestions}
+            onSelect={(suggestion) => {
+              setTerm(suggestion);
+              search(suggestion);
+            }}
+            onClose={() => setSuggestionsOpen(false)}
+          />
+        )}
+      </form>
+    </>
   );
 };
 
@@ -55,11 +64,6 @@ const Suggestions: FC<{
 }> = ({ suggestions, onSelect, onClose }) =>
   suggestions?.length ? (
     <>
-      <div
-        className="fixed top-0 bottom-0 left-0 right-0 animate-fadein bg-yellowy/5"
-        onClick={onClose}
-        style={{ zIndex: 10000 }}
-      />
       <ul
         className="absolute top-full left-0 right-[46px] rounded-md py-1 overflow-hidden bg-blacky text-whitey"
         style={{ zIndex: 10001 }}

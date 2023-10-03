@@ -1,12 +1,15 @@
 import { FC } from "react";
+import slugify from "slugify";
 import Image from "next/image";
-import { GroovyPlayer } from "@/features";
-import { Radios } from "@/features/admin";
+import { Radios, usePickSnippet } from "@/features/admin";
 import { Button, Input } from "@/features/rsc";
-import { ArrowIcon } from "@/features/Icons";
 import { cx } from "@/utils";
 import { useSnippetForm } from "./useSnippetForm";
-import Link from "next/link";
+import { PatternsForm } from "./PatternsForm";
+import { PatternHint } from "./PatternHint";
+import { FormSuccessScreen } from "./FormSuccessScreen";
+import { BackToAdmin } from "./BackToAdmin";
+import { FormErrors } from "./FormErrors";
 
 export const SnippetForm: FC = () => {
   const {
@@ -23,44 +26,14 @@ export const SnippetForm: FC = () => {
     mode,
   } = useSnippetForm();
 
+  const { currentBarSize } = usePickSnippet();
+
   return (
     <>
-      {success && (
-        <div className="flex flex-col items-center">
-          <Image
-            className="rounded-lg my-8"
-            src="/gods.avif"
-            quality={25}
-            width={717}
-            height={403}
-            alt="Happy African Gods"
-          />
-          <h2 className="my-8 md:my-16 w-full text-center text-greeny-light text-4xl tracking-wider">
-            Mandé Gods are pleased with your sacrifice
-          </h2>
-          {mode === "edit" ? (
-            <Button className="mt-8" onClick={editAgain}>
-              Edit this rhythm again
-            </Button>
-          ) : (
-            <Button className="mt-8" onClick={resetForm}>
-              Add another rhythm
-            </Button>
-          )}
-          <Link href="/foladmin">
-            <Button className="mt-8 bg-transparent md:hover:bg-transparent border-transparent hover:border-graye">
-              <span className="text-graye-light">Go to the mountains</span>
-            </Button>
-          </Link>
-        </div>
-      )}
+      {success && <FormSuccessScreen {...{ mode, editAgain, resetForm }} />}
+
       <div className={cx(["h-fit w-full", success && "hidden"])}>
-        <Link
-          className="p-2 md:px-4 text-lg text-graye absolute top-16 left-2 tracking-wider rounded-md hover:bg-[#0002] hover:scale-110 transition-all flex items-center"
-          href="/foladmin"
-        >
-          <ArrowIcon className="fill-graye rotate-180 mr-2" /> Back
-        </Link>
+        <BackToAdmin />
         <form className="grid grid-flow-row gap-8">
           <div className="flex w-full justify-center">
             <Image
@@ -82,104 +55,52 @@ export const SnippetForm: FC = () => {
           <Input
             label="Title"
             value={formData.title}
-            onChange={(e) => updateFormData({ title: e.target.value })}
+            hint={mode === "add" ? "will change the slug" : ""}
+            onChange={(e) =>
+              updateFormData(
+                mode === "add"
+                  ? {
+                      title: e.target.value,
+                      slug: slugify(e.target.value, { lower: true }),
+                    }
+                  : {
+                      title: e.target.value,
+                    }
+              )
+            }
           />
           <div className="flex w-full flex-1 items-end">
             <div className="text-3xl pb-1 pr-1 text-graye">/</div>
             <div className="flex-1">
               <Input
                 label="Slug"
-                hint="kebab case | unique | e.g. soli-sangban"
-                value={formData.slug}
-                onChange={(e) => updateFormData({ slug: e.target.value })}
+                hint={
+                  mode === "add"
+                    ? "kebab case | unique | e.g. soli-sangban-variation-2"
+                    : "can't touch this"
+                }
+                defaultValue={formData.slug}
+                disabled={mode !== "add"}
+                onChange={(e) =>
+                  updateFormData({
+                    slug: slugify(e.target.value, { lower: true }),
+                  })
+                }
               />
             </div>
           </div>
           <Input
             label="Tags"
-            hint="coma-separated | min 3 required"
+            hint="coma-separated | please include meter e.g. 4/4 | min 3 required"
             value={formData.tags}
-            onChange={(e) => updateFormData({ tags: e.target.value })}
+            onChange={(e) =>
+              updateFormData({
+                tags: e.target.value.toLowerCase(),
+              })
+            }
           />
 
-          <div className="bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24">
-            <div className="text-xl pb-4 flex justify-between items-end">
-              <div className="text-yellowy tracking-wide">Patterns</div>
-              <div className="pl-4 text-yellowy opacity-50 text-sm">
-                min 1 required
-              </div>
-            </div>
-
-            <div className="grid grid-flow-row gap-8 mt-4">
-              <Input
-                label="Dundunba"
-                value={formData.patterns.dundunba}
-                onChange={(e) =>
-                  updateFormData({
-                    patterns: {
-                      ...formData.patterns,
-                      dundunba: e.target.value,
-                    },
-                  })
-                }
-              />
-              <Input
-                label="Sangban"
-                value={formData.patterns.sangban}
-                onChange={(e) =>
-                  updateFormData({
-                    patterns: { ...formData.patterns, sangban: e.target.value },
-                  })
-                }
-              />
-              <Input
-                label="Kenkeni"
-                value={formData.patterns.kenkeni}
-                onChange={(e) =>
-                  updateFormData({
-                    patterns: { ...formData.patterns, kenkeni: e.target.value },
-                  })
-                }
-              />
-              <Input
-                label="Kenkeni (low)"
-                value={formData.patterns.kenkeni2}
-                onChange={(e) =>
-                  updateFormData({
-                    patterns: {
-                      ...formData.patterns,
-                      kenkeni2: e.target.value,
-                    },
-                  })
-                }
-              />
-              <Input
-                label="Bell"
-                value={formData.patterns.bell}
-                onChange={(e) =>
-                  updateFormData({
-                    patterns: { ...formData.patterns, bell: e.target.value },
-                  })
-                }
-              />
-            </div>
-            <div className="pt-8 lg:pt-12">
-              <div className="-mx-2 w-fill xl:-mx-24">
-                <GroovyPlayer
-                  signal={formData.signal}
-                  swingStyle={formData.swing}
-                  tempo={formData.tempo ? Number(formData.tempo) : 110}
-                  tracks={Object.keys(formData.patterns)
-                    .map((instrument) => ({
-                      instrument,
-                      title: instrument,
-                      pattern: formData.patterns[instrument],
-                    }))
-                    .filter((track) => Boolean(track.pattern))}
-                />
-              </div>
-            </div>
-          </div>
+          <PatternsForm {...formData} />
 
           <h2 className="my-12 w-full text-center text-graye text-3xl tracking-wider">
             Optional
@@ -205,35 +126,27 @@ export const SnippetForm: FC = () => {
             onChange={(swing) => updateFormData({ swing })}
           />
           <Input
-            label="Custom call pattern"
-            hint="open: bts | mute: lc | flam: rf"
+            label="(beta) call pattern"
+            hint={
+              <>
+                <span>open: bts | flam: f</span>
+                {formData.signal?.length ? (
+                  <>
+                    {" | "}
+                    <PatternHint
+                      pattern={formData.signal}
+                      barSize={currentBarSize}
+                      factor={/^[btsf-]+$/.test(formData.signal)}
+                    />
+                  </>
+                ) : null}
+              </>
+            }
             value={formData.signal}
             onChange={(e) => updateFormData({ signal: e.target.value })}
           />
           <div className="flex flex-col w-full pt-16 items-center">
-            {errors.length > 0 && (
-              <div className="py-4 flex md:flex-row-reverse justify-center md:justify-between md:order-reverse items-center flex-wrap w-full">
-                <div className="py-4 flex-1">
-                  {errors.map((msg) => (
-                    <div key={msg} className="text-xl text-redy py-2">
-                      {msg}
-                    </div>
-                  ))}
-                </div>
-                <div className="py-4 md:pr-8">
-                  <Image
-                    placeholder="blur"
-                    blurDataURL="favicons/fav-64.png"
-                    src="/dictator.avif"
-                    alt="The Great Validator"
-                    quality={20}
-                    width={165}
-                    height={330}
-                    className="rounded-md"
-                  />
-                </div>
-              </div>
-            )}
+            {errors.length > 0 && <FormErrors errors={errors} />}
             <Button
               type="submit"
               disabled={loading || !dirty}

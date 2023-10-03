@@ -112,8 +112,8 @@ export const addSnippet = async (data: Snippet) => {
     tempo,
     authorUid,
   } = data;
-  const messages = validate(data);
 
+  const messages = validate(data);
   if (messages.length > 0) {
     return { messages };
   }
@@ -160,12 +160,12 @@ export const addSnippet = async (data: Snippet) => {
 
 export const updateSnippet = async (data: Snippet, patternsDirty: boolean) => {
   const { title, slug, tags, description, swing, signal, tempo } = data;
-  const messages = validate(data);
 
   if (!data.id) {
     throw new Error("Missing id param in data");
   }
 
+  const messages = validate(data);
   if (messages.length > 0) {
     return { messages };
   }

@@ -21,6 +21,7 @@ export const AuthContext = createContext<AuthStore>({
   config: null,
   logIn: () => Promise.resolve(undefined),
 });
+
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthContextProvider: FC<{ children: ReactNode }> = ({

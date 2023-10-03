@@ -19,42 +19,15 @@ const swings: Record<SwingStyle, string> = {
   ">>": "6/8 lazy",
 };
 
-const defaultFormData: Snippet = {
-  id: "",
-  slug: "",
-  authorUid: "",
-  title: "",
-  description: "",
-  tags: "",
-  swing: "",
-  tempo: "",
-  signal: "",
-  patterns: {
-    dundunba: "",
-    sangban: "",
-    kenkeni: "",
-    kenkeni2: "",
-    bell: "",
-  },
-};
-
-export type FormData = typeof defaultFormData;
-
 export const useSnippetForm = () => {
-  const { initialData, pick } = usePickSnippet();
+  const { initialData, pick, formData, resetFormData, updateFormData } =
+    usePickSnippet();
   const mode = initialData ? "edit" : "add";
   const { user } = useAuth();
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
-    ...defaultFormData,
-    ...initialData,
-    patterns: {
-      ...defaultFormData.patterns,
-      ...initialData?.patterns,
-    },
-  });
+
   const { revalidate } = useRevalidate();
 
   const patternsDirty = Object.keys(formData.patterns).some(
@@ -109,20 +82,8 @@ export const useSnippetForm = () => {
     }
   };
 
-  const updateFormData = (partial: Partial<FormData>) =>
-    setFormData({
-      ...defaultFormData,
-      ...formData,
-      ...partial,
-      patterns: {
-        ...defaultFormData.patterns,
-        ...formData.patterns,
-        ...(partial["patterns"] ?? {}),
-      },
-    });
-
   const resetForm = () => {
-    setFormData(defaultFormData);
+    resetFormData();
     setLoading(false);
     setSuccess(false);
     setErrors([]);
@@ -152,5 +113,5 @@ export const useSnippetForm = () => {
     editAgain,
     dirty,
     mode,
-  };
+  } as const;
 };
