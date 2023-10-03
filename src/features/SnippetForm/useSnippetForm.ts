@@ -65,11 +65,14 @@ export const useSnippetForm = () => {
         if (mode === "add") {
           revalidate("");
           revalidate("grooves");
+          console.log("Revalidating homepage and /grooves page.");
         } else if (mode === "edit") {
           if (initialData!.slug !== formData.slug) {
-            revalidate(initialData!.slug!);
+            revalidate(initialData!.slug);
+            console.log(`Revalidating /${initialData!.slug}`);
           } else {
             revalidate(formData.slug);
+            console.log(`Revalidating /${formData.slug}`);
           }
         }
       } else {
