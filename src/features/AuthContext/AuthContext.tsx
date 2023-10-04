@@ -9,6 +9,7 @@ import {
 import { User } from "@firebase/auth";
 import { auth } from "@/firebaseAuth";
 import { LoginForm, logIn, getConfig } from "@/features/admin";
+import { onAuthStateChanged } from "firebase/auth";
 
 type AuthStore = {
   user: User | null;
@@ -32,7 +33,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
     });

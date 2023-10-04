@@ -4,7 +4,7 @@ export const POST = async (req: Request) => {
   const { path, secret } = await req.json();
 
   if (secret !== process.env.REVALIDATION_SECRET) {
-    return new Response("Unauthorized", { status: 403 });
+    return new Response("You have no power here", { status: 403 });
   }
 
   revalidatePath(`/${path}`);
