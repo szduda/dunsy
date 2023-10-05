@@ -107,9 +107,15 @@ const HelpPage: FC = () => (
       }
       icon={
         <div className="flex flex-col items-center">
-          <Bars large id="" bars={["--------"]} />
+          <Bars large id="" bars={["--------"]} instrument="djembe" />
           <div className="w-fit mt-4">
-            <Bars large id="" bars={["------"]} activeIndex={0} />
+            <Bars
+              large
+              id=""
+              bars={["------"]}
+              instrument="djembe"
+              activeIndex={0}
+            />
           </div>
         </div>
       }
