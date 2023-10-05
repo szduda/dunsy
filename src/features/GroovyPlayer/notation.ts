@@ -17,16 +17,30 @@ export const fillBeat = (
     if (!pattern) return [];
 
     const prolongedPattern = pattern.repeat(loopLength / pattern.length);
-    const result = [...prolongedPattern].map((note) => note === sound);
+    const output = [...prolongedPattern].map((note) => note === sound);
 
-    return result;
+    return output;
   };
 
-  const parseSignalAtLoopEnd = () => {
-    if (!signalActive) {
+  const parseDjembe = () => {
+    const pattern =
+      tracks.find((t) => t.instrument === "djembe")?.pattern ?? null;
+
+    if (!pattern) {
       return [];
     }
 
+    const output = [...Array(DJEMBE_SOUNDS.length)].map(() => Array<boolean>());
+    const prolongedPattern = pattern.repeat(loopLength / pattern.length);
+
+    [...prolongedPattern].forEach((note) =>
+      DJEMBE_SOUNDS.forEach((sound, i) => output[i].push(note === sound))
+    );
+
+    return output;
+  };
+
+  const parseSignalAtLoopEnd = () => {
     const prolongBy = loopLength - signal.length;
     const silence = [...Array<boolean>(prolongBy)].fill(false);
     const results = [...Array(DJEMBE_SOUNDS.length)].map(() =>
@@ -55,7 +69,6 @@ export const fillBeat = (
       .map(({ instrument, symbol }) => {
         if (instrument === "shaker" && metronome) {
           return generateMetronome();
-          // atm djembe sounds are only used to play the signal
         } else if (muted[instrument]) {
           return false;
         } else if (instrument === "djembe") {
@@ -67,8 +80,9 @@ export const fillBeat = (
       .filter((val) => val !== "skip");
 
     const signal = parseSignalAtLoopEnd();
+    const djembeTrack = parseDjembe();
 
-    return [...groove, ...signal];
+    return [...groove, ...(signalActive ? signal : djembeTrack)];
   };
 
   const loops = getLoops() as boolean[][];

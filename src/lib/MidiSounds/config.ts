@@ -53,7 +53,7 @@ export const DRUMS = {
     sampleId: 3321,
     symbol: "b",
     instrument: "djembe",
-    volume: 3,
+    volume: 5,
   },
   djembeOpenTone: {
     sampleId: 3318,
@@ -65,7 +65,7 @@ export const DRUMS = {
     sampleId: 3320,
     symbol: "s",
     instrument: "djembe",
-    volume: 6,
+    volume: 5,
   },
   djembeMuteTone: {
     sampleId: 3322,

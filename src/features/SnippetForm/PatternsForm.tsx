@@ -4,6 +4,7 @@ import { Input } from "@/features/rsc";
 import { Snippet } from "../SnippetApi";
 import { PatternHint } from "./PatternHint";
 import { usePickSnippet } from "./PickSnippetContext";
+import { vocabularyOk } from "@/features/SnippetApi/validate";
 
 export const PatternsForm: FC<Snippet> = ({
   patterns,
@@ -40,6 +41,7 @@ export const PatternsForm: FC<Snippet> = ({
         <PatternInput label="Kenkeni" track="kenkeni" />
         <PatternInput label="Kenkeni (low)" track="kenkeni2" />
         <PatternInput label="Bell" track="bell" />
+        <PatternInput label="Djembe (beta)" track="djembe" />
       </div>
       <div className="pt-8 lg:pt-12">
         <div className="-mx-2 w-fill xl:-mx-24">
@@ -71,7 +73,7 @@ export const PatternInput: FC<{ track: string; label: string }> = ({
     updateFormData,
   } = usePickSnippet();
   const pattern = patterns[track];
-  const patternOk = (track === "bell" ? /^[x-]+$/ : /^[xo-]+$/).test(pattern);
+  const [patternOk, allowedVocabulary] = vocabularyOk(track, pattern);
   return (
     <Input
       label={label}
@@ -82,7 +84,7 @@ export const PatternInput: FC<{ track: string; label: string }> = ({
               {!patternOk && (
                 <>
                   <span className="text-redy-dark">
-                    {track === "bell" ? "x-" : "xo-"} only
+                    {allowedVocabulary} only
                   </span>
                   {" | "}
                 </>

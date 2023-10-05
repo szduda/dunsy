@@ -1,12 +1,7 @@
-import { FC, ReactNode, memo, useMemo } from "react";
+import { FC, memo, useMemo } from "react";
 import { cx } from "@/utils";
 import { usePlayerSettings } from "./PlayerSettingsContext";
-import {
-  SoundLowIcon,
-  SoundMidIcon,
-  SoundHighIcon,
-  SoundHalfIcon,
-} from "@/features/Icons";
+import { Note } from "./Note";
 
 type Props = {
   title?: string;
@@ -20,17 +15,13 @@ type Props = {
 export const Track: FC<Props> = ({
   title,
   pattern = "",
-  instrument,
+  instrument = "",
   muted,
   setMuted,
   beat = -1,
 }) => {
   const barSize =
-    [6, 8, 9].find((length) => pattern.length % length === 0) ?? pattern.length;
-
-  if (instrument === "bell") {
-    pattern = pattern.replaceAll("x", "b");
-  }
+    [6, 8].find((length) => pattern.length % length === 0) ?? pattern.length;
 
   const bars = useMemo(
     () => pattern?.match(RegExp(`.{1,${barSize}}`, "g")) ?? [],
@@ -66,8 +57,9 @@ export const Track: FC<Props> = ({
             <MemoBars
               large={largeBars}
               bars={bars}
-              id={pattern}
+              id={instrument + pattern}
               activeIndex={muted ? undefined : Math.round(beat / 2) - 1}
+              instrument={instrument}
             />
           ) : (
             <div className="min-h-[48px] flex items-center justify-center text-graye-light">
@@ -85,13 +77,14 @@ type BarsProps = {
   bars: string[];
   large?: boolean;
   activeIndex?: number;
-  instrument?: string;
+  instrument: string;
 };
 
 export const Bars: FC<BarsProps> = ({
   bars,
   activeIndex = -1,
   large = false,
+  instrument,
 }) =>
   bars.map((bar, index) => (
     <div
@@ -104,6 +97,7 @@ export const Bars: FC<BarsProps> = ({
     >
       {[...bar].map((note, noteIndex) => (
         <Note
+          instrument={instrument}
           key={noteIndex}
           note={note}
           large={large}
@@ -125,39 +119,3 @@ const MemoBars = memo(
     prev.activeIndex === next.activeIndex &&
     prev.large === next.large
 );
-
-type NoteProps = {
-  note: string;
-  beat?: boolean;
-  large?: boolean;
-};
-
-export const Note: FC<NoteProps> = ({ note, beat = false, large = false }) => (
-  <div
-    className={cx([
-      "flex-1 text-center",
-      large ? "py-2 lg:py-3" : "py-1 lg:py-2",
-      beat && "bg-blacky/40",
-    ])}
-  >
-    <span
-      className={cx([
-        "flex items-center justify-center h-full mx-auto",
-        large
-          ? "w-[20px] md:w-[36px] lg:w-[24px]"
-          : "w-[10px] md:w-[20px] lg:w-[12px]",
-        note === "-" && "opacity-25",
-      ])}
-    >
-      {note in font ? font[note] : note}
-    </span>
-  </div>
-);
-
-const font: Record<string, ReactNode> = {
-  "-": "\u22c5",
-  o: <SoundLowIcon className="w-full" />,
-  x: <SoundHighIcon className="w-full" />,
-  i: <SoundMidIcon className="w-full" />,
-  b: <SoundHalfIcon className="w-full" />,
-};

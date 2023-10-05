@@ -1,11 +1,9 @@
 import { ComponentProps, FC, useState } from "react";
-
 import { PlayerControls } from "./PlayerControls";
 import { Track } from "./Track";
 import { useGroovyPlayer } from "./useGroovyPlayer";
 import { SwingStyle } from "../SnippetApi/types";
 import { TTrack } from "./types";
-import { Button } from "@/features/rsc";
 import { cx } from "@/utils";
 import {
   AVSyncLabel,
@@ -14,7 +12,6 @@ import {
   SettingsButton,
 } from "./PlayerSettings";
 import { PlayerSettingsProvider } from "./PlayerSettingsContext";
-import { GearIcon } from "../Icons";
 
 export type Props = ComponentProps<"div"> & {
   tracks: TTrack[];

@@ -128,8 +128,12 @@ const validatePatterns = (
     }
   }
 
-  const incorrectNotation = patternKeys.find((inst) =>
-    [...data.patterns[inst]].some((char) => !["x", "o", "-"].includes(char))
+  // const incorrectNotation = patternKeys.find((inst) =>
+  //   [...data.patterns[inst]].some((char) => !["x", "o", "-"].includes(char))
+  // );
+
+  const incorrectNotation = patternKeys.find(
+    (instrument) => !vocabularyOk(instrument, data.patterns[instrument])
   );
 
   if (incorrectNotation) {
@@ -147,4 +151,21 @@ const getMeter = (data: Snippet) => {
   //     ?.charAt(0) ?? "0"
   // );
   return firstLen % 6 === 0 ? 6 : firstLen % 8 === 0 ? 4 : -1;
+};
+
+export const vocabularyOk = (instrument: string, pattern: string) => {
+  let regex = /^[xo-]+$/;
+  let vocabulary = "xo-";
+
+  if (instrument === "bell") {
+    regex = /^[x-]+$/;
+    vocabulary = "x-";
+  }
+
+  if (instrument === "djembe") {
+    regex = /^[btsf-]+$/;
+    vocabulary = "btsf-";
+  }
+
+  return [regex.test(pattern), vocabulary] as const;
 };

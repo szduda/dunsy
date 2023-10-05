@@ -18,6 +18,7 @@ const defaultFormData: Snippet = {
     kenkeni: "",
     kenkeni2: "",
     bell: "",
+    djembe: "",
   },
 };
 

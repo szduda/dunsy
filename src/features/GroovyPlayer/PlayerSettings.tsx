@@ -22,7 +22,7 @@ export const AVSyncLabel: FC<ComponentProps<"button">> = (props) => {
         props.className,
       ])}
     >
-      A/V Sync
+      A/V Sync (beta)
     </button>
   );
 };
