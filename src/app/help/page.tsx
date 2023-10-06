@@ -1,3 +1,6 @@
+import { FC } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { TopScrollGuard } from "@/features";
 import { Bars, Button, Legend, TextLink } from "@/features/rsc";
 import {
@@ -10,9 +13,6 @@ import {
   SoundHighIcon,
   SoundLowIcon,
 } from "@/features/Icons";
-import Image from "next/image";
-import Link from "next/link";
-import { FC } from "react";
 
 const HelpPage: FC = () => (
   <main className="flex mx-auto flex-col items-center justify-center px-2 pt-8 pb-8 max-w-[1024px]">

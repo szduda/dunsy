@@ -105,41 +105,28 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
     else if (playing) playLoop();
   }, [tracks]);
 
-  const toggleSignal = () => {
-    if (
-      (signalRequested && !signalActive) ||
-      (!signalRequested && signalActive)
-    ) {
-      setSignalActive(signalRequested);
-      if (signalRequested) setSignalRequested(false);
-    }
-  };
-
   // counting 1,2,3,4
   useEffect(() => {
     const swingModifier = swing ? 6 : 1;
     const swingAwareLoopLength = loopLength * swingModifier;
 
     const signalLength =
-      (signal?.length ?? beatSize % 6 === 0 ? 12 : 16) * swingModifier;
-    const isLastNoteOfSignal =
-      noteIndex ===
-      swingAwareLoopLength -
-        1 -
-        (signalLength -
-          Math.max(
-            ...DJEMBE_SOUNDS.map((sound) => signal?.lastIndexOf(sound))
-          ) ?? beatSize % 6 === 0
-          ? 3
-          : 4) *
-          swingModifier;
-    const lastNoteBeforeSignal =
-      noteIndex === swingAwareLoopLength - signalLength - 1;
-
-    if (lastNoteBeforeSignal && signalRequested) {
+      (signal?.length ?? (beatSize % 6 === 0 ? 12 : 16)) * swingModifier;
+    const signalLastSoundIndex =
+      (signal?.length
+        ? Math.max(...DJEMBE_SOUNDS.map((sound) => signal?.lastIndexOf(sound)))
+        : beatSize % 6 === 0
+        ? 9
+        : 12) * swingModifier;
+    const lastNoteOfSignal =
+      swingAwareLoopLength - signalLength + signalLastSoundIndex;
+    const lastNoteBeforeSignal = swingAwareLoopLength - signalLength - 1;
+    const startSignalOnNoteIndex =
+      lastNoteBeforeSignal > 0 ? lastNoteBeforeSignal : 0;
+    if (noteIndex === startSignalOnNoteIndex && signalRequested) {
       setSignalActive(true);
       setSignalRequested(false);
-    } else if (isLastNoteOfSignal && signalActive) {
+    } else if (noteIndex === lastNoteOfSignal && signalActive) {
       setSignalActive(false);
       setSignalRequested(false);
     }

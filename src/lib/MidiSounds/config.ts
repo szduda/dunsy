@@ -11,7 +11,7 @@ export const DRUMS = {
     sampleId: 3311,
     symbol: "x",
     instrument: "sangban",
-    volume: 1.5,
+    volume: 2,
   },
   dundunbaOpen: {
     sampleId: 3312,
@@ -59,13 +59,13 @@ export const DRUMS = {
     sampleId: 3318,
     symbol: "t",
     instrument: "djembe",
-    volume: 4,
+    volume: 5,
   },
   djembeOpenSlap: {
     sampleId: 3320,
     symbol: "s",
     instrument: "djembe",
-    volume: 5,
+    volume: 4,
   },
   djembeMuteTone: {
     sampleId: 3322,

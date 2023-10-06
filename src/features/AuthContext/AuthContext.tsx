@@ -13,7 +13,9 @@ import { onAuthStateChanged } from "firebase/auth";
 
 type AuthStore = {
   user: User | null;
-  config: Record<string, string> | null;
+  config: {
+    revalidationSecret?: string;
+  } | null;
   logIn(email: string, password: string): Promise<User | undefined>;
 };
 
@@ -29,7 +31,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(auth.currentUser);
-  const [config, setConfig] = useState<any>();
+  const [config, setConfig] = useState<AuthStore["config"]>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

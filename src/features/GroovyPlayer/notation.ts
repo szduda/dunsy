@@ -42,6 +42,11 @@ export const fillBeat = (
 
   const parseSignalAtLoopEnd = () => {
     const prolongBy = loopLength - signal.length;
+
+    if (prolongBy < 0) {
+      return [];
+    }
+
     const silence = [...Array<boolean>(prolongBy)].fill(false);
     const results = [...Array(DJEMBE_SOUNDS.length)].map(() =>
       Array<boolean>()

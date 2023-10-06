@@ -31,13 +31,19 @@ export const logIn = async (email: string, password: string) => {
 
 export const getConfig = async (userUid?: string) => {
   if (!userUid) {
-    return "";
+    return null;
   }
 
-  const col = collection(db, "editorConfig");
-  const res = await getDocs(query(col));
+  try {
+    const col = collection(db, "editorConfig");
+    const res = await getDocs(query(col));
 
-  const config = res.docs[0];
+    const config = res.docs[0];
 
-  return config.data();
+    return config.data();
+  } catch (error) {
+    console.error("Error caught:\n", error);
+  }
+
+  return null;
 };

@@ -7,6 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        comic: ["Comic Sans MS", "Chalkboard SE", "Comic Neue", "sans-serif"],
+      },
+      boxShadow: {
+        bright: "0 0 4px 4px #D0DCDB44",
+      },
       colors: {
         browny: "#4A2317",
 
@@ -102,15 +108,16 @@ module.exports = {
             animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
           },
         },
-        bouncy: { "0%, 100%": {
-          transform: 'translateX(0) rotate(0deg)',
-          animationTimingFunction: "cubic-bezier(0.1, 0, 1, 1)",
-
-        }, "50%": {
-          transform: 'translateX(20%) rotate(35deg)',
-          animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
-
-        } },
+        bouncy: {
+          "0%, 100%": {
+            transform: "translateX(0) rotate(0deg)",
+            animationTimingFunction: "cubic-bezier(0.1, 0, 1, 1)",
+          },
+          "50%": {
+            transform: "translateX(20%) rotate(35deg)",
+            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+          },
+        },
       },
       animation: {
         shake: "wiggle 500ms ease-in-out infinite",

@@ -31,33 +31,38 @@ export const writeSnippets = (cards: SnippetCard[]) => {
 };
 
 export const getSnippets = async (search?: string, options = { limit: 5 }) => {
-  const col = collection(db, DRUMS_COLLECTION);
-  const response = await getDocs(
-    search
-      ? query(
-          col,
-          where("tags", "array-contains", search.toLowerCase().trim()),
-          orderBy("createdAt", "desc"),
-          limit(options.limit)
-        )
-      : query(col, orderBy("createdAt", "desc"), limit(options.limit))
-  );
+  try {
+    const col = collection(db, DRUMS_COLLECTION);
+    const response = await getDocs(
+      search
+        ? query(
+            col,
+            where("tags", "array-contains", search.toLowerCase().trim()),
+            orderBy("createdAt", "desc"),
+            limit(options.limit)
+          )
+        : query(col, orderBy("createdAt", "desc"), limit(options.limit))
+    );
 
-  const results: SnippetCard[] = response.docs.map((doc) => {
-    const { title, slug, tags, createdAt, updatedAt } = doc.data();
-    return {
-      id: doc.id,
-      title,
-      slug,
-      tags,
-      lastModified:
-        Math.round(updatedAt?.seconds / (3600 * 24)) * (3600 * 24000) ||
-        Math.round(createdAt?.seconds / (3600 * 24)) * (3600 * 24000) ||
-        0,
-    };
-  });
+    const results: SnippetCard[] = response.docs.map((doc) => {
+      const { title, slug, tags, createdAt, updatedAt } = doc.data();
+      return {
+        id: doc.id,
+        title,
+        slug,
+        tags,
+        lastModified:
+          Math.round(updatedAt?.seconds / (3600 * 24)) * (3600 * 24000) ||
+          Math.round(createdAt?.seconds / (3600 * 24)) * (3600 * 24000) ||
+          0,
+      };
+    });
+    return results;
+  } catch (error) {
+    console.error("Error caught:\n", error);
+  }
 
-  return results;
+  return [];
 };
 
 export const getRecentlyAdded = async (options = { limit: 4 }) => {

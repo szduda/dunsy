@@ -1,7 +1,7 @@
 import { FC } from "react";
 import slugify from "slugify";
 import Image from "next/image";
-import { Radios, usePickSnippet } from "@/features/admin";
+import { BellnardNail, Radios, usePickSnippet } from "@/features/admin";
 import { Button, Input } from "@/features/rsc";
 import { cx } from "@/utils";
 import { useSnippetForm } from "./useSnippetForm";
@@ -31,6 +31,7 @@ export const SnippetForm: FC = () => {
   return (
     <>
       {success && <FormSuccessScreen {...{ mode, editAgain, resetForm }} />}
+      <BellnardNail />
 
       <div className={cx(["h-fit w-full", success && "hidden"])}>
         <BackToAdmin />
