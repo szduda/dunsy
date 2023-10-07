@@ -10,34 +10,47 @@ export const useSearchForm = () => {
   const [term, setTerm] = useState(searchQuery.length > 2 ? searchQuery : "");
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (term?.length > 1) {
-      const newSuggestions = [
-        ...new Set(
-          cards.flatMap((card) => card.tags).filter((tag) => tag.includes(term))
-        ),
-      ].sort(byIndexOf(term));
-      setSuggestions(newSuggestions);
-    } else if (term?.length === 1) {
+  const getSuggestions = (_term: string) => {
+    if (_term?.length > 1) {
       const newSuggestions = [
         ...new Set(
           cards
             .flatMap((card) => card.tags)
-            .filter((tag) => tag.startsWith(term))
+            .filter((tag) => tag.includes(_term))
+        ),
+      ].sort(byIndexOf(_term));
+      setSuggestions(newSuggestions);
+    } else if (_term?.length === 1) {
+      const newSuggestions = [
+        ...new Set(
+          cards
+            .flatMap((card) => card.tags)
+            .filter((tag) => tag.startsWith(_term))
         ),
       ].sort(byTitle);
       setSuggestions(newSuggestions);
     } else {
       setSuggestions([]);
     }
-  }, [term]);
+  };
 
   const submitSearch = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
     search(term);
   };
 
-  return { suggestions, term, setTerm, submitSearch, search };
+  return {
+    suggestions,
+    term,
+    setTerm: (term: string, options: { updateSuggestions?: boolean } = {}) => {
+      setTerm(term || "");
+      if (options.updateSuggestions) {
+        getSuggestions(term);
+      }
+    },
+    submitSearch,
+    search,
+  };
 };
 
 const byIndexOf = (term: string) => (s1: string, s2: string) => {

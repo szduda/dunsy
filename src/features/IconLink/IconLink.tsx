@@ -8,12 +8,16 @@ type Props = {
   icon: "djembe" | "dundun" | "question" | "story";
   iconSize?: number;
   text: ReactNode;
+  ninja?: boolean;
+  circle?: boolean;
 } & ComponentProps<typeof Link>;
 
 export const IconLink: FC<Props> = ({
   className,
   text,
   icon,
+  ninja = false,
+  circle = false,
   iconSize = 128,
   ...props
 }) => {
@@ -32,7 +36,9 @@ export const IconLink: FC<Props> = ({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={cx([
-        "transition hover:bg-greeny/50 p-4 flex flex-col justify-center items-center bg-greeny/10 rounded-full h-64 w-64",
+        "transition hover:bg-yellowy/10 p-4 flex flex-col justify-center items-center  h-64 w-64",
+        !ninja && "bg-yellowy/5",
+        circle ? "rounded-full" : "rounded-xl",
         className,
       ])}
     >

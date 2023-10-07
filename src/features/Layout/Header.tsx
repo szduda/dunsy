@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from "react";
 import Link from "next/link";
-import { Logo, Search } from "@/features";
+import { Logo, Search, SearchResultsOverlay } from "@/features";
 import { Button } from "@/features/rsc";
 import { InfoIcon, LogoIcon } from "@/features/Icons";
 import { cx } from "@/utils";
@@ -21,19 +21,26 @@ export const Header: FC<Props> = ({ compact }) => (
     >
       <Logo />
     </div>
-    <nav
-      className={cx([
-        "flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md",
-      ])}
-    >
-      <div className="flex items-center w-[64px] h-fit">
-        {compact ? <SmallLogo /> : <InfoButton className="flex md:opacity-0" />}
-      </div>
-      <div className="flex items-center pl-2 flex-1 md:flex-none md:w-[400px]">
-        <Search />
-      </div>
-      <InfoButton className="hidden md:flex" />
-    </nav>
+    <div className="relative">
+      <nav
+        className={cx([
+          "flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md",
+        ])}
+      >
+        <div className="flex items-center w-[64px] h-fit">
+          {compact ? (
+            <SmallLogo />
+          ) : (
+            <InfoButton className="flex md:opacity-0" />
+          )}
+        </div>
+        <div className="flex items-center pl-2 flex-1 md:flex-none md:w-[400px]">
+          <Search />
+        </div>
+        <InfoButton className="hidden md:flex" />
+      </nav>
+      <SearchResultsOverlay />
+    </div>
   </header>
 );
 

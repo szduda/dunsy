@@ -47,8 +47,8 @@ module.exports = {
       },
       keyframes: {
         wiggle: {
-          "0%, 100%": { transform: "rotate(-4deg)" },
-          "50%": { transform: "rotate(4deg)" },
+          "0%, 100%": { transform: "rotate(4deg)" },
+          "50%": { transform: "rotate(-4deg)" },
         },
         sway: {
           "0%, 100%": { transform: "rotate(-15deg)" },

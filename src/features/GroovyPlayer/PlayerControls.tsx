@@ -135,6 +135,7 @@ export const PlayerControls: FC<Props> = ({
         buttonClassName,
         metronome && playing ? "animate-shake" : "",
       ])}
+      style={{ animationDuration: `${Math.round(60000 / tempo)}ms` }}
       disabled={disabled}
       aria-label={`turn metronome ${metronome ? "off" : "on"}`}
       onClick={(e) => {
@@ -151,6 +152,7 @@ export const PlayerControls: FC<Props> = ({
       ninja
       on={swing}
       className={cx([buttonClassName, swing && playing ? "animate-spin" : ""])}
+      style={{ animationDuration: `${Math.round(2 * 60000 / tempo)}ms` }}
       disabled={disabled || !swingStyle}
       aria-label={`turn swing ${swing ? "off" : "on"}`}
       onClick={(e) => {

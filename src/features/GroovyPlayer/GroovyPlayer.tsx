@@ -12,6 +12,7 @@ import {
   SettingsButton,
 } from "./PlayerSettings";
 import { PlayerSettingsProvider } from "./PlayerSettingsContext";
+import { matchSignal } from "./notation";
 
 export type Props = ComponentProps<"div"> & {
   tracks: TTrack[];
@@ -29,13 +30,14 @@ export const GroovyPlayer: FC<Props> = ({
   tempo: initialTempo = 110,
   ...divProps
 }) => {
-  const { muted, setMuted, loopLength, beat, ...rest } = useGroovyPlayer({
-    tracks,
-    initialMetronome,
-    initialTempo,
-    swingStyle,
-    signal,
-  });
+  const { muted, setMuted, loopLength, beat, beatSize, ...rest } =
+    useGroovyPlayer({
+      tracks,
+      initialMetronome,
+      initialTempo,
+      swingStyle,
+      signal,
+    });
 
   const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -66,19 +68,34 @@ export const GroovyPlayer: FC<Props> = ({
           </div>
         </div>
         {tracks.length
-          ? tracks.map(({ title, instrument, pattern }, index) => (
-              <Track
-                key={`${title}${index}`}
-                title={title}
-                beat={beat}
-                instrument={instrument}
-                pattern={pattern?.repeat(loopLength / pattern.length)}
-                muted={muted[instrument]}
-                setMuted={(value) =>
-                  setMuted({ ...muted, [instrument]: value })
-                }
-              />
-            ))
+          ? tracks.map(({ title, instrument, pattern }, index) => {
+              const _signal = matchSignal(beatSize, signal, swingStyle);
+              const signalTrack = rest.signalActive && instrument === "djembe";
+              const prolongedSignal =
+                "-".repeat(loopLength - _signal?.length) + _signal;
+              const prolongedPattern = pattern?.repeat(
+                loopLength / pattern.length
+              );
+              return (
+                <Track
+                  key={`${title}${index}`}
+                  title={signalTrack ? "djembe signal" : title}
+                  highlight={signalTrack}
+                  beat={beat}
+                  instrument={instrument}
+                  pattern={
+                    (rest.signalActive || rest.signalRequested) &&
+                    instrument === "djembe"
+                      ? prolongedSignal
+                      : prolongedPattern
+                  }
+                  muted={muted[instrument]}
+                  setMuted={(value) =>
+                    setMuted({ ...muted, [instrument]: value })
+                  }
+                />
+              );
+            })
           : [...Array(3)].map((_, i) => <Track key={`track-${i}`} />)}
 
         <PlayerControls

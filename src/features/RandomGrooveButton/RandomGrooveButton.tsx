@@ -6,6 +6,7 @@ export const RandomGrooveButton: FC = () => {
   const randomIndex = Math.round(Math.random() * cards.length);
   return (
     <IconLink
+      ninja
       href={{ pathname: cards[randomIndex]?.slug ?? "" }}
       icon="djembe"
       text="Play Along"

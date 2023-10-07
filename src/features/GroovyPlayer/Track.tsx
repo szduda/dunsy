@@ -10,6 +10,7 @@ type Props = {
   muted?: boolean;
   setMuted?(muted: boolean): void;
   beat?: number;
+  highlight?: boolean;
 };
 
 export const Track: FC<Props> = ({
@@ -19,6 +20,7 @@ export const Track: FC<Props> = ({
   muted,
   setMuted,
   beat = -1,
+  highlight = false,
 }) => {
   const barSize =
     [6, 8].find((length) => pattern.length % length === 0) ?? pattern.length;
@@ -32,7 +34,13 @@ export const Track: FC<Props> = ({
   beat = videoSync ? beat - 1 : beat;
 
   return (
-    <div className="px-1 py-4 lg:px-8 border-b-2 border-graye-darker w-full md:px-4">
+    <div
+      className={cx([
+        "px-1 py-4 lg:px-8 border-b-2 border-graye-darker w-full md:px-4",
+        ,
+        highlight && "bg-redy-dark/25",
+      ])}
+    >
       <label className="mx-1 flex align-center mb-4 w-fit cursor-pointer hover:opacity-75">
         <input
           className="mr-3 w-4 cursor-pointer"

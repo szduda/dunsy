@@ -1,7 +1,8 @@
-import { ComponentProps, FC, Suspense, useState } from "react";
+import { ComponentProps, FC, KeyboardEvent, Suspense, useState } from "react";
 import { useSearchForm } from "@/features";
 import { SearchIcon } from "@/features/Icons";
 import { Button } from "@/features/rsc";
+import { cx } from "@/utils";
 
 export const Search: FC = () => (
   <Suspense fallback={<SearchFallback />}>
@@ -12,13 +13,42 @@ export const Search: FC = () => (
 const ClientSearch: FC = () => {
   const { suggestions, term, setTerm, submitSearch, search } = useSearchForm();
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+
+  const closeSuggestions = () => {
+    setSuggestionsOpen(false);
+    setSelectedSuggestionIndex(-1);
+  };
+
+  const selectWithKeyboard = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (suggestions.length < 1) {
+      return;
+    }
+
+    const last = suggestions.length - 1;
+    const isLast = selectedSuggestionIndex === last;
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const index =
+        selectedSuggestionIndex === 0 ? last : selectedSuggestionIndex - 1;
+      setTerm(suggestions[index]);
+      setSelectedSuggestionIndex(index);
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const index = isLast ? 0 : selectedSuggestionIndex + 1;
+      setTerm(suggestions[index]);
+      setSelectedSuggestionIndex(index);
+    } else if (e.key === "Escape") {
+      closeSuggestions();
+    }
+  };
 
   return (
     <>
       {suggestionsOpen && (
         <div
           className="fixed top-0 bottom-0 left-0 right-0 animate-fadein bg-yellowy/5"
-          onClick={() => setSuggestionsOpen(false)}
+          onClick={closeSuggestions}
           style={{ zIndex: 10000 }}
         />
       )}
@@ -26,23 +56,30 @@ const ClientSearch: FC = () => {
         className="flex-1 flex relative"
         onSubmit={(e) => {
           submitSearch(e);
-          setSuggestionsOpen(false);
+          closeSuggestions();
         }}
       >
         <SearchInput
           value={term}
-          onChange={(e) => setTerm(e.target.value)}
-          onFocus={() => setSuggestionsOpen(true)}
+          onChange={(e) => {
+            setTerm(e.target.value, { updateSuggestions: true });
+            setSuggestionsOpen(true);
+          }}
+          onFocus={() =>
+            setSuggestionsOpen(Boolean(term) && suggestions.length > 0)
+          }
+          onKeyDown={selectWithKeyboard}
         />
         <SearchButton type="submit" />
         {suggestionsOpen && (
           <Suggestions
             suggestions={suggestions}
-            onSelect={(suggestion) => {
+            selectedIndex={selectedSuggestionIndex}
+            onClick={(suggestion) => {
               setTerm(suggestion);
               search(suggestion);
             }}
-            onClose={() => setSuggestionsOpen(false)}
+            onClose={closeSuggestions}
           />
         )}
       </form>
@@ -59,23 +96,27 @@ const SearchFallback = () => (
 
 const Suggestions: FC<{
   suggestions: string[];
-  onSelect(term: string): void;
+  selectedIndex: number;
+  onClick(term: string): void;
   onClose(): void;
-}> = ({ suggestions, onSelect, onClose }) =>
+}> = ({ suggestions, selectedIndex, onClick, onClose }) =>
   suggestions?.length ? (
     <>
       <ul
         className="absolute top-full left-0 right-[46px] rounded-md py-1 overflow-hidden bg-blacky text-whitey"
         style={{ zIndex: 10001 }}
       >
-        {suggestions.map((suggestion) => (
+        {suggestions.map((suggestion, index) => (
           <li key={suggestion}>
             <button
               onClick={() => {
-                onSelect(suggestion);
+                onClick(suggestion);
                 onClose();
               }}
-              className="py-1 px-1 hover:bg-greeny-dark w-full text-left"
+              className={cx([
+                "py-1 px-1 hover:bg-greeny-dark w-full text-left",
+                selectedIndex === index && "bg-greeny-dark",
+              ])}
             >
               {suggestion}
             </button>

@@ -2,7 +2,7 @@
 
 import { FC, ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { GroovyContext, SearchResultsOverlay } from "@/features";
+import { GroovyContext } from "@/features";
 import { Header } from "./Header";
 
 type Props = {
@@ -20,10 +20,7 @@ export const Layout: FC<Props> = ({ children }) => {
     <div className="transition-all duration-500 ease-in-out">
       <GroovyContext>
         <Header compact={pathname !== "/"} />
-        <div className="relative">
-          {children}
-          <SearchResultsOverlay />
-        </div>
+        <div className="relative">{children}</div>
       </GroovyContext>
     </div>
   );

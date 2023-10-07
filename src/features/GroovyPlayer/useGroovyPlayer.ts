@@ -1,20 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 
 import { DJEMBE_SOUNDS, DRUMS, useMidiSounds } from "@/lib/MidiSounds";
-import { TGroovyPlayerContext, TGroovyPlayerHook, TTrack } from "./types";
+import { GroovyPlayerHook, TTrack } from "./types";
 import { applySwing } from "./applySwing";
 import { fillBeat, matchSignal } from "./notation";
 
-export const useGroovyPlayer: TGroovyPlayerHook = ({
+export const useGroovyPlayer = ({
   tracks = [],
   initialMetronome = true,
   swingStyle = "",
   initialTempo = 110,
   signal = "",
-}) => {
+}: GroovyPlayerHook) => {
   const midiSounds = useMidiSounds();
   const [tempo, setTempo] = useState(initialTempo);
-  const [muted, setMuted] = useState<TGroovyPlayerContext["muted"]>({});
+  const [muted, setMuted] = useState<Record<string, boolean>>({});
   const [metronome, setMetronome] = useState(initialMetronome);
   const [playing, setPlaying] = useState(false);
   const [swing, setSwing] = useState(false);
@@ -26,12 +26,9 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
 
   const loopLength = tracks.sort(byPatternLength)[0]?.pattern?.length ?? 0;
   const beatSize = loopLength % 3 === 0 ? 3 : 4;
+  const swingModifier = swing && swingStyle ? 6 : 1;
 
-  const calcTrueTempo = () => {
-    const _tempo = swing && swingStyle ? 6 * tempo : tempo;
-    return (beatSize / 4) * _tempo;
-  };
-
+  const calcTrueTempo = () => (beatSize / 4) * tempo * swingModifier;
   const trueTempo = useRef(calcTrueTempo());
 
   const playLoop = () => {
@@ -56,7 +53,11 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
     if (signalActive || signalRequested) {
       setSignalActive(false);
       setSignalRequested(false);
-    } else setSignalRequested(true);
+    } else if (playing) {
+      setSignalRequested(true);
+    } else {
+      setSignalActive(!signalActive);
+    }
   };
 
   const updateBeats = () => {
@@ -105,33 +106,27 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
     else if (playing) playLoop();
   }, [tracks]);
 
-  // counting 1,2,3,4
-  useEffect(() => {
-    const swingModifier = swing ? 6 : 1;
+  const maybePlaySignal = () => {
     const swingAwareLoopLength = loopLength * swingModifier;
-
     const signalLength =
       (signal?.length ?? (beatSize % 6 === 0 ? 12 : 16)) * swingModifier;
-    const signalLastSoundIndex =
-      (signal?.length
-        ? Math.max(...DJEMBE_SOUNDS.map((sound) => signal?.lastIndexOf(sound)))
-        : beatSize % 6 === 0
-        ? 9
-        : 12) * swingModifier;
-    const lastNoteOfSignal =
-      swingAwareLoopLength - signalLength + signalLastSoundIndex;
     const lastNoteBeforeSignal = swingAwareLoopLength - signalLength - 1;
     const startSignalOnNoteIndex =
-      lastNoteBeforeSignal > 0 ? lastNoteBeforeSignal : 0;
+      lastNoteBeforeSignal > 0
+        ? lastNoteBeforeSignal
+        : swingAwareLoopLength - 1;
     if (noteIndex === startSignalOnNoteIndex && signalRequested) {
       setSignalActive(true);
       setSignalRequested(false);
-    } else if (noteIndex === lastNoteOfSignal && signalActive) {
+    } else if (noteIndex === swingAwareLoopLength - 1 && signalActive) {
       setSignalActive(false);
       setSignalRequested(false);
     }
+  };
 
-    // onBeat ...
+  useEffect(() => {
+    maybePlaySignal();
+
     if (noteIndex % beatSize === beatSize - 1) {
       const lastBeat = loopLength / beatSize;
       const beatDelta =
@@ -141,6 +136,7 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
       const beatGamma = 1 + beatDelta > 0 ? beatDelta : 0;
       const beatIndex = beatGamma === lastBeat ? 1 : beatGamma + 1;
 
+      // counting 1,2,3,4
       setBeat(beatIndex);
     }
   }, [noteIndex]);
@@ -166,6 +162,7 @@ export const useGroovyPlayer: TGroovyPlayerHook = ({
     setMuted,
     loopLength,
     beat,
+    beatSize,
     swing,
     setSwing,
     signalActive,

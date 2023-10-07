@@ -44,7 +44,7 @@ const HelpPage: FC = () => (
     </h2>
     <Legend
       title="Play Djembe Signal"
-      description="Player will eventually play the signal. Just give it some time."
+      description="You will eventually hear the djembe call. Just give it some time."
       icon={
         <SignalIcon
           className="w-24 h-24"

@@ -20,12 +20,13 @@ const HomePage: FC = async () => {
           in form of MIDI snippets for you to listen or read.
         </p>
         <p className="mx-auto md:col-span-2 text-center text-greeny-light font-medium tracking-wider">
-          Become a better fola
+          Improve your fola skills
           <br />
           in just two steps
         </p>
         <IconLink
           icon="dundun"
+          ninja
           text="Pick Backing Track"
           href="/grooves"
           className="mx-auto mt-1"
@@ -51,6 +52,8 @@ const HomePage: FC = async () => {
         Need help?
       </h2>
       <IconLink
+        ninja
+        circle
         className="mt-12 font-bold text-xl"
         href="/help"
         icon="question"

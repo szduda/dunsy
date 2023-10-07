@@ -1,47 +1,31 @@
 import { ComponentProps, FC, Suspense, useEffect } from "react";
 import Link from "next/link";
-import { useSearch, useSearchResults, Search } from "@/features";
+import { useSearch, useSearchResults } from "@/features";
 import { Button, Card } from "@/features/rsc";
 import { CloseIcon } from "@/features/Icons";
 import { cx } from "@/utils";
 
-type Props = {
-  onToggle?(open: boolean): void;
-};
-
-export const SearchResultsOverlay: FC<Props> = (props) => (
+export const SearchResultsOverlay: FC = () => (
   <Suspense>
-    <SearchResultsOverlayClient {...props} />
+    <SearchResultsOverlayClient />
   </Suspense>
 );
 
-const SearchResultsOverlayClient: FC<Props> = ({ onToggle = () => null }) => {
+const SearchResultsOverlayClient: FC = () => {
   const { clearSearch, searchQuery } = useSearch();
   const { searchResults } = useSearchResults();
   const noResults = searchQuery && searchResults?.length === 0;
 
-  useEffect(() => {
-    const isOpen = searchQuery.length > 2;
-    onToggle?.(isOpen);
-    if (isOpen) {
-    } else {
-      clearSearch();
-    }
-  }, [searchQuery]);
-
   return (
     <aside
-      style={{ zIndex: 1000 }}
+      style={{ zIndex: -1 }}
       className={cx([
-        "fixed top-0 left-0 right-0 bg-greeny-darker p-2 transition-all duration-500 ease-in-out",
+        "absolute top-full left-0 right-0 bg-greeny-darker p-2 transition-all duration-500 ease-in-out",
         searchQuery
-          ? "h-[calc(100dvh)] overflow-y-auto"
-          : "opacity-0 pointer-events-none h-0",
+          ? "h-[calc(100dvh-57px)] overflow-y-auto"
+          : "opacity-0 pointer-events-none -translate-y-[82px]",
       ])}
     >
-      <div className="mx-auto flex items-center translate-x-2 pl-2 flex-1 md:flex-none md:w-[400px]">
-        <Search />
-      </div>
       {(searchResults?.length ?? 0) > 0 && (
         <div className="pt-6 md:pt-14 tracking-wide text-xl text-graye flex items-center justify-center">
           <div className="flex flex-1 md:flex-none flex-col md:flex-row">
@@ -55,7 +39,7 @@ const SearchResultsOverlayClient: FC<Props> = ({ onToggle = () => null }) => {
           <CloseIconButton onClick={clearSearch} />
         </div>
       )}
-      <div className="pt-8 lg:pt-16 max-w-[1280px] mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
+      <div className="pt-16 pb-[185px] md:pb-[248px] max-w-[1280px] mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
         {searchResults?.map((card) => (
           <Card key={card.id} {...card} />
         ))}

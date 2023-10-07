@@ -15,11 +15,15 @@ import {
 
 type GroovyGarage = {
   cards: SnippetCard[];
+  loading: boolean;
 };
 
-export const Context = createContext<GroovyGarage>({
+const defaultContext = {
   cards: [],
-});
+  loading: true,
+};
+
+export const Context = createContext<GroovyGarage>(defaultContext);
 
 export const useGrooves = () => useContext(Context);
 
@@ -28,7 +32,8 @@ type Props = {
 };
 
 export const GroovyContext: FC<Props> = (props) => {
-  const [cards, setCards] = useState<SnippetCard[]>([]);
+  const [cards, setCards] = useState<SnippetCard[]>(defaultContext.cards);
+  const [loading, setLoading] = useState(defaultContext.loading);
 
   useEffect(() => {
     const lastFetchAt = Number(localStorage.getItem("lastFetchAt") ?? -1);
@@ -50,7 +55,8 @@ export const GroovyContext: FC<Props> = (props) => {
       );
       setCards(localData);
     }
+    setLoading(false);
   }, []);
 
-  return <Context.Provider value={{ cards }} {...props} />;
+  return <Context.Provider value={{ cards, loading }} {...props} />;
 };
