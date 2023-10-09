@@ -10,13 +10,15 @@ export const fillBeat = (
   signalActive: boolean,
   signal: string
 ) => {
+  const barSize = loopLength % 3 ? 8 : 6;
+
   const parse = (instrument: string, sound: string = "x") => {
     const pattern =
       tracks.find((t) => t.instrument === instrument)?.pattern ?? null;
 
     if (!pattern) return [];
 
-    const prolongedPattern = pattern.repeat(loopLength / pattern.length);
+    const prolongedPattern = prolongPattern(pattern, loopLength);
     const output = [...prolongedPattern].map((note) => note === sound);
 
     return output;
@@ -31,8 +33,7 @@ export const fillBeat = (
     }
 
     const output = [...Array(DJEMBE_SOUNDS.length)].map(() => Array<boolean>());
-    const prolongedPattern = pattern.repeat(loopLength / pattern.length);
-
+    const prolongedPattern = prolongPattern(pattern, loopLength);
     [...prolongedPattern].forEach((note) =>
       DJEMBE_SOUNDS.forEach((sound, i) => output[i].push(note === sound))
     );
@@ -65,9 +66,8 @@ export const fillBeat = (
     return results;
   };
 
-  const beatSize = loopLength % 3 ? 4 : 3;
   const generateMetronome = () =>
-    [...Array(loopLength)].map((_, index) => index % beatSize === 0);
+    [...Array(loopLength)].map((_, index) => index % (barSize / 2) === 0);
 
   const getLoops = () => {
     const groove = Object.values(DRUMS)
@@ -116,4 +116,12 @@ export const matchSignal = (
   } else {
     return "f-tt-t-tt-t-t---";
   }
+};
+
+const prolongPattern = (pattern: string, loopLength: number) => {
+  const barSize = loopLength % 3 ? 8 : 6;
+  const excess = pattern.length % barSize;
+  const fullBeatPattern =
+    excess > 0 ? pattern + "-".repeat(barSize - excess) : pattern;
+  return fullBeatPattern?.repeat(loopLength / fullBeatPattern.length);
 };

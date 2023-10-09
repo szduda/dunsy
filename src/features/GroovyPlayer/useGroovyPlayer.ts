@@ -124,9 +124,7 @@ export const useGroovyPlayer = ({
     }
   };
 
-  useEffect(() => {
-    maybePlaySignal();
-
+  const updateCurrentBeat = () => {
     if (noteIndex % beatSize === beatSize - 1) {
       const lastBeat = loopLength / beatSize;
       const beatDelta =
@@ -139,6 +137,11 @@ export const useGroovyPlayer = ({
       // counting 1,2,3,4
       setBeat(beatIndex);
     }
+  };
+
+  useEffect(() => {
+    maybePlaySignal();
+    updateCurrentBeat();
   }, [noteIndex]);
 
   // adjust volumes on mount

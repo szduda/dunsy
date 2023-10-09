@@ -69,13 +69,18 @@ export const GroovyPlayer: FC<Props> = ({
         </div>
         {tracks.length
           ? tracks.map(({ title, instrument, pattern }, index) => {
+              const barSize = 2 * beatSize;
               const _signal = matchSignal(beatSize, signal, swingStyle);
               const signalTrack = rest.signalActive && instrument === "djembe";
               const prolongedSignal =
-                "-".repeat(loopLength - _signal?.length) + _signal;
-              const prolongedPattern = pattern?.repeat(
-                loopLength / pattern.length
+                "-".repeat(Math.max(loopLength - _signal?.length, 0)) + _signal;
+              const excess = pattern.length % barSize;
+              const _pattern =
+                excess > 0 ? pattern + "-".repeat(barSize - excess) : pattern;
+              const prolongedPattern = _pattern?.repeat(
+                loopLength / _pattern.length
               );
+
               return (
                 <Track
                   key={`${title}${index}`}
