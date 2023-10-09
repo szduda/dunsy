@@ -12,6 +12,7 @@ import {
   SoundHalfIcon,
   SoundHighIcon,
   SoundLowIcon,
+  SoundMidIcon,
 } from "@/features/Icons";
 
 const HelpPage: FC = () => (
@@ -44,7 +45,43 @@ const HelpPage: FC = () => (
     </h2>
     <Legend
       title="Play Djembe Signal"
-      description="You will eventually hear the djembe call. Just give it some time."
+      description={
+        <>
+          Press the button and you will eventually hear the djembe call. I
+          promise, just give it some time. Some rhythms have their unique signal
+          patterns, for the rest it will be one of 3 default calls.
+          <div className="w-fit grid my-4 gap-2 w-full">
+            <div className="flex">
+              <Bars
+                large
+                id="4/4 call"
+                bars={["f-tt-t-t", "t-t-t---"]}
+                instrument="djembe"
+              />
+            </div>
+            <div className="flex">
+              <Bars
+                large
+                id="6/8 call"
+                bars={["f-tt-t", "t-tt--"]}
+                instrument="djembe"
+              />
+            </div>
+            <div className="flex">
+              <Bars
+                large
+                id="6/4 alternative call"
+                bars={["ttttt-", "tt-t--"]}
+                instrument="djembe"
+              />{" "}
+            </div>
+          </div>
+          <p>
+            The last pattern should start with a roll, but rolls are not yet
+            implemented in the app.
+          </p>
+        </>
+      }
       icon={
         <SignalIcon
           className="w-24 h-24"
@@ -122,26 +159,42 @@ const HelpPage: FC = () => (
     />
 
     <Legend
-      title="Open Sound"
+      title="Dundun open / djembe bass"
       description={
-        <p>
-          The default sound of dun dun. You play it by striking the drum, then
-          letting your hand bounce up right after it touch the skin.
-        </p>
+        <>
+          <p>
+            The default sound of dun dun. You play it by striking the drum, then
+            letting your hand bounce up right after it touch the skin.
+          </p>
+          <p className="mt-2">On the djembe track: bass</p>
+        </>
       }
       icon={<SoundLowIcon height={96} />}
     />
 
     <Legend
-      title="Closed Sound"
+      title="Dundun closed / djembe slap"
       description={
-        <p>
-          You play it by striking the drum and slightly pressing the stick
-          against the membrane to mute the sound. Don&rsquo;t press too strong.
-          Keep the stick pressed until you need to play the next note.
-        </p>
+        <>
+          <p>
+            You play that sound by striking the drum and slightly pressing the
+            stick against the membrane to mute the sound. Don&rsquo;t press too
+            strong. Keep the stick pressed until you need to play the next note.
+          </p>
+          <p className="mt-2">On the djembe track: slap</p>
+        </>
       }
       icon={<SoundHighIcon height={96} />}
+    />
+
+    <Legend
+      title="Djembe tone"
+      description={
+        <>
+          <p className="mt-2">On the djembe track: tone</p>
+        </>
+      }
+      icon={<SoundMidIcon height={96} />}
     />
 
     <Legend
