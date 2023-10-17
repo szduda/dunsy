@@ -9,7 +9,7 @@ export {
 export { PickSnippetModal } from "./PickSnippetModal/PickSnippetModal";
 export { LoginForm } from "./LoginForm";
 export { useAuth, AuthContextProvider } from "./AuthContext/AuthContext";
-export { logIn, getConfig } from "./AuthContext/api";
+export { logIn, getConfig, getUserData } from "./AuthContext/api";
 export { EditSnippet } from "./EditSnippet/EditSnippet";
 export { RevalidateInput, RevalidateAll } from "./Revalidate/RevalidateInput";
 export { BellnardNail } from "./BellnardNail/BellnardNail";

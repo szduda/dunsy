@@ -1,9 +1,16 @@
-import { PickSnippetModal, SnippetForm, usePickSnippet } from "@/features/admin";
+import {
+  PickSnippetModal,
+  SnippetForm,
+  usePickSnippet,
+} from "@/features/admin";
 import { useIdParam } from "../SnippetForm/useIdParam";
+import { useEffect } from "react";
 
 export const EditSnippet = () => {
-  const { loading, initialData } = usePickSnippet();
+  const { loading, initialData, reset } = usePickSnippet();
   const { setIdParam } = useIdParam();
+
+  useEffect(() => reset, []);
 
   return (
     <>

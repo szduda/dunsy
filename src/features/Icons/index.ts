@@ -19,3 +19,5 @@ export { DundunIcon } from "./Dundun";
 export { GearIcon } from "./Gear";
 export { DundunSetIcon } from "./DundunSet";
 export { BellnardNailIcon } from "./BellnardNail";
+export { BluescreenIcon } from "./Bluescreen";
+export { AdminIcon } from "./Admin";

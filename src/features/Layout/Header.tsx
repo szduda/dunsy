@@ -1,12 +1,13 @@
 import { ComponentProps, FC } from "react";
 import Link from "next/link";
-import { Logo, Search, SearchResultsOverlay } from "@/features";
+import { AdminButton, Logo, Search, SearchResultsOverlay } from "@/features";
 import { Button } from "@/features/rsc";
 import { InfoIcon, LogoIcon } from "@/features/Icons";
 import { cx } from "@/utils";
 
 type Props = {
   compact: boolean;
+  fola: boolean;
 };
 
 export const Header: FC<Props> = ({ compact }) => (
@@ -28,16 +29,15 @@ export const Header: FC<Props> = ({ compact }) => (
         ])}
       >
         <div className="flex items-center w-[64px] h-fit">
-          {compact ? (
-            <SmallLogo />
-          ) : (
-            <InfoButton className="flex md:opacity-0" />
-          )}
+          {compact && <SmallLogo />}
         </div>
         <div className="flex items-center pl-2 flex-1 md:flex-none md:w-[400px]">
           <Search />
         </div>
-        <InfoButton className="hidden md:flex" />
+        <div className="flex">
+          <AdminButton />
+          <InfoButton className="hidden md:flex" />
+        </div>
       </nav>
       <SearchResultsOverlay />
     </div>
@@ -58,7 +58,7 @@ const SmallLogo: FC = () => (
 );
 
 const InfoButton: FC<Omit<ComponentProps<typeof Link>, "href">> = (props) => (
-  <Link {...props} href="/help" scroll={false}>
+  <Link {...props} href="/help" scroll={false} className="flex">
     <Button
       mini
       circle

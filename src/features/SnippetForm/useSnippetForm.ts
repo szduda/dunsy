@@ -11,18 +11,17 @@ import { useRevalidate } from "../Revalidate/useRevalidate";
 
 const swings: Record<SwingStyle, string> = {
   "": "none",
-  "<<<": "4/4 rushy",
-  "<": "4/4 hasty",
-  "-->": "4/4 lilazy",
-  ">": "4/4 bluesy",
-  "<<": "6/8 hasty",
-  ">>": "6/8 lazy",
+  "<": "hasty",
+  "<<<": "rushy",
+  "<<": "hasty",
+  "-->": "lil lazy",
+  ">>": "lazy",
+  ">": "bluesy",
 };
 
 export const useSnippetForm = () => {
-  const { initialData, pick, formData, resetFormData, updateFormData } =
+  const { initialData, pick, formData, resetFormData, updateFormData, mode } =
     usePickSnippet();
-  const mode = initialData ? "edit" : "add";
   const { user } = useAuth();
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
@@ -62,11 +61,11 @@ export const useSnippetForm = () => {
         setSuccess(true);
         setErrors([]);
 
-        if (mode === "add") {
+        if (mode === "create") {
           revalidate("");
           revalidate("grooves");
           console.log("Revalidating homepage and /grooves page.");
-        } else if (mode === "edit") {
+        } else if (mode === "update") {
           if (initialData!.slug !== formData.slug) {
             revalidate(initialData!.slug);
             console.log(`Revalidating /${initialData!.slug}`);

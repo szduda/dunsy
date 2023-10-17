@@ -6,7 +6,8 @@ import { PatternHint } from "./PatternHint";
 import { usePickSnippet } from "./PickSnippetContext";
 import { vocabularyOk } from "@/features/SnippetApi/validate";
 
-export const PatternsForm: FC<Snippet> = ({
+export const PatternsForm: FC<{ disabled: boolean } & Snippet> = ({
+  disabled,
   patterns,
   signal,
   swing,
@@ -36,12 +37,20 @@ export const PatternsForm: FC<Snippet> = ({
       </div>
 
       <div className="grid grid-flow-row gap-8 mt-4">
-        <PatternInput label="Dundunba" track="dundunba" />
-        <PatternInput label="Sangban" track="sangban" />
-        <PatternInput label="Kenkeni" track="kenkeni" />
-        <PatternInput label="Kenkeni (low)" track="kenkeni2" />
-        <PatternInput label="Bell" track="bell" />
-        <PatternInput label="Djembe (beta)" track="djembe" />
+        <PatternInput label="Dundunba" track="dundunba" disabled={disabled} />
+        <PatternInput label="Sangban" track="sangban" disabled={disabled} />
+        <PatternInput label="Kenkeni" track="kenkeni" disabled={disabled} />
+        <PatternInput
+          label="Kenkeni (low)"
+          track="kenkeni2"
+          disabled={disabled}
+        />
+        <PatternInput label="Bell" track="bell" disabled={disabled} />
+        <PatternInput
+          label="Djembe (beta)"
+          track="djembe"
+          disabled={disabled}
+        />
       </div>
       <div className="pt-8 lg:pt-12">
         <div className="-mx-2 w-fill xl:-mx-24">
@@ -63,10 +72,11 @@ export const PatternsForm: FC<Snippet> = ({
   );
 };
 
-export const PatternInput: FC<{ track: string; label: string }> = ({
-  track,
-  label,
-}) => {
+export const PatternInput: FC<{
+  track: string;
+  label: string;
+  disabled?: boolean;
+}> = ({ track, label, disabled = false }) => {
   const {
     currentBarSize,
     formData: { patterns },
@@ -76,6 +86,7 @@ export const PatternInput: FC<{ track: string; label: string }> = ({
   const [patternOk, allowedVocabulary] = vocabularyOk(track, pattern);
   return (
     <Input
+      disabled={disabled}
       label={label}
       hint={
         <>

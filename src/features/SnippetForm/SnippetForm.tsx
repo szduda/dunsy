@@ -10,6 +10,7 @@ import { PatternHint } from "./PatternHint";
 import { FormSuccessScreen } from "./FormSuccessScreen";
 import { BackToAdmin } from "./BackToAdmin";
 import { FormErrors } from "./FormErrors";
+import { SwingStyle } from "../SnippetApi/types";
 
 export const SnippetForm: FC = () => {
   const {
@@ -28,6 +29,15 @@ export const SnippetForm: FC = () => {
 
   const { currentBarSize } = usePickSnippet();
 
+  const validSwingKeys: SwingStyle[] =
+    currentBarSize === 6 ? ["", "<<", ">>"] : ["", "<", ">", "-->", "<<<"];
+
+  const validSwings = (Object.keys(swings) as (keyof typeof swings)[]).reduce(
+    (acc, key) =>
+      validSwingKeys.includes(key) ? { ...acc, [key]: swings[key] } : acc,
+    {}
+  );
+
   return (
     <>
       {success && <FormSuccessScreen {...{ mode, editAgain, resetForm }} />}
@@ -40,7 +50,7 @@ export const SnippetForm: FC = () => {
             <Image
               placeholder="blur"
               blurDataURL="favicons/fav-64.png"
-              src={mode === "edit" ? "/godess2.avif" : "/host.avif"}
+              src={mode === "update" ? "/godess2.avif" : "/host.avif"}
               alt="The rhythm vault host in person"
               quality={25}
               width={450}
@@ -54,12 +64,13 @@ export const SnippetForm: FC = () => {
           </h2>
 
           <Input
+            disabled={mode === "read"}
             label="Title"
             value={formData.title}
-            hint={mode === "add" ? "will change the slug" : ""}
+            hint={mode === "create" ? "will change the slug" : ""}
             onChange={(e) =>
               updateFormData(
-                mode === "add"
+                mode === "create"
                   ? {
                       title: e.target.value,
                       slug: slugify(e.target.value, { lower: true }),
@@ -76,12 +87,12 @@ export const SnippetForm: FC = () => {
               <Input
                 label="Slug"
                 hint={
-                  mode === "add"
+                  mode === "create"
                     ? "kebab case | unique | e.g. soli-sangban-variation-2"
                     : "can't touch this"
                 }
                 defaultValue={formData.slug}
-                disabled={mode !== "add"}
+                disabled={mode !== "create"}
                 onChange={(e) =>
                   updateFormData({
                     slug: slugify(e.target.value, { lower: true }),
@@ -93,6 +104,7 @@ export const SnippetForm: FC = () => {
           <Input
             label="Tags"
             hint="coma-separated | please include meter e.g. 4/4 | min 3 required"
+            disabled={mode === "read"}
             value={formData.tags}
             onChange={(e) =>
               updateFormData({
@@ -101,32 +113,36 @@ export const SnippetForm: FC = () => {
             }
           />
 
-          <PatternsForm {...formData} />
+          <PatternsForm {...formData} disabled={mode === "read"} />
 
           <h2 className="my-12 w-full text-center text-graye text-3xl tracking-wider">
             Optional
           </h2>
 
           <Input
+            disabled={mode === "read"}
             label="Description"
             textarea
             value={formData.description}
             onChange={(e) => updateFormData({ description: e.target.value })}
           />
           <Input
+            disabled={mode === "read"}
             label="Tempo"
             hint="80 - 200"
             value={formData.tempo}
             onChange={(e) => updateFormData({ tempo: e.target.value })}
           />
           <Radios
+            disabled={mode === "read"}
             label="Swing style"
             name="swing"
-            items={swings}
+            items={validSwings}
             value={formData.swing}
             onChange={(swing) => updateFormData({ swing })}
           />
           <Input
+            disabled={mode === "read"}
             label="(beta) call pattern"
             hint={
               <>
@@ -146,16 +162,24 @@ export const SnippetForm: FC = () => {
             value={formData.signal}
             onChange={(e) => updateFormData({ signal: e.target.value })}
           />
-          <div className="flex flex-col w-full pt-16 items-center">
-            {errors.length > 0 && <FormErrors errors={errors} />}
-            <Button
-              type="submit"
-              disabled={loading || !dirty}
-              onClick={handleSubmit}
-            >
-              {loading ? "Submitting..." : "Submit rhythm"}
-            </Button>
-          </div>
+          {mode !== "read" && (
+            <div className="flex flex-col w-full pt-16 items-center">
+              {errors.length > 0 && <FormErrors errors={errors} />}
+              <Button
+                type="submit"
+                disabled={loading || !dirty}
+                onClick={handleSubmit}
+              >
+                {mode === "create"
+                  ? loading
+                    ? "Creating..."
+                    : "Create Groove"
+                  : loading
+                  ? "Updating..."
+                  : "Update Groove"}
+              </Button>
+            </div>
+          )}
         </form>
       </div>
     </>

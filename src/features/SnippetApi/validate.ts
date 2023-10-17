@@ -29,9 +29,18 @@ const validateTitle = (messages: string[], data: Snippet) => {
 const validateTags = (messages: string[], data: Snippet) => {
   const { tags } = data;
   const tagsArray = tags.split(",");
+  const meterTags = tagsArray.filter((tag) => /\d\/\d/.test(tag));
 
   if (tagsArray.length < 3) {
     messages.push("At least 3 tags sir. Coma separated.");
+  }
+
+  if (meterTags.length !== 1) {
+    messages.push(
+      meterTags.length
+        ? "Remove multiple meter tags"
+        : "Please add a meter e.g. 4/4, 6/8"
+    );
   }
 
   if (tagsArray.find((tag) => tag.length > 20)) {

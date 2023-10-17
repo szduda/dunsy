@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@/features/rsc";
 
 type Props = {
-  mode: "add" | "edit";
+  mode: "create" | "update" | "read";
   editAgain(): void;
   resetForm(): void;
 };
@@ -26,7 +26,7 @@ export const FormSuccessScreen: FC<Props> = ({
     <h2 className="my-8 md:my-16 w-full text-center text-greeny-light text-4xl tracking-wider">
       Mandé Gods are pleased with your sacrifice
     </h2>
-    {mode === "edit" ? (
+    {mode === "update" ? (
       <Button className="mt-8" onClick={editAgain}>
         Edit this rhythm again
       </Button>

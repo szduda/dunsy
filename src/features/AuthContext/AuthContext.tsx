@@ -8,20 +8,30 @@ import {
 } from "react";
 import { User } from "@firebase/auth";
 import { auth } from "@/firebaseAuth";
-import { LoginForm, logIn, getConfig } from "@/features/admin";
+import { LoginForm, logIn, getConfig, getUserData } from "@/features/admin";
 import { onAuthStateChanged } from "firebase/auth";
+
+type UserData = {
+  name?: string;
+  isEditor?: boolean;
+  isAdmin?: boolean;
+};
+
+type RoleConfig = {
+  revalidationSecret?: string;
+};
 
 type AuthStore = {
   user: User | null;
-  config: {
-    revalidationSecret?: string;
-  } | null;
+  userData: UserData;
+  config: RoleConfig;
   logIn(email: string, password: string): Promise<User | undefined>;
 };
 
 export const AuthContext = createContext<AuthStore>({
   user: null,
-  config: null,
+  userData: {},
+  config: {},
   logIn: () => Promise.resolve(undefined),
 });
 
@@ -30,8 +40,9 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(auth.currentUser);
-  const [config, setConfig] = useState<AuthStore["config"]>(null);
+  const [userData, setUserData] = useState<AuthStore["userData"]>({});
+  const [user, setUser] = useState<AuthStore["user"]>(auth.currentUser);
+  const [config, setConfig] = useState<AuthStore["config"]>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,19 +55,32 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    if (config || !user?.uid) {
+    if (!user?.uid) {
       return;
     }
 
-    const asyncEffect = async () => {
-      const _config = await getConfig(user.uid);
-      setConfig(_config);
-    };
-    asyncEffect();
+    if (!userData) {
+      const asyncEffect = async () => {
+        const userData = await getUserData(user.uid);
+        setUserData(userData || {});
+      };
+      asyncEffect();
+    }
+
+    if (!config) {
+      const asyncEffect = async () => {
+        const _config = await getConfig(user.uid);
+        setConfig(_config || {});
+        if (_config) {
+          localStorage.setItem("Trust me I'm a writer", "true");
+        }
+      };
+      asyncEffect();
+    }
   }, [user?.uid]);
 
   return (
-    <AuthContext.Provider value={{ user, config, logIn }}>
+    <AuthContext.Provider value={{ user, userData, config, logIn }}>
       {loading ? (
         <div className="fixed top-0 left-0 right-0 h-screen text-3xl font-black flex items-center justify-center p-4 tracking-widest text-center">
           Loading...

@@ -1,6 +1,7 @@
 import { FC, ReactNode, createContext, useContext, useState } from "react";
 import { Snippet, getSnippet } from "@/features/SnippetApi";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../admin";
 
 const defaultFormData: Snippet = {
   id: "",
@@ -25,6 +26,7 @@ const defaultFormData: Snippet = {
 export type FormData = typeof defaultFormData;
 
 type PickSnippetContext = {
+  mode: "create" | "update" | "read";
   loading: boolean;
   initialData: Partial<FormData> | null;
   pick(id: string): void;
@@ -36,6 +38,7 @@ type PickSnippetContext = {
 };
 
 export const Context = createContext<PickSnippetContext>({
+  mode: "read",
   loading: false,
   initialData: null,
   pick: () => null,
@@ -51,9 +54,13 @@ export const PickSnippetProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [initialData, setInitialData] = useState<Snippet | null>(null);
+  const { user, userData } = useAuth();
+  const [initialData, setInitialData] =
+    useState<PickSnippetContext["initialData"]>(null);
+  const [mode, setMode] = useState<PickSnippetContext["mode"]>("create");
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<FormData>(defaultFormData);
+  const [formData, setFormData] =
+    useState<PickSnippetContext["formData"]>(defaultFormData);
 
   const pick = async (id: string) => {
     setLoading(true);
@@ -69,6 +76,9 @@ export const PickSnippetProvider: FC<{ children: ReactNode }> = ({
           ...data?.patterns,
         },
       });
+      setMode(
+        data.authorUid === user?.uid || userData.isAdmin ? "update" : "read"
+      );
     } catch (error) {
       setInitialData(null);
       router.push("/foladmin");
@@ -94,6 +104,7 @@ export const PickSnippetProvider: FC<{ children: ReactNode }> = ({
 
   const reset = () => {
     setInitialData(null);
+    setMode("create");
     resetFormData();
   };
 
@@ -104,6 +115,7 @@ export const PickSnippetProvider: FC<{ children: ReactNode }> = ({
     <Context.Provider
       value={{
         initialData,
+        mode,
         pick,
         reset,
         loading,
