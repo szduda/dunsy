@@ -13,8 +13,8 @@ export const FormErrors: FC<{ errors: string[] }> = ({ errors }) => (
     <div className="py-4 md:pr-8">
       <Image
         placeholder="blur"
-        blurDataURL="favicons/fav-64.png"
-        src="/dictator.avif"
+        blurDataURL="fallback.jpeg"
+        src="/dictator.jpeg"
         alt="The Great Validator"
         quality={20}
         width={165}

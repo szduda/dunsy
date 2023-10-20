@@ -1,111 +1,124 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from 'react'
 import {
   addSnippet,
   updateSnippet,
   Snippet,
   getSnippet,
-} from "@/features/SnippetApi";
-import { useAuth, usePickSnippet } from "@/features/admin";
-import { SwingStyle } from "../SnippetApi/types";
-import { useRevalidate } from "../Revalidate/useRevalidate";
+} from '@/features/SnippetApi'
+import { useAuth, usePickSnippet } from '@/features/admin'
+import { SwingStyle } from '../SnippetApi/types'
+import { useRevalidate } from '../Revalidate/useRevalidate'
+import { Mode } from './types'
 
 const swings: Record<SwingStyle, string> = {
-  "": "none",
-  "<": "hasty",
-  "<<<": "rushy",
-  "<<": "hasty",
-  "-->": "lil lazy",
-  ">>": "lazy",
-  ">": "bluesy",
-};
+  '': 'none',
+  '<': 'hasty',
+  '<<<': 'rushy',
+  '<<': 'hasty',
+  '-->': 'lil lazy',
+  '>>': 'lazy',
+  '>': 'bluesy',
+}
 
 export const useSnippetForm = () => {
-  const { initialData, pick, formData, resetFormData, updateFormData, mode } =
-    usePickSnippet();
-  const { user } = useAuth();
-  const [errors, setErrors] = useState<string[]>([]);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const {
+    initialData,
+    pick,
+    formData,
+    resetFormData,
+    updateFormData,
+    loading,
+  } = usePickSnippet()
+  const { user } = useAuth()
+  const [errors, setErrors] = useState<string[]>([])
+  const [success, setSuccess] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [mode, setMode] = useState<Mode>(
+    initialData || loading ? 'read' : 'create'
+  )
 
-  const { revalidate } = useRevalidate();
+  useEffect(
+    () => setMode(initialData || loading ? 'read' : 'create'),
+    [initialData, loading]
+  )
 
   const patternsDirty = Object.keys(formData.patterns).some(
     (instrument) =>
       formData.patterns[instrument] !==
-      (initialData?.patterns?.[instrument] || "")
-  );
+      (initialData?.patterns?.[instrument] || '')
+  )
 
   const dirty = Object.keys(formData).some((field) => {
-    const value = formData[field as keyof Snippet];
+    const value = formData[field as keyof Snippet]
     // try shallow comparison
-    if (value === (initialData?.[field as keyof Snippet] || "")) {
-      return false;
+    if (value === (initialData?.[field as keyof Snippet] || '')) {
+      return false
     }
 
-    if (field === "patterns") {
-      return patternsDirty;
+    if (field === 'patterns') {
+      return patternsDirty
     }
 
-    return true;
-  });
+    return true
+  })
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setBusy(true)
 
     try {
       const res = formData.id
         ? await updateSnippet(formData, patternsDirty)
-        : await addSnippet({ ...formData, authorUid: user?.uid! });
+        : await addSnippet({ ...formData, authorUid: user?.uid! })
       if (res.ok) {
-        setSuccess(true);
-        setErrors([]);
+        setSuccess(true)
+        setErrors([])
 
-        if (mode === "create") {
-          revalidate("");
-          revalidate("grooves");
-          console.log("Revalidating homepage and /grooves page.");
-        } else if (mode === "update") {
-          if (initialData!.slug !== formData.slug) {
-            revalidate(initialData!.slug);
-            console.log(`Revalidating /${initialData!.slug}`);
-          } else {
-            revalidate(formData.slug);
-            console.log(`Revalidating /${formData.slug}`);
-          }
-        }
+        // if (mode === 'create') {
+        //   revalidate('')
+        //   revalidate('grooves')
+        //   console.log('Revalidating homepage and /grooves page.')
+        // } else if (mode === 'update') {
+        //   if (initialData!.slug !== formData.slug) {
+        //     revalidate(initialData!.slug)
+        //     console.log(`Revalidating /${initialData!.slug}`)
+        //   } else {
+        //     revalidate(formData.slug)
+        //     console.log(`Revalidating /${formData.slug}`)
+        //   }
+        // }
       } else {
-        setErrors(res.messages);
+        setErrors(res.messages)
       }
     } catch (error) {
-      console.log("Error:", error);
+      console.log('Error:', error)
     } finally {
-      setLoading(false);
+      setBusy(false)
     }
-  };
+  }
 
   const resetForm = () => {
-    resetFormData();
-    setLoading(false);
-    setSuccess(false);
-    setErrors([]);
-  };
+    resetFormData()
+    setBusy(false)
+    setSuccess(false)
+    setErrors([])
+  }
 
   const editAgain = async () => {
     if (!initialData?.id) {
-      return;
+      return
     }
 
-    resetForm();
-    const refetched = await getSnippet(String(initialData.id));
-    const newInitial = { id: initialData.id, ...refetched };
-    updateFormData(newInitial);
-    pick(initialData.id);
-  };
+    resetForm()
+    const refetched = await getSnippet(String(initialData.id))
+    const newInitial = { id: initialData.id, ...refetched }
+    updateFormData(newInitial)
+    pick(initialData.id)
+  }
 
   return {
     handleSubmit,
-    loading,
+    loading: busy,
     errors,
     success,
     swings,
@@ -115,5 +128,6 @@ export const useSnippetForm = () => {
     editAgain,
     dirty,
     mode,
-  } as const;
-};
+    setMode,
+  } as const
+}

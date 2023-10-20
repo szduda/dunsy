@@ -41,7 +41,7 @@ export const PatternsForm: FC<{ disabled: boolean } & Snippet> = ({
         <PatternInput label="Sangban" track="sangban" disabled={disabled} />
         <PatternInput label="Kenkeni" track="kenkeni" disabled={disabled} />
         <PatternInput
-          label="Kenkeni (low)"
+          label="Kenkeni (high)"
           track="kenkeni2"
           disabled={disabled}
         />

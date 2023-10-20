@@ -1,30 +1,30 @@
-import { ComponentProps, FC, useState } from "react";
-import { PlayerControls } from "./PlayerControls";
-import { Track } from "./Track";
-import { useGroovyPlayer } from "./useGroovyPlayer";
-import { SwingStyle } from "../SnippetApi/types";
-import { TTrack } from "./types";
-import { cx } from "@/utils";
+import { ComponentProps, FC, useState } from 'react'
+import { PlayerControls } from './PlayerControls'
+import { Track } from './Track'
+import { useGroovyPlayer } from './useGroovyPlayer'
+import { SwingStyle } from '../SnippetApi/types'
+import { TTrack } from './types'
+import { cx } from '@/utils'
 import {
   AVSyncLabel,
   LargeBarsLabel,
   PlayerSettings,
   SettingsButton,
-} from "./PlayerSettings";
-import { PlayerSettingsProvider } from "./PlayerSettingsContext";
-import { matchSignal } from "./notation";
+} from './PlayerSettings'
+import { PlayerSettingsProvider } from './PlayerSettingsContext'
+import { matchSignal } from './notation'
 
-export type Props = ComponentProps<"div"> & {
-  tracks: TTrack[];
-  swingStyle?: SwingStyle;
-  signal?: string;
-  metronome?: boolean;
-  tempo?: number;
-};
+export type Props = ComponentProps<'div'> & {
+  tracks: TTrack[]
+  swingStyle?: SwingStyle
+  signal?: string
+  metronome?: boolean
+  tempo?: number
+}
 
 export const GroovyPlayer: FC<Props> = ({
   tracks,
-  swingStyle = "",
+  swingStyle = '',
   signal,
   metronome: initialMetronome = true,
   tempo: initialTempo = 110,
@@ -37,60 +37,60 @@ export const GroovyPlayer: FC<Props> = ({
       initialTempo,
       swingStyle,
       signal,
-    });
+    })
 
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   return (
     <Wrapper {...divProps}>
       <div
         className={cx([
-          "transition-all ease-in-out",
-          settingsOpen && "blur-sm brightness-75 pointer-events-none",
+          'transition-all ease-in-out',
+          settingsOpen && 'blur-sm brightness-75 pointer-events-none',
         ])}
       >
-        <div className="pr-4 pl-8 py-4 flex justify-between items-center text-3xl">
+        <div className='px-2 md:px-4 lg:px-8 py-4 flex justify-between items-center text-3xl'>
           <div
-            className="text-greeny-darker tracking-tighter opacity-50"
-            style={{ textShadow: "0 0 2px #000" }}
+            className='text-greeny-darker tracking-tighter opacity-50'
+            style={{ textShadow: '0 0 2px #000' }}
           >
             GroovyPlayer
           </div>
-          <div className="flex">
-            <div className="hidden md:grid grid-cols-2 gap-1 mx-4">
+          <div className='flex'>
+            <div className='hidden md:grid grid-cols-2 gap-1'>
               <LargeBarsLabel />
               <AVSyncLabel />
             </div>
             <SettingsButton
-              className="md:hidden"
+              className='md:hidden'
               onClick={() => setSettingsOpen(true)}
             />
           </div>
         </div>
         {tracks.length
           ? tracks.map(({ title, instrument, pattern }, index) => {
-              const barSize = 2 * beatSize;
-              const _signal = matchSignal(beatSize, signal, swingStyle);
-              const signalTrack = rest.signalActive && instrument === "djembe";
+              const barSize = 2 * beatSize
+              const _signal = matchSignal(beatSize, signal, swingStyle)
+              const signalTrack = rest.signalActive && instrument === 'djembe'
               const prolongedSignal =
-                "-".repeat(Math.max(loopLength - _signal?.length, 0)) + _signal;
-              const excess = pattern.length % barSize;
+                '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
+              const excess = pattern.length % barSize
               const _pattern =
-                excess > 0 ? pattern + "-".repeat(barSize - excess) : pattern;
+                excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern
               const prolongedPattern = _pattern?.repeat(
                 loopLength / _pattern.length
-              );
+              )
 
               return (
                 <Track
                   key={`${title}${index}`}
-                  title={signalTrack ? "djembe signal" : title}
+                  title={signalTrack ? 'djembe signal' : title}
                   highlight={signalTrack}
                   beat={beat}
                   instrument={instrument}
                   pattern={
                     (rest.signalActive || rest.signalRequested) &&
-                    instrument === "djembe"
+                    instrument === 'djembe'
                       ? prolongedSignal
                       : prolongedPattern
                   }
@@ -99,7 +99,7 @@ export const GroovyPlayer: FC<Props> = ({
                     setMuted({ ...muted, [instrument]: value })
                   }
                 />
-              );
+              )
             })
           : [...Array(3)].map((_, i) => <Track key={`track-${i}`} />)}
 
@@ -110,17 +110,17 @@ export const GroovyPlayer: FC<Props> = ({
       <PlayerSettings
         onClose={() => setSettingsOpen(false)}
         className={cx([
-          "transition ease-in-out duration-300",
+          'transition ease-in-out duration-300',
           settingsOpen
-            ? "translate-x-0"
-            : "translate-x-16 pointer-events-none opacity-0",
+            ? 'translate-x-0'
+            : 'translate-x-16 pointer-events-none opacity-0',
         ])}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-const Wrapper: FC<ComponentProps<"div">> = ({
+const Wrapper: FC<ComponentProps<'div'>> = ({
   className,
   children,
   ...props
@@ -128,10 +128,10 @@ const Wrapper: FC<ComponentProps<"div">> = ({
   <div
     {...props}
     className={cx([
-      "overflow-hidden w-full lg:rounded-lg bg-blacky text-whitey font-bold text-md leading-normal relative",
+      'overflow-hidden w-full lg:rounded-lg bg-blacky text-whitey font-bold text-md leading-normal relative',
       className,
     ])}
   >
     <PlayerSettingsProvider>{children}</PlayerSettingsProvider>
   </div>
-);
+)

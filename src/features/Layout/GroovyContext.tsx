@@ -49,7 +49,7 @@ export const GroovyContext: FC<Props> = (props) => {
     } else {
       const localData = readSnippets();
       const when = new Date(lastFetchAt);
-      const whenStr = `${when.getDate()}.${when.getMonth()} ${when.getHours()}:${when.getMinutes()}`;
+      const whenStr = `${when.getDate()}.${when.getMonth() + 1}|${when.getHours()}:${when.getMinutes()}`;
       console.log(
         `${localData?.length} grooves from ${whenStr} read from local storage`
       );

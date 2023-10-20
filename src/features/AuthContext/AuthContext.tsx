@@ -23,15 +23,15 @@ type RoleConfig = {
 
 type AuthStore = {
   user: User | null;
-  userData: UserData;
-  config: RoleConfig;
+  userData: UserData | null;
+  config: RoleConfig | null;
   logIn(email: string, password: string): Promise<User | undefined>;
 };
 
 export const AuthContext = createContext<AuthStore>({
   user: null,
-  userData: {},
-  config: {},
+  userData: null,
+  config: null,
   logIn: () => Promise.resolve(undefined),
 });
 
@@ -40,9 +40,9 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [userData, setUserData] = useState<AuthStore["userData"]>({});
+  const [userData, setUserData] = useState<AuthStore["userData"]>(null);
   const [user, setUser] = useState<AuthStore["user"]>(auth.currentUser);
-  const [config, setConfig] = useState<AuthStore["config"]>({});
+  const [config, setConfig] = useState<AuthStore["config"]>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
     if (!userData) {
       const asyncEffect = async () => {
         const userData = await getUserData(user.uid);
-        setUserData(userData || {});
+        setUserData(userData);
       };
       asyncEffect();
     }
@@ -70,7 +70,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
     if (!config) {
       const asyncEffect = async () => {
         const _config = await getConfig(user.uid);
-        setConfig(_config || {});
+        setConfig(_config);
         if (_config) {
           localStorage.setItem("Trust me I'm a writer", "true");
         }

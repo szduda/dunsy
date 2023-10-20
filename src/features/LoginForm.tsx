@@ -1,47 +1,48 @@
-import { FC, FormEvent, useState } from "react";
-import { useAuth } from "@/features/admin";
-import { Button, Input } from "@/features/rsc";
-import Image from "next/image";
-import { cx } from "@/utils";
+import { FC, FormEvent, useState } from 'react'
+import { useAuth } from '@/features/admin'
+import { Button, Input } from '@/features/rsc'
+import Image from 'next/image'
+import { cx } from '@/utils'
 
 export const LoginForm: FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const { logIn } = useAuth();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+  const { logIn } = useAuth()
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    const res = await logIn(email, password);
-    setError(!res);
-    setLoading(false);
-  };
+    e.preventDefault()
+    setLoading(true)
+    const res = await logIn(email, password)
+    setError(!res)
+    setLoading(false)
+  }
 
   return (
-    <form className="grid grid-flow-row gap-4 md:gap-6" onSubmit={handleSubmit}>
-      <Image
-        placeholder="blur"
-        blurDataURL="favicons/fav-64.png"
-        className="rounded-lg"
-        src={error ? "/dictator.avif" : "/god2.avif"}
-        quality={25}
-        width={480}
-        height={480}
-        alt="Dundunin The Guardian"
-      />
+    <form className='grid grid-flow-row gap-4 md:gap-6 w-full max-w-[450px]' onSubmit={handleSubmit}>
+      <div className='relative w-full h-[450px]'>
+        <Image
+          fill
+          placeholder='blur'
+          blurDataURL='fallback.jpeg'
+          className='rounded-lg object-cover object-bottom'
+          src={error ? '/dictator.jpeg' : '/god2.jpeg'}
+          quality={80}
+          alt='Dundunin The Guardian'
+        />
+      </div>
       <h2
         className={cx([
-          "my-4 md:mt-8 w-full text-center text-xl tracking-wider italic h-[84px]",
-          error ? "text-redy-dark" : "text-graye",
+          'my-4 md:mt-8 w-full text-center text-xl tracking-wider italic h-[84px]',
+          error ? 'text-redy-dark' : 'text-graye',
         ])}
       >
         {error ? (
           <>
-            {!email && password && "Dundunfola needa name."}
-            {email && !password && "Mi a know dundunfola has a secret."}
-            {email && password && "Yar a quick learner, mi a say."}
+            {!email && password && 'Dundunfola needa name.'}
+            {email && !password && 'Mi a know dundunfola has a secret.'}
+            {email && password && 'Yar a quick learner, mi a say.'}
             {!email && !password && (
               <>
                 Needa key to enta ina di garage.
@@ -60,26 +61,26 @@ export const LoginForm: FC = () => {
           </>
         )}
       </h2>
-      <div className="grid grid-flow-row gap-2">
+      <div className='grid grid-flow-row gap-2'>
         <Input
-          name="e-mail"
+          name='e-mail'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Who are you?"
+          placeholder='Who are you?'
         />
         <Input
-          name="password"
-          type="password"
+          name='password'
+          type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="What's your secret?"
         />
-        <div className="flex w-full h-fit justify-center">
-          <Button type="submit" disabled={loading}>
-            {loading ? "..." : "I vow to add many rhythms"}
+        <div className='flex w-full h-fit justify-center'>
+          <Button type='submit' disabled={loading}>
+            {loading ? '...' : 'I vow to add many rhythms'}
           </Button>
         </div>
       </div>
     </form>
-  );
-};
+  )
+}

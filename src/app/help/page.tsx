@@ -242,7 +242,7 @@ const HelpPage: FC = () => (
       leftCol={
         <Image
           placeholder="blur"
-          blurDataURL="favicons/fav-64.png"
+          blurDataURL="fallback.jpeg"
           alt="people playing drums"
           src="/bg_.jpg"
           className="rounded-3xl"
