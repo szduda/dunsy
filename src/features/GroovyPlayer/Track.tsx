@@ -72,7 +72,7 @@ export const Track: FC<Props> = ({
             />
           ) : (
             <div className='min-h-[48px] flex items-center justify-center text-graye-light'>
-              ...
+              &nbsp;
             </div>
           )}
         </div>

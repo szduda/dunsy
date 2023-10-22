@@ -1,4 +1,4 @@
-import { ComponentProps, FC, useState } from 'react'
+import { ComponentProps, FC, memo, useState } from 'react'
 import { PlayerControls } from './PlayerControls'
 import { Track } from './Track'
 import { useGroovyPlayer } from './useGroovyPlayer'
@@ -22,7 +22,7 @@ export type Props = ComponentProps<'div'> & {
   tempo?: number
 }
 
-export const GroovyPlayer: FC<Props> = ({
+const GroovyPlayerEngine: FC<Props> = ({
   tracks,
   swingStyle = '',
   signal,
@@ -119,6 +119,22 @@ export const GroovyPlayer: FC<Props> = ({
     </Wrapper>
   )
 }
+
+export const GroovyPlayer = memo(
+  GroovyPlayerEngine,
+  ({ tracks: prevTracks, ...prev }, { tracks: nextTracks, ...next }) => {
+    const propsEqual = Object.keys(prev).every(
+      (key) => (next as any)[key] === (prev as any)[key]
+    )
+    const tracksEqual =
+      nextTracks.length === prevTracks.length &&
+      nextTracks.every(
+        (track, index) => prevTracks?.[index]?.pattern === track.pattern
+      )
+
+    return propsEqual && tracksEqual
+  }
+)
 
 const Wrapper: FC<ComponentProps<'div'>> = ({
   className,

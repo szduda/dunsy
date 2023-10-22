@@ -9,12 +9,12 @@ const AdminPage = () => (
     <div className='flex flex-col md:flex-row items-center md:justify-around w-full bg-yellowy-dark/5 md:rounded-xl py-4'>
       <div className='w-full md:w-[240px] p-4 md:py-8'>
         <Link href={'/foladmin/groove/new'}>
-          <Button className='md:min-w-full border-transparent'>Create</Button>
+          <Button className='md:min-w-full border-transparent !bg-greeny-dark hover:!bg-greeny'>Create</Button>
         </Link>
       </div>
       <div className='w-full md:w-[240px] p-4 md:py-8'>
         <Link href={'/foladmin/groove'}>
-          <Button className='md:min-w-full border-transparent'>
+          <Button className='md:min-w-full border-transparent !bg-browny hover:!bg-orangey-dark/70'>
             View / Update
           </Button>
         </Link>

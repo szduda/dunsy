@@ -36,23 +36,23 @@ export const PickSnippetModal: FC = () => {
   return (
     <div
       className={cx([
-        'fixed top-0 left-0 w-full h-full bg-gradient-radial from-[#0008] via-[#000C] to-[#000E] flex justify-center items-end',
+        'fixed top-0 left-0 w-full h-full bg-gradient-radial from-[#0004] via-[#000A] to-[#000B] flex justify-center items-end md:items-center',
         '',
       ])}
     >
-      <div className='fixed bg-graye-dark md:rounded-lg py-3 px-4 flex flex-col w-full md:w-[500px] h-full md:h-fit'>
-        <div className='w-full flex justify-between items-center text-graye-light'>
+      <div className='fixed bg-yellowy-dark/10 md:rounded-lg py-3 px-4 flex flex-col w-full md:w-[500px] h-full md:h-fit'>
+        <div className='w-full flex justify-between items-center text-yellowy-light/75'>
           <div className='text-sm'>Fixin&rsquo; da mess, huh?</div>
           <Link
             href='/foladmin'
             className='w-8 h-8 flex items-center font-bold rounded-full hover:bg-[#0002] transition-colors'
           >
-            <CloseIcon className='mx-auto fill-graye-light' />
+            <CloseIcon className='mx-auto fill-whitey/50' />
           </Link>
         </div>
         <form className='flex flex-col'>
           <Input
-            className='mt-4'
+            className='mt-4 !bg-transparent'
             placeholder='Search by tag'
             value={term}
             onChange={(e) => setTerm(e.target.value)}
@@ -62,8 +62,8 @@ export const PickSnippetModal: FC = () => {
               <label
                 key={id}
                 className={cx([
-                  'p-2 mb-0.5 text-lg flex items-center cursor-pointer rounded-md hover:bg-graye transition-colors',
-                  selectedSnippet === id && 'bg-graye',
+                  'p-2 mb-0.5 text-lg flex items-center cursor-pointer rounded-md hover:bg-orangey/10 transition-colors',
+                  selectedSnippet === id && 'bg-orangey-dark/25',
                 ])}
               >
                 <input
@@ -77,7 +77,7 @@ export const PickSnippetModal: FC = () => {
             ))}
           </div>
           <Link href={`/foladmin/groove/${selectedSnippet}`}>
-            <Button disabled={!selectedSnippet} className='md:w-full'>
+            <Button disabled={!selectedSnippet} className='md:w-full !bg-browny hover:!bg-orangey-dark/70'>
               View
             </Button>
           </Link>

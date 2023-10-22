@@ -52,20 +52,19 @@ export const GarageMonitor: FC = () => {
       <Link
         href='/foladmin'
         onClick={fetchDrafts}
-        className='absolute right-4 px-1'
+        className='absolute right-4 px-1 pt-1'
       >
         Refetch
       </Link>
-      <h2 className='text-yellowy text-xl text-center tracking-widest font-black'>
+      <h2 className='px-4 w-fit text-yellowy text-xl md:text-center tracking-widest font-black'>
         Garage Monitoring
       </h2>
-      <div className='h-[400px] overflow-y-scroll relative mt-4'>
+      <div className='h-[480px] overflow-y-scroll relative mt-4'>
         <table className='w-full'>
           <thead className='bg-blacky sticky top-0 z-10'>
             <tr>
               <TH>...ago</TH>
-              <TH>Fola</TH>
-              <TH colSpan={2}>Groove Title</TH>
+              <TH colSpan={3}>Fola</TH>
             </tr>
           </thead>
           <tbody>
@@ -78,7 +77,8 @@ export const GarageMonitor: FC = () => {
                     onClick={() => revalidate('/')}
                     className='p-1 md:px-1 md:py-0 opacity-25 hover:opacity-100 hover:underline text-yellowy-light'
                   >
-                    Revalidate
+                    <RestartIcon width={24} className='md:hidden' />
+                    <span className='hidden md:inline-block'>Revalidate</span>
                   </button>
                 </div>
               </TD>
@@ -92,7 +92,8 @@ export const GarageMonitor: FC = () => {
                     onClick={() => revalidate('grooves')}
                     className='p-1 md:px-1 md:py-0 opacity-25 hover:opacity-100 hover:underline text-yellowy-light'
                   >
-                    Revalidate
+                    <RestartIcon width={24} className='md:hidden' />
+                    <span className='hidden md:inline-block'>Revalidate</span>
                   </button>
                 </div>
               </TD>
@@ -135,7 +136,7 @@ export const Row: FC<Props> = ({
   const ageDays = Math.floor(ageMin / (24 * 60))
   const ageHours = Math.floor(ageMin / 60)
   const age =
-    ageDays > 0
+    ageDays > 4
       ? `${ageDays} d`
       : ageHours > 0
       ? `${ageHours} h`
@@ -212,7 +213,7 @@ export const TD: FC<ComponentProps<'td'>> = (props) => (
 )
 export const TH: FC<ComponentProps<'th'>> = (props) => (
   <th
-    className='px-2 py-3 font-semibold border-b border-whitey/5 tracking-widest text-graye/40'
+    className='px-2 py-3 font-semibold border-b border-whitey/5 tracking-widest text-graye/40 text-left'
     {...props}
   />
 )
