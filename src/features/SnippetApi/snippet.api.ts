@@ -95,12 +95,13 @@ export const getRecentlyAdded = async (options = { limit: 4 }) => {
   const response = await getDocs(_query)
 
   const results: SnippetCard[] = response.docs.map((doc) => {
-    const { title, slug, tags } = doc.data()
+    const { title, slug, tags, authorUid } = doc.data()
     return {
       id: doc.id,
       title,
       slug,
       tags,
+      authorUid,
     }
   })
 
