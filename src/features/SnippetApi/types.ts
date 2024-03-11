@@ -41,7 +41,5 @@ export type DbSnippet = {
 
 export type SnippetCard = {
   id: string
-} & Pick<
-  Snippet,
-  'title' | 'slug' | 'tags' | 'lastModified' | 'authorUid' | 'published'
->
+  tags: string[]
+} & Pick<Snippet, 'title' | 'slug' | 'lastModified' | 'authorUid' | 'published'>
