@@ -21,6 +21,8 @@ export type Snippet = {
   tempo?: string
   signal?: string
   authorUid: string
+  published?: boolean
+  lastModified?: number
 }
 
 export type DbSnippet = {
@@ -39,10 +41,7 @@ export type DbSnippet = {
 
 export type SnippetCard = {
   id: string
-  title: string
-  slug: string
-  tags: string[]
-  lastModified?: number
-  authorUid?: string
-  published?: boolean
-}
+} & Pick<
+  Snippet,
+  'title' | 'slug' | 'tags' | 'lastModified' | 'authorUid' | 'published'
+>

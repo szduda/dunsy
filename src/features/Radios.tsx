@@ -1,5 +1,5 @@
-import { ComponentProps, FC, memo } from 'react'
-import { cx, hashify } from '@/utils'
+import { ComponentProps, FC } from 'react'
+import { cx } from '@/utils'
 
 type Props = {
   label: string
@@ -8,7 +8,7 @@ type Props = {
   onChange(value: any): void
 } & Omit<ComponentProps<'input'>, 'value' | 'onChange'>
 
-const RadiosPure: FC<Props> = ({ items, label, value, onChange, ...rest }) => (
+export const RadiosPure: FC<Props> = ({ items, label, value, onChange, ...rest }) => (
   <fieldset>
     {label && (
       <div className='text-graye text-sm font-semibold tracking-wider mb-2 uppercase'>
@@ -36,13 +36,4 @@ const RadiosPure: FC<Props> = ({ items, label, value, onChange, ...rest }) => (
       </label>
     ))}
   </fieldset>
-)
-
-export const Radios = memo(
-  RadiosPure,
-  (prev, next) =>
-    prev.label === next.label &&
-    prev.disabled === next.disabled &&
-    prev.value === next.value &&
-    hashify(prev.items) === hashify(next.items)
 )

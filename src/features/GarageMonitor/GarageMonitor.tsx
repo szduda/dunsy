@@ -9,18 +9,8 @@ import { useGrooves } from '..'
 export const GarageMonitor: FC = () => {
   const { userData } = useAuth()
   const { cards } = useGrooves()
-  const [snippets, setSnippets] = useState<SnippetCard[]>(cards)
+  const [snippets, setSnippets] = useState(cards)
   const { revalidate } = useRevalidate()
-
-  useEffect(() => {
-    if (snippets.length === 0 && cards.length > 0) {
-      setSnippets(cards)
-    }
-  }, [cards.length])
-
-  if (!userData?.isAdmin) {
-    return null
-  }
 
   const fetchDrafts = async () => {
     const newSnippets = await getSnippets('', {
@@ -33,9 +23,21 @@ export const GarageMonitor: FC = () => {
           (s2.lastModified ?? 0) > (s1.lastModified ?? 0) ? -1 : 1
         )
         .sort((s1, s2) =>
-          s2.published === s1.published ? 0 : s2.published ? -1 : 1
+          s2.published === s1.published || s2.published ? -1 : 1
         )
     )
+  }
+
+  useEffect(() => {
+    if (snippets.length === 0 && cards.length > 0) {
+      setSnippets(cards)
+    }
+
+    fetchDrafts()
+  }, [cards.length])
+
+  if (!userData?.isAdmin) {
+    return null
   }
 
   const now = Date.now()
@@ -49,13 +51,9 @@ export const GarageMonitor: FC = () => {
 
   return (
     <div className='md:px-4 py-8 md:mt-4 bg-blacky/80 md:rounded-xl w-full relative'>
-      <Link
-        href='/foladmin'
-        onClick={fetchDrafts}
-        className='absolute right-4 px-1 pt-1'
-      >
+      <button onClick={fetchDrafts} className='absolute right-4 px-1 pt-1'>
         Refetch
-      </Link>
+      </button>
       <h2 className='px-4 w-fit text-yellowy text-xl md:text-center tracking-widest font-black'>
         Garage Monitoring
       </h2>

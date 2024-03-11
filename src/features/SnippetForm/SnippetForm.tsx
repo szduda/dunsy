@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import { FC, memo } from 'react'
 import { BellnardNail } from '@/features/admin'
-import { SnippetFormProvider } from './SnippetFormContext'
+import { SnippetFormProvider, useSnippetForm } from './SnippetFormContext'
 import { PatternsSection } from './inputs/PatternsSection'
 import { FormSuccessScreen } from './components/FormSuccessScreen'
 import { FormImage } from './components/FormImage'
@@ -12,12 +12,20 @@ import { CallPatternInput } from './inputs/CallPatternInput'
 import { SwingStyleInput } from './inputs/SwingStyleInput'
 import { Submit } from './components/Submit'
 import { TempoInput } from './inputs/TempoInput'
+import Link from 'next/link'
 
 export const SnippetForm: FC = () => (
   <SnippetFormProvider>
     <FormSuccessScreen />
     <BellnardNail />
+    <BackToFoladmin />
+    <Form />
+  </SnippetFormProvider>
+)
 
+const Form = () => {
+  const { success } = useSnippetForm()
+  return success ? null : (
     <div className='h-fit w-full grid grid-flow-row gap-8'>
       <FormImage />
       <ModeSwitchSection />
@@ -44,7 +52,16 @@ export const SnippetForm: FC = () => (
         <Submit />
       </form>
     </div>
-  </SnippetFormProvider>
+  )
+}
+
+const BackToFoladmin = () => (
+  <Link
+    href='/foladmin'
+    className='absolute left-4 md:left-16 top-[40px] md:top-[78px]'
+  >
+    Back
+  </Link>
 )
 
 export default SnippetForm

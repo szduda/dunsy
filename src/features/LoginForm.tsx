@@ -27,7 +27,7 @@ export const LoginForm: FC = () => {
           placeholder='blur'
           blurDataURL='fallback.jpeg'
           className='rounded-lg object-cover object-bottom'
-          src={error ? '/dictator.jpeg' : '/god2.jpeg'}
+          src={error ? '/hotpot-ai/validator.png' : '/hotpot-ai/gods.png'}
           quality={80}
           alt='Dundunin The Guardian'
         />
@@ -77,7 +77,7 @@ export const LoginForm: FC = () => {
         />
         <div className='flex w-full h-fit justify-center'>
           <Button type='submit' disabled={loading}>
-            {loading ? '...' : 'I vow to add many rhythms'}
+            {loading ? '...' : 'I vow to add many grooves'}
           </Button>
         </div>
       </div>

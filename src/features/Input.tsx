@@ -1,4 +1,4 @@
-import { cx, hashify } from '@/utils'
+import { cx } from '@/utils'
 import { ComponentProps, FC, ReactNode, memo } from 'react'
 
 type Props = {
@@ -17,7 +17,7 @@ type TextareaProps = {
   textarea: true
 } & ComponentProps<'textarea'>
 
-export const InputPure: FC<Props> = ({
+export const Input: FC<Props> = ({
   mini = false,
   black = false,
   label,
@@ -71,8 +71,3 @@ export const InputPure: FC<Props> = ({
     </label>
   )
 }
-
-export const Input = memo(
-  InputPure,
-  (prev, next) => hashify(prev) === hashify(next)
-)

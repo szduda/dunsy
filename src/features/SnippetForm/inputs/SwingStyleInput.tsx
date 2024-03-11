@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Radios } from '@/features/admin'
+import { RadiosPure } from '@/features/admin'
 import { SwingStyle } from '@/features/SnippetApi/types'
 import { useSnippetForm } from '../SnippetFormContext'
 
@@ -17,7 +17,7 @@ export const SwingStyleInput: FC = () => {
   )
 
   return (
-    <Radios
+    <RadiosPure
       disabled={mode === 'read'}
       label='Swing style'
       name='swing'

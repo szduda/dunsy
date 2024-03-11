@@ -1,7 +1,7 @@
 import { FC } from 'react'
-import slugify from 'slugify'
 import { Input } from '@/features/rsc'
 import { useSnippetForm } from '../SnippetFormContext'
+import { slugify } from '@/utils/slugify'
 
 export const TitleSlugInput: FC = () => {
   const { mode, formData, updateFormData } = useSnippetForm()
@@ -17,7 +17,7 @@ export const TitleSlugInput: FC = () => {
             mode === 'create'
               ? {
                   title: e.target.value,
-                  slug: slugify(e.target.value, { lower: true }),
+                  slug: slugify(e.target.value),
                 }
               : {
                   title: e.target.value,
@@ -39,7 +39,7 @@ export const TitleSlugInput: FC = () => {
             disabled={mode !== 'create'}
             onChange={(e) =>
               updateFormData({
-                slug: slugify(e.target.value, { lower: true }),
+                slug: slugify(e.target.value),
               })
             }
           />

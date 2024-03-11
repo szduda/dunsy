@@ -5,6 +5,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import { addSnippet, updateSnippet, getSnippet } from '@/features/SnippetApi'
@@ -46,12 +47,11 @@ export const SnippetFormProvider: FC<{ children: ReactNode }> = (props) => {
     initialData || loading ? 'read' : 'create'
   )
   const [formData, setFormData] = useState<FormData>(DEFAULT_FORM_DATA)
+  const initialHash = useMemo(() => hashify(initialData), [initialData])
+  const formHash = hashify(formData)
 
   useEffect(() => {
     setMode(initialData || loading ? 'read' : 'create')
-    if (formData) {
-      return
-    }
 
     setFormData({
       ...DEFAULT_FORM_DATA,
@@ -61,24 +61,22 @@ export const SnippetFormProvider: FC<{ children: ReactNode }> = (props) => {
         ...initialData?.patterns,
       },
     })
-  }, [initialData, loading])
-
-  const dirty = hashify(formData) !== hashify(initialData)
+  }, [initialHash, loading])
 
   const len = Object.values(formData.patterns).find(Boolean)?.length ?? 0
   const currentBarSize = 2 * (len % 3 === 0 ? 3 : len % 4 === 0 ? 4 : 0)
 
   const updateFormData = (partial: Partial<FormData>) =>
-    setFormData({
+    setFormData((state) => ({
       ...DEFAULT_FORM_DATA,
-      ...formData,
+      ...state,
       ...partial,
       patterns: {
         ...DEFAULT_FORM_DATA.patterns,
-        ...formData.patterns,
+        ...state.patterns,
         ...(partial?.['patterns'] ?? {}),
       },
-    })
+    }))
 
   const resetForm = () => {
     setFormData(DEFAULT_FORM_DATA)
@@ -123,24 +121,24 @@ export const SnippetFormProvider: FC<{ children: ReactNode }> = (props) => {
     pick(initialData.id)
   }
 
-  return (
-    <Context.Provider
-      {...props}
-      value={{
-        handleSubmit,
-        loading: busy,
-        errors,
-        success,
-        swings: SWINGS,
-        resetForm,
-        editAgain,
-        dirty,
-        mode,
-        setMode,
-        formData,
-        updateFormData,
-        currentBarSize: len > 2 && len >= currentBarSize ? currentBarSize : -2,
-      }}
-    />
+  const memoValue = useMemo(
+    () => ({
+      handleSubmit,
+      loading: busy,
+      errors,
+      success,
+      swings: SWINGS,
+      resetForm,
+      editAgain,
+      dirty: formHash !== initialHash,
+      mode,
+      setMode,
+      formData,
+      updateFormData,
+      currentBarSize: len > 2 && len >= currentBarSize ? currentBarSize : -2,
+    }),
+    [loading, success, mode, initialHash, formHash, busy]
   )
+
+  return <Context.Provider {...props} value={memoValue} />
 }

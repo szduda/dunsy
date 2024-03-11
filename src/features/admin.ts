@@ -1,6 +1,6 @@
 'use client'
 
-export { Radios } from './Radios'
+export { RadiosPure } from './Radios'
 export { SnippetForm } from './SnippetForm/SnippetForm'
 export {
   PickSnippetProvider,

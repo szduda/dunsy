@@ -4,12 +4,14 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { getSnippet } from '@/features/SnippetApi'
 import { useAuth } from '@/features/admin'
 import { PickSnippetContext } from './types'
+import { hashify } from '@/utils'
 
 export const Context = createContext<PickSnippetContext>({
   canEdit: false,
@@ -23,6 +25,7 @@ export const usePickSnippet = () => useContext(Context)
 export const PickSnippetProvider: FC<{ children: ReactNode }> = (props) => {
   const router = useRouter()
   const pathname = usePathname()
+  const { id } = useParams()
   const isAddRoute = pathname.search(/\/groove\/new$/) > 0
   const { user, userData } = useAuth()
   const [initialData, setInitialData] =
@@ -35,10 +38,8 @@ export const PickSnippetProvider: FC<{ children: ReactNode }> = (props) => {
       return
     }
 
-    const index = pathname.search(/\/groove\/(.+)$/)
-    if (index > 0) {
-      const idFromUrl = pathname.substring(index + 8)
-      pick(idFromUrl)
+    if (typeof id === 'string') {
+      pick(id)
     } else {
       resetPick()
     }
@@ -69,16 +70,16 @@ export const PickSnippetProvider: FC<{ children: ReactNode }> = (props) => {
     setLoading(false)
   }
 
-  return (
-    <Context.Provider
-      {...props}
-      value={{
-        initialData,
-        canEdit,
-        pick,
-        loading,
-        resetPick,
-      }}
-    />
+  const memoValue = useMemo(
+    () => ({
+      initialData,
+      canEdit,
+      pick,
+      loading,
+      resetPick,
+    }),
+    [canEdit, loading, hashify(initialData)]
   )
+
+  return <Context.Provider {...props} value={memoValue} />
 }

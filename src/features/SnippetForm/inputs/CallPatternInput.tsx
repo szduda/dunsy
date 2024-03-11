@@ -1,26 +1,27 @@
 import { ChangeEvent, FC } from 'react'
 import { useSnippetForm } from '../SnippetFormContext'
-import { MemoPatternInput } from './PatternInput'
+import { PatternInputPure } from './PatternInput'
+import { vocabularyOk } from '@/features/SnippetApi/validate'
 
 export const CallPatternInput: FC = ({}) => {
   const { mode, currentBarSize, formData, updateFormData } = useSnippetForm()
-
-  const disabled = mode === 'read'
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) =>
-    updateFormData({
-      signal: e.target.value.toLowerCase(),
-    })
+  const pattern = formData.signal ?? ''
+  const [patternOk, allowedVocabulary] = vocabularyOk('djembe', pattern)
 
   return (
-    <MemoPatternInput
+    <PatternInputPure
       {...{
         track: 'djembe',
         label: '(beta) Signal Pattern',
         currentBarSize,
-        pattern: formData.signal ?? '',
-        onChange,
-        disabled,
+        patternOk,
+        allowedVocabulary,
+        pattern,
+        disabled: mode === 'read',
+        onChange: (e: ChangeEvent<HTMLInputElement>) =>
+          updateFormData({
+            signal: e.target.value.toLowerCase(),
+          }),
       }}
     />
   )

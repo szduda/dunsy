@@ -14,7 +14,7 @@ export const FormErrors: FC<{ errors: string[] }> = ({ errors }) => (
       <Image
         placeholder="blur"
         blurDataURL="fallback.jpeg"
-        src="/dictator.jpeg"
+        src="/hotpot-ai/validator.png"
         alt="The Great Validator"
         quality={20}
         width={165}

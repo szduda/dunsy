@@ -4,8 +4,6 @@ import { PatternInput } from './PatternInput'
 import { useSnippetForm } from '../SnippetFormContext'
 
 export const PatternsSection: FC = () => {
-  console.log('PatternsForm')
-
   return (
     <div className='bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24'>
       <div className='text-xl pb-4 flex justify-between items-end'>

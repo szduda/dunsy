@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from 'react'
+import Image from 'next/image'
 import { User } from '@firebase/auth'
 import { auth } from '@/firebaseAuth'
 import { LoginForm, logIn, getConfig, getUserData } from '@/features/admin'
@@ -82,8 +83,20 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
   return (
     <AuthContext.Provider value={{ user, userData, config, logIn }}>
       {loading ? (
-        <div className='fixed top-0 left-0 right-0 h-screen text-3xl font-black flex items-center justify-center p-4 tracking-widest text-center'>
-          Loading...
+        <div className='fixed top-0 left-0 right-0 h-screen text-3xl font-black flex flex-col items-center justify-center p-4 tracking-widest text-center'>
+          <div className='relative w-[450px] h-[450px]'>
+            <Image
+              fill
+              sizes='(max-width: 767px) 100%, 450px'
+              placeholder='blur'
+              blurDataURL='fallback.jpeg'
+              className='rounded-lg object-cover object-bottom'
+              src={'/hotpot-ai/loader.png'}
+              quality={80}
+              alt='Dundunin The Guardian'
+            />
+          </div>
+          <div className='mt-32 pt-1 animate-pulse'>Loading...</div>
         </div>
       ) : user ? (
         children
