@@ -6,10 +6,12 @@ import { CloseIcon } from '@/features/Icons'
 import { cx } from '@/utils'
 import Link from 'next/link'
 import throttle from 'throttleit'
+import { useRouter } from 'next/navigation'
 
 const getSnippetsThrottled = throttle(getSnippets, 1000)
 
 export const PickSnippetModal: FC = () => {
+  const router = useRouter()
   const [term, setTerm] = useState('')
   const [selectedSnippet, selectSnippet] = useState('')
 
@@ -43,12 +45,14 @@ export const PickSnippetModal: FC = () => {
       <div className='fixed bg-yellowy-dark/10 md:rounded-lg py-3 px-4 flex flex-col w-full md:w-[500px] h-full md:h-fit'>
         <div className='w-full flex justify-between items-center text-yellowy-light/75'>
           <div className='text-sm'>Fixin&rsquo; da mess, huh?</div>
-          <Link
-            href='/foladmin'
-            className='w-8 h-8 flex items-center font-bold rounded-full hover:bg-[#0002] transition-colors'
+          <Button
+            mini
+            ninja
+            onClick={() => router.back()}
+            className='w-8 h-8 translate-x-4 flex items-center font-bold rounded-full hover:bg-[#0002] transition-colors'
           >
             <CloseIcon className='mx-auto fill-whitey/50' />
-          </Link>
+          </Button>
         </div>
         <form className='flex flex-col'>
           <Input
@@ -77,7 +81,10 @@ export const PickSnippetModal: FC = () => {
             ))}
           </div>
           <Link href={`/foladmin/groove/${selectedSnippet}`}>
-            <Button disabled={!selectedSnippet} className='md:w-full !bg-browny hover:!bg-orangey-dark/70'>
+            <Button
+              disabled={!selectedSnippet}
+              className='md:w-full !bg-orangey-dark hover:!bg-orangey'
+            >
               View
             </Button>
           </Link>

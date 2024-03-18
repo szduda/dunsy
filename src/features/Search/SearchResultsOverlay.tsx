@@ -44,8 +44,8 @@ const SearchResultsOverlayClient: FC = () => {
           <Card key={card.id} {...card} />
         ))}
         {noResults && (
-          <div className="col-span-4 flex flex-col items-center text-center mt-32">
-            <div className="text-3xl lg:text-4xl text-graye">
+          <div className="col-span-4 flex flex-col items-center text-center md:mt-12">
+            <div className="text-3xl lg:text-4xl text-graye break-all">
               {searchQuery}?
             </div>
             <div className="mt-6 lg:mt-12 text-lg lg:text-xl">

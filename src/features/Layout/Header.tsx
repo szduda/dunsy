@@ -24,13 +24,13 @@ export const Header: FC<Props> = ({ compact }) => (
     <div className='relative'>
       <nav
         className={cx([
-          'flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md',
+          'flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md max-w-screen',
         ])}
       >
-        <div className='flex flex-1 items-center w-[64px] h-fit'>
+        <div className='flex md:flex-1 items-center md:w-[64px] h-fit'>
           {compact && <SmallLogo />}
         </div>
-        <div className='flex items-center pl-2 flex-1 md:flex-none md:w-[400px]'>
+        <div className='flex items-center pl-2 md:flex-1 w-[180px] md:flex-none md:w-[400px]'>
           <Search />
         </div>
         <div className='flex flex-1 justify-end'>

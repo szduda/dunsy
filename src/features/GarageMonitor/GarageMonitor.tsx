@@ -68,7 +68,11 @@ export const GarageMonitor: FC = () => {
           <tbody>
             <tr className='bg-greeny-light/10'>
               <TD colSpan={2}></TD>
-              <TD>Homepage</TD>
+              <TD>
+                <Link href='/' target='_blank' className='hover:underline'>
+                  Homepage
+                </Link>
+              </TD>
               <TD>
                 <div className='flex flex-wrap justify-end items-center md:min-w-[200px]'>
                   <button
@@ -83,7 +87,11 @@ export const GarageMonitor: FC = () => {
             </tr>
             <tr className='bg-greeny/5'>
               <TD colSpan={2}></TD>
-              <TD>Grooves Garage</TD>
+              <TD>
+                <Link href='/grooves' target='_blank' className='hover:underline'>
+                  Grooves Garage
+                </Link>
+              </TD>
               <TD>
                 <div className='flex flex-wrap justify-end items-center md:min-w-[200px]'>
                   <button

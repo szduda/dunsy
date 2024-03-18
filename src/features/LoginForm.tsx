@@ -9,6 +9,7 @@ export const LoginForm: FC = () => {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
   const { logIn } = useAuth()
 
   const handleSubmit = async (e: FormEvent) => {
@@ -16,12 +17,16 @@ export const LoginForm: FC = () => {
     setLoading(true)
     const res = await logIn(email, password)
     setError(!res)
+    setSubmitError(!res)
     setLoading(false)
   }
 
   return (
-    <form className='grid grid-flow-row gap-4 md:gap-6 w-full max-w-[450px]' onSubmit={handleSubmit}>
-      <div className='relative w-full h-[450px]'>
+    <form
+      className='grid grid-flow-row gap-4 md:gap-6 w-full max-w-[450px]'
+      onSubmit={handleSubmit}
+    >
+      <div className='relative w-full h-[300px] md:h-[450px]'>
         <Image
           fill
           placeholder='blur'
@@ -42,7 +47,17 @@ export const LoginForm: FC = () => {
           <>
             {!email && password && 'Dundunfola needa name.'}
             {email && !password && 'Mi a know dundunfola has a secret.'}
-            {email && password && 'Yar a quick learner, mi a say.'}
+            {email &&
+              password &&
+              (submitError ? (
+                <>
+                  Yar a dundunfola?
+                  <br />
+                  Color mi nuh sold.
+                </>
+              ) : (
+                'Yar a quick learner, mi a say.'
+              ))}
             {!email && !password && (
               <>
                 Needa key to enta ina di garage.
