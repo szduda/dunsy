@@ -8,7 +8,12 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { addSnippet, updateSnippet, getSnippet } from '@/features/SnippetApi'
+import {
+  addSnippet,
+  updateSnippet,
+  getSnippet,
+  Snippet,
+} from '@/features/SnippetApi'
 import { useAuth, usePickSnippet } from '@/features/admin'
 import {
   DEFAULT_FORM_DATA,
@@ -37,21 +42,36 @@ const Context = createContext<SnippetFormContext>({
 
 export const useSnippetForm = () => useContext(Context)
 
-export const SnippetFormProvider: FC<{ children: ReactNode }> = (props) => {
-  const { initialData, pick, loading } = usePickSnippet()
+export const SnippetFormProvider: FC<{
+  children: ReactNode
+  dataSeed?: Partial<Snippet>
+}> = (props) => {
+  const pickContext = usePickSnippet()
+  const initialData = props.dataSeed || pickContext.initialData
   const { user } = useAuth()
   const [errors, setErrors] = useState<string[]>([])
   const [success, setSuccess] = useState(false)
   const [busy, setBusy] = useState(false)
   const [mode, setMode] = useState<Mode>(
-    initialData || loading ? 'read' : 'create'
+    !props.dataSeed && (initialData || pickContext.loading) ? 'read' : 'create'
   )
-  const [formData, setFormData] = useState<FormData>(DEFAULT_FORM_DATA)
+  const [formData, setFormData] = useState<FormData>({
+    ...DEFAULT_FORM_DATA,
+    ...props.dataSeed,
+    patterns: {
+      ...DEFAULT_FORM_DATA.patterns,
+      ...props.dataSeed?.patterns,
+    },
+  })
   const initialHash = useMemo(() => hashify(initialData), [initialData])
   const formHash = hashify(formData)
 
   useEffect(() => {
-    setMode(initialData || loading ? 'read' : 'create')
+    setMode(
+      !props.dataSeed && (initialData || pickContext.loading)
+        ? 'read'
+        : 'create'
+    )
 
     setFormData({
       ...DEFAULT_FORM_DATA,
@@ -61,7 +81,7 @@ export const SnippetFormProvider: FC<{ children: ReactNode }> = (props) => {
         ...initialData?.patterns,
       },
     })
-  }, [initialHash, loading])
+  }, [initialHash, pickContext.loading])
 
   const len = Object.values(formData.patterns).find(Boolean)?.length ?? 0
   const currentBarSize = 2 * (len % 3 === 0 ? 3 : len % 4 === 0 ? 4 : 0)
@@ -118,7 +138,7 @@ export const SnippetFormProvider: FC<{ children: ReactNode }> = (props) => {
     const refetched = await getSnippet(String(initialData.id))
     const newInitial = { id: initialData.id, ...refetched }
     updateFormData(newInitial)
-    pick(initialData.id)
+    pickContext.pick(initialData.id)
   }
 
   const memoValue = useMemo(
@@ -137,7 +157,7 @@ export const SnippetFormProvider: FC<{ children: ReactNode }> = (props) => {
       updateFormData,
       currentBarSize: len > 2 && len >= currentBarSize ? currentBarSize : -2,
     }),
-    [loading, success, mode, initialHash, formHash, busy]
+    [pickContext.loading, success, mode, initialHash, formHash, busy]
   )
 
   return <Context.Provider {...props} value={memoValue} />

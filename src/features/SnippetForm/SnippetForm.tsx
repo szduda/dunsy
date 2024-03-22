@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
 import { BellnardNail } from '@/features/admin'
 import { SnippetFormProvider, useSnippetForm } from './SnippetFormContext'
 import { PatternsSection } from './inputs/PatternsSection'

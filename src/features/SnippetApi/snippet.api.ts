@@ -88,6 +88,7 @@ export const getSnippets = async (
 export const getRecentlyAdded = async (options = { limit: 4 }) => {
   const _query = query(
     collection(db, DRUMS_COLLECTION),
+    where('published', '==', true),
     orderBy('createdAt', 'desc'),
     limit(options.limit)
   )
@@ -230,21 +231,21 @@ export const updateSnippet = async (data: Snippet, patternsDirty: boolean) => {
   }
 }
 
-async function parseSnippet(raw: DocumentSnapshot) {
-  const rawData = raw.data()
+async function parseSnippet(raw: DocumentSnapshot): Promise<Snippet> {
+  const { tempo: rawTempo, ...rawData } = raw.data() as DbSnippet
   const rawPatterns = await Promise.all(
-    rawData?.patterns
+    (rawData?.patterns ?? [])
       .filter(Boolean)
       .map(async (patternRef: DocumentReference) => await getDoc(patternRef))
   )
 
   return {
     ...rawData,
-    ...(rawData?.tempo ? { tempo: String(rawData.tempo) } : {}),
-    tags: rawData?.tags.join(', '),
+    ...(rawTempo ? { tempo: String(rawTempo) } : {}),
+    tags: rawData?.tags.join(', ') ?? '',
     patterns: rawPatterns.reduce((acc, current) => {
       const { instrument, pattern } = current.data() ?? {}
       return { ...acc, [instrument]: pattern }
     }, {}),
-  } as Snippet
+  }
 }

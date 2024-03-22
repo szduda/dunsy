@@ -26,6 +26,7 @@ export type Props = {
   playSignal(): void
   signalActive: boolean
   signalRequested: boolean
+  signalDisabled?: boolean
 }
 
 export const PlayerControls: FC<Props> = ({
@@ -43,6 +44,7 @@ export const PlayerControls: FC<Props> = ({
   playSignal,
   signalActive,
   signalRequested,
+  signalDisabled,
 }) => (
   <Wrapper>
     <div className='flex w-full md:w-fit'>
@@ -111,7 +113,7 @@ export const PlayerControls: FC<Props> = ({
       circle
       on={signalActive || signalRequested}
       className={cx([buttonClassName])}
-      disabled={disabled}
+      disabled={disabled || signalDisabled}
       aria-label='Play signal'
       onClick={(e) => {
         e.preventDefault()

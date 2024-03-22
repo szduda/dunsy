@@ -17,7 +17,7 @@ export const useGroovyPlayer = ({
   const [muted, setMuted] = useState<Record<string, boolean>>({})
   const [metronome, setMetronome] = useState(initialMetronome)
   const [playing, setPlaying] = useState(false)
-  const [swing, setSwing] = useState(false)
+  const [swing, setSwing] = useState(swingStyle !== '')
   const [noteIndex, setNoteIndex] = useState(0)
   const [beat, setBeat] = useState(0)
   const [signalRequested, setSignalRequested] = useState(false)
@@ -99,7 +99,7 @@ export const useGroovyPlayer = ({
     setTempo(initialTempo)
     setMetronome(initialMetronome)
     setMuted({})
-    setSwing(false)
+    setSwing(swingStyle !== '')
     setSignalActive(false)
 
     if (tracks.length === 0) stopLoop()
