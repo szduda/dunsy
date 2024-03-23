@@ -45,6 +45,7 @@ export const useSnippetForm = () => useContext(Context)
 export const SnippetFormProvider: FC<{
   children: ReactNode
   dataSeed?: Partial<Snippet>
+  onChange?(data: Partial<Snippet>): void
 }> = (props) => {
   const pickContext = usePickSnippet()
   const initialData = props.dataSeed || pickContext.initialData
@@ -65,6 +66,10 @@ export const SnippetFormProvider: FC<{
   })
   const initialHash = useMemo(() => hashify(initialData), [initialData])
   const formHash = hashify(formData)
+
+  useEffect(() => {
+    props.onChange?.(formData)
+  }, [formHash])
 
   useEffect(() => {
     setMode(
