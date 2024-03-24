@@ -43,13 +43,11 @@ export const getConfig = async (userUid?: string) => {
   try {
     const col = collection(db, 'editorConfig')
     const res = await getDocs(query(col))
-
     if (res.empty) {
       return null
     }
 
     const config = res.docs[0]
-
     return config.data()
   } catch (error) {
     console.error('Error caught:\n', error)

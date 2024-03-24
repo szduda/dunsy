@@ -29,7 +29,9 @@ export const writeSnippets = (cards: SnippetCard[]) => {
   localStorage.setItem('cards', JSON.stringify(cards))
   localStorage.setItem('lastFetchAt', JSON.stringify(Date.now()))
 }
+
 type Options = { limit: number; includeDrafts: boolean }
+
 const defaultOptions: Options = {
   limit: 5,
   includeDrafts: false,

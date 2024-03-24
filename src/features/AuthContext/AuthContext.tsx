@@ -78,7 +78,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
       }
       asyncEffect()
     }
-  }, [user?.uid])
+  }, [user?.uid, userData?.isAdmin])
 
   return (
     <AuthContext.Provider value={{ user, userData, config, logIn }}>

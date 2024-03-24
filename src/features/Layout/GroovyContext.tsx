@@ -41,7 +41,7 @@ export const GroovyContext: FC<Props> = (props) => {
     const needRefetch = Date.now() > lastFetchAt + 24 * 3600 * 1000
     if (needRefetch) {
       const asyncEffect = async () => {
-        const remoteData = await getSnippets(undefined, { limit: 1000 })
+        const remoteData = await getSnippets(undefined, { limit: 100 })
         console.log(remoteData?.length, 'grooves fetched now')
         writeSnippets(remoteData)
         setCards(remoteData)
