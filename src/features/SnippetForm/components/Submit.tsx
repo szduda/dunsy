@@ -1,6 +1,6 @@
-import { Button } from "@/features/rsc"
-import { FormErrors } from "./FormErrors"
-import { useSnippetForm } from "../SnippetFormContext"
+import { Button } from '@/features/rsc'
+import { FormErrors } from './FormErrors'
+import { useSnippetForm } from '../SnippetFormContext'
 
 export const Submit = () => {
   const { mode, loading, errors, handleSubmit, dirty } = useSnippetForm()
@@ -14,8 +14,8 @@ export const Submit = () => {
             ? 'Creating...'
             : 'Create Groove'
           : loading
-          ? 'Updating...'
-          : 'Update Groove'}
+            ? 'Updating...'
+            : 'Update Groove'}
       </Button>
     </div>
   )

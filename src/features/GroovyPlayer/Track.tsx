@@ -113,8 +113,8 @@ export const Bars: FC<BarsProps> = ({
           beat={(bar.length % 6 === 0
             ? [0, 3]
             : bar.length % 9 === 0
-            ? [0, 3, 6]
-            : [0, 4]
+              ? [0, 3, 6]
+              : [0, 4]
           ).includes(noteIndex)}
         />
       ))}

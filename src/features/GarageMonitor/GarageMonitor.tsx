@@ -88,7 +88,11 @@ export const GarageMonitor: FC = () => {
             <tr className='bg-greeny/5'>
               <TD colSpan={2}></TD>
               <TD>
-                <Link href='/grooves' target='_blank' className='hover:underline'>
+                <Link
+                  href='/grooves'
+                  target='_blank'
+                  className='hover:underline'
+                >
                   Grooves Garage
                 </Link>
               </TD>
@@ -145,8 +149,8 @@ export const Row: FC<Props> = ({
     ageDays > 4
       ? `${ageDays} d`
       : ageHours > 0
-      ? `${ageHours} h`
-      : `${ageMin} min`
+        ? `${ageHours} h`
+        : `${ageMin} min`
 
   const actions = [
     {

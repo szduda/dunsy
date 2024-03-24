@@ -28,7 +28,11 @@ export const BellnardNail: FC = () => {
     '': (
       <>
         Ohhhh hello! Sorry, I didn&rsquo;t hear you come in. You must be the
-        famous <span className='font-semibold'>{userData?.name ?? 'Anonady Moussa'}</span>, I was expecting you.
+        famous{' '}
+        <span className='font-semibold'>
+          {userData?.name ?? 'Anonady Moussa'}
+        </span>
+        , I was expecting you.
       </>
     ),
     intro: (

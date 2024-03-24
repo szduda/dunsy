@@ -104,7 +104,12 @@ const GroovyPlayerEngine: FC<Props> = ({
           : [...Array(3)].map((_, i) => <Track key={`track-${i}`} />)}
 
         <PlayerControls
-          {...{ disabled: !tracks.length, swingStyle, signalDisabled: loopLength < 16, ...rest }}
+          {...{
+            disabled: !tracks.length,
+            swingStyle,
+            signalDisabled: loopLength < 16,
+            ...rest,
+          }}
         />
       </div>
       <PlayerSettings

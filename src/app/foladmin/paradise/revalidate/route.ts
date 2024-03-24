@@ -1,13 +1,13 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache'
 
 export const POST = async (req: Request) => {
-  const { path, secret } = await req.json();
+  const { path, secret } = await req.json()
 
   if (secret !== process.env.REVALIDATION_SECRET) {
-    return new Response("You have no power here", { status: 403 });
+    return new Response('You have no power here', { status: 403 })
   }
 
-  revalidatePath(`/${path}`);
-  console.log("Path revalidated:", path);
-  return new Response("path revalidated", { status: 200 });
-};
+  revalidatePath(`/${path}`)
+  console.log('Path revalidated:', path)
+  return new Response('path revalidated', { status: 200 })
+}

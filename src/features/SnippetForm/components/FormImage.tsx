@@ -17,8 +17,8 @@ export const FormImage: FC = () => {
           mode === 'update'
             ? 'updator'
             : mode === 'create'
-            ? 'creator'
-            : 'reador'
+              ? 'creator'
+              : 'reador'
         }.png`}
         className='rounded-lg object-cover'
       />

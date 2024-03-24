@@ -8,7 +8,13 @@ type Props = {
   onChange(value: any): void
 } & Omit<ComponentProps<'input'>, 'value' | 'onChange'>
 
-export const RadiosPure: FC<Props> = ({ items, label, value, onChange, ...rest }) => (
+export const RadiosPure: FC<Props> = ({
+  items,
+  label,
+  value,
+  onChange,
+  ...rest
+}) => (
   <fieldset>
     {label && (
       <div className='text-graye text-sm font-semibold tracking-wider mb-2 uppercase'>
