@@ -10,7 +10,6 @@
     "format": "npx prettier -w src/"
   },
   "dependencies": {
-    "compress-json": "^3.0.0",
     "lz-string": "^1.5.0",
     "next": "13.5.1",
     "react": "18.2.0",
