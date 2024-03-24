@@ -1,64 +1,65 @@
-import { FC, memo, useMemo } from "react";
-import { cx } from "@/utils";
-import { usePlayerSettings } from "./PlayerSettingsContext";
-import { Note } from "./Note";
+import { FC, memo, useMemo } from 'react'
+import { cx } from '@/utils'
+import { usePlayerSettings } from './PlayerSettingsContext'
+import { Note } from './Note'
 
 type Props = {
-  title?: string;
-  pattern?: string;
-  instrument?: string;
-  muted?: boolean;
-  setMuted?(muted: boolean): void;
-  beat?: number;
-  highlight?: boolean;
-};
+  title?: string
+  pattern?: string
+  instrument?: string
+  muted?: boolean
+  setMuted?(muted: boolean): void
+  beat?: number
+  highlight?: boolean
+}
 
 export const Track: FC<Props> = ({
   title,
-  pattern = "",
-  instrument = "",
+  pattern = '',
+  instrument = '',
   muted,
   setMuted,
   beat = -1,
   highlight = false,
 }) => {
   const barSize =
-    [6, 8].find((length) => pattern.length % length === 0) ?? pattern.length;
+    [6, 8].find((length) => pattern.length % length === 0) ?? pattern.length
 
   const bars = useMemo(
-    () => pattern?.match(RegExp(`.{1,${barSize}}`, "g")) ?? [],
+    () => pattern?.match(RegExp(`.{1,${barSize}}`, 'g')) ?? [],
     [pattern]
-  );
+  )
 
-  const { largeBars, videoSync } = usePlayerSettings();
-  beat = videoSync ? beat - 1 : beat;
+  const { largeBars, videoSync } = usePlayerSettings()
+  beat = videoSync ? beat - 1 : beat
 
   return (
     <div
       className={cx([
-        "px-1 py-4 lg:px-8 border-b-2 border-graye-darker w-full md:px-4",
+        'px-1 py-4 lg:px-8 border-b-2 border-graye-darker w-full md:px-4',
         ,
-        highlight && "bg-redy-dark/25",
+        highlight && 'bg-redy-dark/25',
       ])}
     >
-      <label className="mx-1 flex align-center mb-4 w-fit cursor-pointer hover:opacity-75">
+      <label className='mx-1 flex items-center mb-4 w-fit cursor-pointer hover:opacity-75'>
         <input
-          className="mr-3 w-4 cursor-pointer"
-          type="checkbox"
-          aria-label={`${title} track ${muted ? "off" : "on"}`}
+          name={`mute ${instrument} track`}
+          className='mr-3 w-4 cursor-pointer'
+          type='checkbox'
+          aria-label={`${title} track ${muted ? 'off' : 'on'}`}
           onChange={() => setMuted?.(!muted)}
           checked={!muted}
           disabled={!pattern}
         />
-        <div className="text-graye-light">{title}</div>
+        <div className='text-graye-light'>{title}</div>
       </label>
-      <div className={cx(["transition", muted && "opacity-10"])}>
+      <div className={cx(['transition', muted && 'opacity-10'])}>
         <div
           className={cx([
-            "grid gap-0.5 gap-y-3 w-full",
+            'grid gap-0.5 gap-y-3 w-full',
             largeBars
-              ? "grid-cols-2 lg:grid-cols-4"
-              : "grid-cols-4 lg:grid-cols-8",
+              ? 'grid-cols-2 lg:grid-cols-4'
+              : 'grid-cols-4 lg:grid-cols-8',
           ])}
         >
           {pattern ? (
@@ -70,23 +71,23 @@ export const Track: FC<Props> = ({
               instrument={instrument}
             />
           ) : (
-            <div className="min-h-[48px] flex items-center justify-center text-graye-light">
-              ...
+            <div className='min-h-[48px] flex items-center justify-center text-graye-light'>
+              &nbsp;
             </div>
           )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 type BarsProps = {
-  id: string;
-  bars: string[];
-  large?: boolean;
-  activeIndex?: number;
-  instrument: string;
-};
+  id: string
+  bars: string[]
+  large?: boolean
+  activeIndex?: number
+  instrument: string
+}
 
 export const Bars: FC<BarsProps> = ({
   bars,
@@ -98,9 +99,9 @@ export const Bars: FC<BarsProps> = ({
     <div
       key={bar + index}
       className={cx([
-        "flex align-center w-full overflow-hidden",
-        activeIndex === index ? "bg-greeny-dark" : "bg-graye-darkest",
-        large ? "rounded-3xl" : "rounded-2xl",
+        'flex w-full overflow-hidden',
+        activeIndex === index ? 'bg-greeny-dark' : 'bg-graye-darkest',
+        large ? 'rounded-3xl' : 'rounded-2xl',
       ])}
     >
       {[...bar].map((note, noteIndex) => (
@@ -112,13 +113,13 @@ export const Bars: FC<BarsProps> = ({
           beat={(bar.length % 6 === 0
             ? [0, 3]
             : bar.length % 9 === 0
-            ? [0, 3, 6]
-            : [0, 4]
+              ? [0, 3, 6]
+              : [0, 4]
           ).includes(noteIndex)}
         />
       ))}
     </div>
-  ));
+  ))
 
 const MemoBars = memo(
   Bars,
@@ -126,4 +127,4 @@ const MemoBars = memo(
     prev.id === next.id &&
     prev.activeIndex === next.activeIndex &&
     prev.large === next.large
-);
+)

@@ -1,6 +1,6 @@
-import { SwingStyle } from "../SnippetApi/types";
-import { DJEMBE_SOUNDS, DRUMS, SAMPLE_IDS } from "@/lib/MidiSounds";
-import { TTrack } from "./types";
+import { SwingStyle } from '../SnippetApi/types'
+import { DJEMBE_SOUNDS, DRUMS, SAMPLE_IDS } from '@/lib/MidiSounds'
+import { TTrack } from './types'
 
 export const fillBeat = (
   loopLength: number,
@@ -10,118 +10,116 @@ export const fillBeat = (
   signalActive: boolean,
   signal: string
 ) => {
-  const barSize = loopLength % 3 ? 8 : 6;
+  const barSize = loopLength % 3 ? 8 : 6
 
-  const parse = (instrument: string, sound: string = "x") => {
+  const parse = (instrument: string, sound: string = 'x') => {
     const pattern =
-      tracks.find((t) => t.instrument === instrument)?.pattern ?? null;
+      tracks.find((t) => t.instrument === instrument)?.pattern ?? null
 
-    if (!pattern) return [];
+    if (!pattern) return []
 
-    const prolongedPattern = prolongPattern(pattern, loopLength);
-    const output = [...prolongedPattern].map((note) => note === sound);
+    const prolongedPattern = prolongPattern(pattern, loopLength)
+    const output = [...prolongedPattern].map((note) => note === sound)
 
-    return output;
-  };
+    return output
+  }
 
   const parseDjembe = () => {
     const pattern =
-      tracks.find((t) => t.instrument === "djembe")?.pattern ?? null;
+      tracks.find((t) => t.instrument === 'djembe')?.pattern ?? null
 
     if (!pattern) {
-      return [];
+      return []
     }
 
-    const output = [...Array(DJEMBE_SOUNDS.length)].map(() => Array<boolean>());
-    const prolongedPattern = prolongPattern(pattern, loopLength);
-    [...prolongedPattern].forEach((note) =>
+    const output = [...Array(DJEMBE_SOUNDS.length)].map(() => Array<boolean>())
+    const prolongedPattern = prolongPattern(pattern, loopLength)
+    ;[...prolongedPattern].forEach((note) =>
       DJEMBE_SOUNDS.forEach((sound, i) => output[i].push(note === sound))
-    );
+    )
 
-    return output;
-  };
+    return output
+  }
 
   const parseSignalAtLoopEnd = () => {
-    const prolongBy = loopLength - signal.length;
+    const prolongBy = loopLength - signal.length
 
     if (prolongBy < 0) {
-      return [];
+      return []
     }
 
-    const silence = [...Array<boolean>(prolongBy)].fill(false);
-    const results = [...Array(DJEMBE_SOUNDS.length)].map(() =>
-      Array<boolean>()
-    );
+    const silence = [...Array<boolean>(prolongBy)].fill(false)
+    const results = [...Array(DJEMBE_SOUNDS.length)].map(() => Array<boolean>())
 
     if (prolongBy > 0) {
       results.forEach((_, i) => {
-        results[i] = [...silence];
-      });
+        results[i] = [...silence]
+      })
     }
 
-    [...signal].forEach((note) =>
+    ;[...signal].forEach((note) =>
       DJEMBE_SOUNDS.forEach((sound, i) => results[i].push(note === sound))
-    );
+    )
 
-    return results;
-  };
+    return results
+  }
 
   const generateMetronome = () =>
-    [...Array(loopLength)].map((_, index) => index % (barSize / 2) === 0);
+    [...Array(loopLength)].map((_, index) => index % (barSize / 2) === 0)
 
   const getLoops = () => {
     const groove = Object.values(DRUMS)
       .map(({ instrument, symbol }) => {
-        if (instrument === "shaker" && metronome) {
-          return generateMetronome();
+        if (instrument === 'shaker' && metronome) {
+          return generateMetronome()
         } else if (muted[instrument]) {
-          return false;
-        } else if (instrument === "djembe") {
-          return "skip";
+          return false
+        } else if (instrument === 'djembe') {
+          return 'skip'
         }
 
-        return parse(instrument, symbol);
+        return parse(instrument, symbol)
       })
-      .filter((val) => val !== "skip");
+      .filter((val) => val !== 'skip')
 
-    const signal = parseSignalAtLoopEnd();
-    const djembeTrack = parseDjembe();
+    const signal = parseSignalAtLoopEnd()
+    const djembeTrack = parseDjembe()
 
-    return [...groove, ...(signalActive ? signal : djembeTrack)];
-  };
+    return [...groove, ...(signalActive ? signal : djembeTrack)]
+  }
 
-  const loops = getLoops() as boolean[][];
-  const beats: number[][][] = [];
+  const loops = getLoops() as boolean[][]
+  const beats: number[][][] = []
   for (var i = 0; i < loopLength; i++) {
     const notes = SAMPLE_IDS.map((sampleId, index) =>
       loops?.[index]?.[i] ? sampleId : -1
-    ).filter((n) => n > 0);
-    beats.push([notes, []]);
+    ).filter((n) => n > 0)
+    beats.push([notes, []])
   }
 
-  return beats;
-};
+  return beats
+}
 
 export const matchSignal = (
   beatSize: number,
   signal?: string,
-  swingStyle: SwingStyle = ""
+  swingStyle: SwingStyle = ''
 ) => {
   if (signal) {
-    return signal;
-  } else if (swingStyle === ">>") {
-    return "ttttt-tt-t--";
+    return signal
+  } else if (swingStyle === '>>') {
+    return 'ttttt-tt-t--'
   } else if (beatSize % 2) {
-    return "f-tt-tt-tt--";
+    return 'f-tt-tt-tt--'
   } else {
-    return "f-tt-t-tt-t-t---";
+    return 'f-tt-t-tt-t-t---'
   }
-};
+}
 
 const prolongPattern = (pattern: string, loopLength: number) => {
-  const barSize = loopLength % 3 ? 8 : 6;
-  const excess = pattern.length % barSize;
+  const barSize = loopLength % 3 ? 8 : 6
+  const excess = pattern.length % barSize
   const fullBeatPattern =
-    excess > 0 ? pattern + "-".repeat(barSize - excess) : pattern;
-  return fullBeatPattern?.repeat(loopLength / fullBeatPattern.length);
-};
+    excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern
+  return fullBeatPattern?.repeat(loopLength / fullBeatPattern.length)
+}

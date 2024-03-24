@@ -1,119 +1,85 @@
-import { FC, ReactNode, createContext, useContext, useState } from "react";
-import { Snippet, getSnippet } from "@/features/SnippetApi";
-import { useRouter } from "next/navigation";
-
-const defaultFormData: Snippet = {
-  id: "",
-  slug: "",
-  authorUid: "",
-  title: "",
-  description: "",
-  tags: "",
-  swing: "",
-  tempo: "110",
-  signal: "",
-  patterns: {
-    dundunba: "",
-    sangban: "",
-    kenkeni: "",
-    kenkeni2: "",
-    bell: "",
-    djembe: "",
-  },
-};
-
-export type FormData = typeof defaultFormData;
-
-type PickSnippetContext = {
-  loading: boolean;
-  initialData: Partial<FormData> | null;
-  pick(id: string): void;
-  reset(): void;
-  formData: FormData;
-  updateFormData(data: Partial<FormData>): void;
-  resetFormData(): void;
-  currentBarSize: number;
-};
+import {
+  FC,
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
+import { useParams, usePathname, useRouter } from 'next/navigation'
+import { getSnippet } from '@/features/SnippetApi'
+import { useAuth } from '@/features/admin'
+import { PickSnippetContext } from './types'
+import { hashify } from '@/utils'
 
 export const Context = createContext<PickSnippetContext>({
+  canEdit: false,
   loading: false,
   initialData: null,
   pick: () => null,
-  reset: () => null,
-  formData: defaultFormData,
-  updateFormData: () => null,
-  resetFormData: () => null,
-  currentBarSize: -1,
-});
-export const usePickSnippet = () => useContext(Context);
+  resetPick: () => null,
+})
+export const usePickSnippet = () => useContext(Context)
 
-export const PickSnippetProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const router = useRouter();
-  const [initialData, setInitialData] = useState<Snippet | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<FormData>(defaultFormData);
+export const PickSnippetProvider: FC<{ children: ReactNode }> = (props) => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const { id } = useParams()
+  const isAddRoute = pathname.search(/\/groove\/new$/) > 0
+  const { user, userData } = useAuth()
+  const [initialData, setInitialData] =
+    useState<PickSnippetContext['initialData']>(null)
+  const [loading, setLoading] = useState(!isAddRoute)
+  const [canEdit, setCanEdit] = useState(false)
+
+  useEffect(() => {
+    if (isAddRoute) {
+      return
+    }
+
+    if (typeof id === 'string') {
+      pick(id)
+    } else {
+      resetPick()
+    }
+  }, [pathname])
+
+  useEffect(() => {
+    setCanEdit(userData?.isAdmin ?? false)
+  }, [userData])
 
   const pick = async (id: string) => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const snippet = await getSnippet(id);
-      const data = { id, ...snippet };
-      setInitialData(data);
-      setFormData({
-        ...defaultFormData,
-        ...data,
-        patterns: {
-          ...defaultFormData.patterns,
-          ...data?.patterns,
-        },
-      });
+      const snippet = await getSnippet(id)
+      const data = { id, ...snippet }
+      setInitialData(data)
+      if (data.authorUid === user?.uid || userData?.isAdmin) {
+        setCanEdit(true)
+      }
     } catch (error) {
-      setInitialData(null);
-      router.push("/foladmin");
+      setInitialData(null)
+      router.push('/foladmin')
     }
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
-  const updateFormData = (partial: Partial<FormData>) =>
-    setFormData({
-      ...defaultFormData,
-      ...formData,
-      ...partial,
-      patterns: {
-        ...defaultFormData.patterns,
-        ...formData.patterns,
-        ...(partial?.["patterns"] ?? {}),
-      },
-    });
+  const resetPick = () => {
+    setInitialData(null)
+    setLoading(false)
+  }
 
-  const resetFormData = () => {
-    setFormData(defaultFormData);
-  };
+  const memoValue = useMemo(
+    () => ({
+      initialData,
+      canEdit,
+      pick,
+      loading,
+      resetPick,
+    }),
+    [canEdit, loading, hashify(initialData)]
+  )
 
-  const reset = () => {
-    setInitialData(null);
-    resetFormData();
-  };
-
-  const len = Object.values(formData.patterns).find(Boolean)?.length ?? 0;
-  const currentBarSize = 2 * (len % 3 === 0 ? 3 : len % 4 === 0 ? 4 : 0);
-
-  return (
-    <Context.Provider
-      value={{
-        initialData,
-        pick,
-        reset,
-        loading,
-        formData,
-        updateFormData,
-        resetFormData,
-        currentBarSize: len > 2 && len >= currentBarSize ? currentBarSize : -2,
-      }}
-    >
-      {children}
-    </Context.Provider>
-  );
-};
+  return <Context.Provider {...props} value={memoValue} />
+}

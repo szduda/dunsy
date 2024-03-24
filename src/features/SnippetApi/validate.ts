@@ -1,100 +1,109 @@
-import { Snippet } from "./types";
+import { Snippet } from './types'
 
 export const validate = (data: Snippet) => {
-  let messages: string[] = [];
-  const meter = getMeter(data);
-  const base = meter % 3 === 0 ? 3 : meter % 4 === 0 ? 4 : 0;
+  let messages: string[] = []
+  const meter = getMeter(data)
+  const base = meter % 3 === 0 ? 3 : meter % 4 === 0 ? 4 : 0
 
   const options = {
     base,
     meter,
-  };
+  }
 
-  validateTitle(messages, data);
-  validateTags(messages, data);
-  validateTempo(messages, data);
-  validateSignal(messages, data, options);
-  validateSwing(messages, data, options);
-  validatePatterns(messages, data, options);
+  validateTitle(messages, data)
+  validateTags(messages, data)
+  validateTempo(messages, data)
+  validateSignal(messages, data, options)
+  validateSwing(messages, data, options)
+  validatePatterns(messages, data, options)
 
-  return messages;
-};
+  return messages
+}
 
 const validateTitle = (messages: string[], data: Snippet) => {
   if (!data.title) {
-    messages.push("A rhythm needa title, sir.");
+    messages.push('A rhythm needa title, sir.')
   }
-};
+}
 
 const validateTags = (messages: string[], data: Snippet) => {
-  const { tags } = data;
-  const tagsArray = tags.split(",");
+  const { tags } = data
+  const tagsArray = tags.split(',')
+  const meterTags = tagsArray.filter((tag) => /\d\/\d/.test(tag))
 
   if (tagsArray.length < 3) {
-    messages.push("At least 3 tags sir. Coma separated.");
+    messages.push('At least 3 tags sir. Coma separated.')
+  }
+
+  if (meterTags.length !== 1) {
+    messages.push(
+      meterTags.length
+        ? 'Remove multiple meter tags'
+        : 'Please add a meter e.g. 4/4, 6/8'
+    )
   }
 
   if (tagsArray.find((tag) => tag.length > 20)) {
-    messages.push("Each tag betta be shorter than 20 characters.");
+    messages.push('Each tag betta be shorter than 20 characters.')
   }
 
   if (tags && !/^[a-z0-9/,\s]+$/.test(tags)) {
-    messages.push("Tags betta be simple a-z0-9/,\\s expression.");
+    messages.push('Tags betta be simple a-z0-9/,\\s expression.')
   }
-};
+}
 
 const validateTempo = (messages: string[], data: Snippet) => {
   if (!data.tempo) {
-    return;
+    return
   }
 
-  const tempo = Number(data.tempo);
+  const tempo = Number(data.tempo)
   if (tempo < 80 || tempo > 200) {
-    messages.push("Tempo between 80 and 200, sir.");
+    messages.push('Tempo between 80 and 200, sir.')
   }
-};
+}
 
 type ValidatorOptions = {
-  base: number;
-  meter: number;
-};
+  base: number
+  meter: number
+}
 
 const validateSwing = (
   messages: string[],
   data: Snippet,
   { base }: ValidatorOptions
 ) => {
-  const { swing } = data;
+  const { swing } = data
   if (
     swing &&
     !(
-      (base === 3 && [">>", "<<"].includes(swing)) ||
-      (base === 4 && [">", "<", "<<<", "-->"].includes(swing))
+      (base === 3 && ['>>', '<<'].includes(swing)) ||
+      (base === 4 && ['>', '<', '<<<', '-->'].includes(swing))
     )
   ) {
-    messages.push("Ya messed up dem swings, sir.");
+    messages.push('Ya messed up dem swings, sir.')
   }
-};
+}
 
 const validateSignal = (
   messages: string[],
   data: Snippet,
   { meter }: ValidatorOptions
 ) => {
-  const { signal } = data;
+  const { signal } = data
 
   if (!signal) {
-    return;
+    return
   }
 
   if (signal.length % meter !== 0) {
-    messages.push("Incorrect signal legth, sir.");
+    messages.push('Incorrect signal legth, sir.')
   }
 
   if (!/^[btsf-]+$/.test(signal)) {
-    messages.push("Incorrect signal notation. Use only symbols: b t s f -");
+    messages.push('Incorrect signal notation. Use only symbols: b t s f -')
   }
-};
+}
 
 const validatePatterns = (
   messages: string[],
@@ -103,28 +112,28 @@ const validatePatterns = (
 ) => {
   const patternKeys = Object.keys(data.patterns).filter((key) =>
     Boolean(data.patterns[key])
-  );
-  const patternValues = Object.values(data.patterns).filter(Boolean);
+  )
+  const patternValues = Object.values(data.patterns).filter(Boolean)
 
   if (patternValues.length < 1) {
-    messages.push("At least one drum pattern, sir.");
+    messages.push('At least one drum pattern, sir.')
   } else {
     if (meter < 1 || base < 1) {
       messages.push(
         `The ${patternKeys[0]} pattern has incorrect length of ${patternValues[0].length}. It must be a multiple of 8 or 6.`
-      );
+      )
     }
 
     const incorrectPatterns = patternKeys.filter(
       (inst) => data.patterns[inst].length % (base * 2) !== 0
-    );
+    )
 
     if (meter > 0 && incorrectPatterns.length > 0) {
       messages.push(
         `Inconsistent pattern length between ${
           patternKeys[0]
-        } and ${incorrectPatterns.join(", ")}.`
-      );
+        } and ${incorrectPatterns.join(', ')}.`
+      )
     }
   }
 
@@ -134,38 +143,38 @@ const validatePatterns = (
 
   const incorrectNotation = patternKeys.find(
     (instrument) => !vocabularyOk(instrument, data.patterns[instrument])
-  );
+  )
 
   if (incorrectNotation) {
-    messages.push("Incorrect dundun notation. Use only symbols: x o -");
+    messages.push('Incorrect dundun notation. Use only symbols: x o -')
   }
-};
+}
 
 const getMeter = (data: Snippet) => {
   const firstLen =
-    Object.values(data.patterns).filter(Boolean)?.[0]?.length || 1;
+    Object.values(data.patterns).filter(Boolean)?.[0]?.length || 1
   // const meterFromTag = Number.parseInt(
   //   data.tags
   //     .split(",")
   //     ?.find((tag) => /\d{1,2}\/\d/.test(tag))
   //     ?.charAt(0) ?? "0"
   // );
-  return firstLen % 6 === 0 ? 6 : firstLen % 8 === 0 ? 4 : -1;
-};
+  return firstLen % 6 === 0 ? 6 : firstLen % 8 === 0 ? 4 : -1
+}
 
 export const vocabularyOk = (instrument: string, pattern: string) => {
-  let regex = /^[xo-]+$/;
-  let vocabulary = "xo-";
+  let regex = /^[xo-]+$/
+  let vocabulary = 'xo-'
 
-  if (instrument === "bell") {
-    regex = /^[x-]+$/;
-    vocabulary = "x-";
+  if (instrument === 'bell') {
+    regex = /^[x-]+$/
+    vocabulary = 'x-'
   }
 
-  if (instrument === "djembe") {
-    regex = /^[btsf-]+$/;
-    vocabulary = "btsf-";
+  if (instrument === 'djembe') {
+    regex = /^[btsf-]+$/
+    vocabulary = 'btsf-'
   }
 
-  return [regex.test(pattern), vocabulary] as const;
-};
+  return [regex.test(pattern), vocabulary] as const
+}

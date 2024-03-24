@@ -1,21 +1,23 @@
-export { SearchIcon } from "./Search";
-export { LogoIcon } from "./Logo";
-export { InfoIcon } from "./Info";
-export { ShekereIcon } from "./Shekere";
-export { SignalIcon } from "./Signal";
-export { SoundHighIcon } from "./SoundHigh";
-export { SoundMidIcon } from "./SoundMid";
-export { SoundLowIcon } from "./SoundLow";
-export { SoundHalfIcon } from "./SoundHalf";
-export { Pepper as PepperIcon } from "./Pepper";
-export { Add as AddIcon } from "./Add";
-export { Arrow as ArrowIcon } from "./Arrow";
-export { Close as CloseIcon } from "./Close";
-export { Play as PlayIcon } from "./Play";
-export { Restart as RestartIcon } from "./Restart";
-export { Stop as StopIcon } from "./Stop";
-export { DjembeIcon } from "./Djembe";
-export { DundunIcon } from "./Dundun";
-export { GearIcon } from "./Gear";
-export { DundunSetIcon } from "./DundunSet";
-export { BellnardNailIcon } from "./BellnardNail";
+export { SearchIcon } from './Search'
+export { LogoIcon } from './Logo'
+export { InfoIcon } from './Info'
+export { ShekereIcon } from './Shekere'
+export { SignalIcon } from './Signal'
+export { SoundHighIcon } from './SoundHigh'
+export { SoundMidIcon } from './SoundMid'
+export { SoundLowIcon } from './SoundLow'
+export { SoundHalfIcon } from './SoundHalf'
+export { Pepper as PepperIcon } from './Pepper'
+export { Add as AddIcon } from './Add'
+export { Arrow as ArrowIcon } from './Arrow'
+export { Close as CloseIcon } from './Close'
+export { Play as PlayIcon } from './Play'
+export { Restart as RestartIcon } from './Restart'
+export { Stop as StopIcon } from './Stop'
+export { DjembeIcon } from './Djembe'
+export { DundunIcon } from './Dundun'
+export { GearIcon } from './Gear'
+export { DundunSetIcon } from './DundunSet'
+export { BellnardNailIcon } from './BellnardNail'
+export { BluescreenIcon } from './Bluescreen'
+export { AdminIcon } from './Admin'
