@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { RadiosPure } from '@/features/admin'
 import { SwingStyle } from '@/features/SnippetApi/types'
 import { useSnippetForm } from '../SnippetFormContext'
@@ -15,6 +15,14 @@ export const SwingStyleInput: FC = () => {
       validSwingKeys.includes(key) ? { ...acc, [key]: swings[key] } : acc,
     {}
   )
+
+  const swingStyleMismatch =
+    formData.swing && currentBarSize % (formData.swing.length + 1) !== 0
+  useEffect(() => {
+    if (swingStyleMismatch) {
+      updateFormData({ swing: '' })
+    }
+  }, [swingStyleMismatch])
 
   return (
     <RadiosPure
