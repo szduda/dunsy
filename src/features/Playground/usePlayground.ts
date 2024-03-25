@@ -68,19 +68,16 @@ export const usePlayground = () => {
         ? JSON.parse(
             decompressFromEncodedURIComponent(searchParams.get('q') ?? '')
           ) || {}
-        : {}
-      setDataSeed({
-        ...defaultData,
-        ...urlInput,
-      })
+        : null
+      setDataSeed(urlInput || defaultData)
     } catch (error) {
-      router.push('/playground')
+      router.push('/playground', { scroll: false })
     }
   }, [])
 
   return {
     dataSeed,
     onChange: (data: Partial<Snippet>) =>
-      router.push(`/playground?${createQueryString(data)}`),
+      router.push(`/playground?${createQueryString(data)}`, { scroll: false }),
   }
 }
