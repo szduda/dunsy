@@ -6,6 +6,7 @@ import { applySwing } from './applySwing'
 import { fillBeat, matchSignal } from './notation'
 
 export const useGroovyPlayer = ({
+  slug = '',
   tracks = [],
   initialMetronome = true,
   swingStyle = '',
@@ -36,7 +37,7 @@ export const useGroovyPlayer = ({
       currentBeats.current,
       trueTempo.current,
       1 / 16,
-      0,
+      beat > 0 ? 12 * (beat + 1) : 0,
       setNoteIndex
     )
     setPlaying(true)
@@ -94,17 +95,25 @@ export const useGroovyPlayer = ({
     trueTempo.current = calcTrueTempo()
   }, [tempo, swing])
 
-  // reset player settings on tracks change
+  // reset player settings on page change
+  useEffect(() => {
+    setSwing(swingStyle !== '')
+    setSignalActive(false)
+    if (tracks.length === 0) stopLoop()
+    else if (playing) playLoop()
+  }, [
+    tracks
+      .filter((t) => !muted[t.instrument])
+      .map((t) => t.pattern)
+      .join(),
+  ])
+
   useEffect(() => {
     setTempo(initialTempo)
     setMetronome(initialMetronome)
     setMuted({})
     setSwing(swingStyle !== '')
-    setSignalActive(false)
-
-    if (tracks.length === 0) stopLoop()
-    else if (playing) playLoop()
-  }, [tracks])
+  }, [slug])
 
   const maybePlaySignal = () => {
     const swingAwareLoopLength = loopLength * swingModifier

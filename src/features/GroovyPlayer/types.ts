@@ -7,6 +7,7 @@ export type TTrack = {
 }
 
 export type GroovyPlayerHook = {
+  slug: string
   tracks: TTrack[]
   initialMetronome: boolean
   swingStyle: SwingStyle

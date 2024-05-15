@@ -99,7 +99,7 @@ export const PlayerControls: FC<Props> = ({
           }
 
           setTempo(value)
-          if (value >= 60 && value <= 200) {
+          if (value >= 60 && value <= 200 && playing) {
             setTimeout(playLoop, 0)
           }
         }}
