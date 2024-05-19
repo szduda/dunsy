@@ -11,7 +11,7 @@ export const RhythmPage: FC<{ data: Snippet }> = ({ data }) => (
         {data.title}
       </h1>
       {data.description && (
-        <p className='mt-6 md:mt-12 text-graye-light'>{data.description}</p>
+        <p className='mt-6 md:mt-12 text-graye-light text-lg font-medium'>{data.description}</p>
       )}
     </div>
     <GroovyPlayer

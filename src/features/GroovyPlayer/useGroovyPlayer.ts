@@ -37,7 +37,7 @@ export const useGroovyPlayer = ({
       currentBeats.current,
       trueTempo.current,
       1 / 16,
-      beat > 0 ? 12 * (beat + 1) : 0,
+      beat > 0 ? swingModifier * beatSize * (beat - 1) : 0,
       setNoteIndex
     )
     setPlaying(true)

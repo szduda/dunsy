@@ -38,7 +38,7 @@ export const Legend: FC<Props> = ({
       <h3 className='text-3xl drop-shadow-lg text-graye tracking-wide font-bold'>
         {title}
       </h3>
-      <div className='mt-2 tracking-wide'>{description}</div>
+      <div className='mt-2 tracking-wide font-medium'>{description}</div>
     </div>
   </div>
 )
