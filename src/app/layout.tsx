@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'dunsy.app',
   description:
-    'Listen to groovy loops of West African dundun drums and enjoy your drumming practice. Wasa wasa!',
+    'Listen to the groovy loops featuring West African dundun or djembe and enjoy your drumming practice. Wasa wasa!',
   openGraph: {
     images: ['/og.png'],
   },

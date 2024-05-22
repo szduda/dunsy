@@ -253,7 +253,7 @@ const HelpPage: FC = () => (
       description={
         <p>
           Great people playing drums in the amazing old house. Check out both{' '}
-          <TextLink href='https://www.moribaya.pl/?lang=en' target='_blank'>
+          <TextLink href='https://www.moribaya.pl' target='_blank'>
             Moribaya
           </TextLink>{' '}
           bandpage and{' '}
