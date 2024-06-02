@@ -241,7 +241,7 @@ const HelpPage: FC = () => (
 
     <h3 className='text-graye text-3xl drop-shadow-lg mt-48'>App Version</h3>
     <div className='mt-8 pr-4 pl-6 py-4 border border-yellowy-light/25 rounded-full flex items-baseline'>
-      <div className='text-2xl'>v0.2</div>
+      <div className='text-2xl'>v0.4</div>
       <div className='bg-yellowy-light/75 font-medium uppercase text-sm rounded-full px-2 py-0.5 ml-3 text-blacky self-center'>
         beta
       </div>
