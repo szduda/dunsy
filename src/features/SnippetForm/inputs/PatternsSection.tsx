@@ -9,7 +9,7 @@ export const PatternsSection: FC<{ title?: string; onClear?(): void }> = ({
   onClear,
 }) => (
   <div className='bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24'>
-    <div className='text-xl pb-4 flex justify-between items-end'>
+    <div className='text-xl pb-4 flex justify-between items-center gap-4'>
       <div className='flex gap-2 items-center'>
         <h3 className='text-yellowy tracking-wide'>{title}</h3>
         {onClear && (
