@@ -63,7 +63,7 @@ const GroovyPlayerEngine: FC<Props> = ({
 
   const setTempo = (tempo: number) => {
     rest.setTempo(tempo)
-    onTempoChange(tempo)
+    onTempoChange?.(tempo)
   }
 
   const controls = useMemo(
