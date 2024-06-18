@@ -4,10 +4,11 @@ import { PatternInput } from './PatternInput'
 import { useSnippetForm } from '../SnippetFormContext'
 import { Button } from '@/features/Button'
 
-export const PatternsSection: FC<{ title?: string; onClear?(): void }> = ({
-  title = 'Patterns',
-  onClear,
-}) => (
+export const PatternsSection: FC<{
+  title?: string
+  onClear?(): void
+  syncPlayerTempo?: boolean
+}> = ({ title = 'Patterns', onClear, syncPlayerTempo = false }) => (
   <div className='bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24'>
     <div className='text-xl pb-4 flex justify-between items-center gap-4'>
       <div className='flex gap-2 items-center'>
@@ -36,7 +37,7 @@ export const PatternsSection: FC<{ title?: string; onClear?(): void }> = ({
     </div>
     <div className='pt-8 lg:pt-12'>
       <div className='-mx-2 w-fill xl:-mx-24'>
-        <FormPlayer />
+        <FormPlayer syncTempo={syncPlayerTempo} />
       </div>
     </div>
   </div>

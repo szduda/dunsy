@@ -21,6 +21,7 @@ export type Props = ComponentProps<'div'> & {
   signal?: string
   metronome?: boolean
   tempo?: number
+  onTempoChange(tempo: number): void
 }
 
 const GroovyPlayerEngine: FC<Props> = ({
@@ -29,6 +30,7 @@ const GroovyPlayerEngine: FC<Props> = ({
   signal,
   metronome: initialMetronome = true,
   tempo: initialTempo = 110,
+  onTempoChange,
   ...divProps
 }) => {
   const { slug } = useParams()
@@ -59,14 +61,20 @@ const GroovyPlayerEngine: FC<Props> = ({
     [settingsOpen]
   )
 
+  const setTempo = (tempo: number) => {
+    rest.setTempo(tempo)
+    onTempoChange(tempo)
+  }
+
   const controls = useMemo(
     () => (
       <PlayerControls
         {...{
+          ...rest,
           disabled: !tracks.length,
           swingStyle,
           signalDisabled: loopLength < 16,
-          ...rest,
+          setTempo,
         }}
       />
     ),

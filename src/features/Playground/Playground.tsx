@@ -21,11 +21,14 @@ export const Playground: FC = () => {
 
 const PlaygroundForm = () => {
   const { resetForm, formData } = useSnippetForm()
-  const isCleared = Object.values(formData.patterns).filter(Boolean)?.length
+  const canClear = Object.values(formData.patterns).some(Boolean)
 
   return (
     <>
-      <PatternsSection onClear={isCleared ? resetForm : undefined} />
+      <PatternsSection
+        onClear={canClear ? () => resetForm() : undefined}
+        syncPlayerTempo
+      />
       <div className='flex flex-col md:flex-row md:gap-24 justify-center'>
         <div className='flex flex-col md:flex-row gap-12 items-center py-12'>
           <SignalIcon className='w-24 h-24' />
