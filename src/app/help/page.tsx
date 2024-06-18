@@ -42,7 +42,7 @@ const HelpPage: FC = () => (
       <p className='leading-relaxed font-medium'>
         This is currently a one man project. If by any chance you would like to
         help building dunsy and you are familiar with web development -&nbsp;
-        <TextLink href='#'>message me</TextLink>
+        <TextLink href='mailto:dunsy.contact@gmail.com'>message me</TextLink>
         &nbsp;any time. If you want to contribute your drumming talents or
         whatever else from the muggle-in-the-software world - that would also be
         appreciated.

@@ -14,22 +14,23 @@ export const H2: FC<ComponentProps<'h2'>> = (props) => (
 )
 
 export const TextLink: FC<ComponentProps<typeof Link>> = (props) => {
-  const link = (
-    <Link
-      className='font-semibold underline decoration-greeny-light hover:decoration-greeny-light hover:decoration-4 tracking-widest'
-      scroll={false}
-      {...props}
-    />
-  )
-
   const href = props.href.toString()
-  console.log(href)
-  if (
+  const isExternal =
     href.startsWith(process.env.NEXT_PUBLIC_BASE_URL ?? 'https://dunsy.app') ||
     href.startsWith('/') ||
     href.startsWith('#') ||
     href.startsWith('mailto:')
-  ) {
+
+  const link = (
+    <Link
+      className='font-semibold underline decoration-greeny-light hover:decoration-greeny-light hover:decoration-4 tracking-widest'
+      scroll={false}
+      target={isExternal ? '_blank' : '_self'}
+      {...props}
+    />
+  )
+
+  if (isExternal) {
     return link
   }
 
