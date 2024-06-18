@@ -21,7 +21,7 @@ export type Props = ComponentProps<'div'> & {
   signal?: string
   metronome?: boolean
   tempo?: number
-  onTempoChange(tempo: number): void
+  onTempoChange?(tempo: number): void
 }
 
 const GroovyPlayerEngine: FC<Props> = ({
