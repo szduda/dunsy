@@ -5,11 +5,12 @@ import { Button } from '@/features/rsc'
 import { InfoIcon, LogoIcon } from '@/features/Icons'
 import { cx } from '@/utils'
 
-type Props = {
-  compact: boolean
+const menu = {
+  grooves: 'Rhythms',
+  playground: 'Playground',
 }
 
-export const Header: FC<Props> = ({ compact }) => (
+export const Header: FC = () => (
   <header
     className={cx(['sticky -top-[185px] md:-top-[225px]'])}
     style={{ zIndex: 100 }}
@@ -27,8 +28,20 @@ export const Header: FC<Props> = ({ compact }) => (
           'flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md max-w-screen',
         ])}
       >
-        <div className='flex md:flex-1 items-center md:w-[64px] h-fit'>
-          {compact && <SmallLogo />}
+        <div className='flex md:flex-1 items-center md:w-[64px] h-fit gap-4'>
+          <SmallLogo />
+          <ul className='hidden lg:flex font-medium tracking-wide'>
+            {Object.keys(menu).map((url) => (
+              <li key={url}>
+                <a
+                  className='text-graye-light hover:text-whitey px-5 py-4 flex -my-4 hover:bg-graye-light/5 transition-all ease-in-out'
+                  href={`/${url}`}
+                >
+                  {menu[url as keyof typeof menu]}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className='flex items-center pl-2 md:flex-1 w-[180px] md:flex-none md:w-[400px]'>
           <Search />

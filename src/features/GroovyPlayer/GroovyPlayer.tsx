@@ -1,4 +1,4 @@
-import { ComponentProps, FC, memo, useState } from 'react'
+import { ComponentProps, FC, memo, useMemo, useState } from 'react'
 import { PlayerControls } from './PlayerControls'
 import { Track } from './Track'
 import { useGroovyPlayer } from './useGroovyPlayer'
@@ -13,6 +13,7 @@ import {
 } from './PlayerSettings'
 import { PlayerSettingsProvider } from './PlayerSettingsContext'
 import { matchSignal } from './notation'
+import { useParams } from 'next/navigation'
 
 export type Props = ComponentProps<'div'> & {
   tracks: TTrack[]
@@ -20,6 +21,7 @@ export type Props = ComponentProps<'div'> & {
   signal?: string
   metronome?: boolean
   tempo?: number
+  onTempoChange?(tempo: number): void
 }
 
 const GroovyPlayerEngine: FC<Props> = ({
@@ -28,10 +30,13 @@ const GroovyPlayerEngine: FC<Props> = ({
   signal,
   metronome: initialMetronome = true,
   tempo: initialTempo = 110,
+  onTempoChange,
   ...divProps
 }) => {
+  const { slug } = useParams()
   const { muted, setMuted, loopLength, beat, beatSize, ...rest } =
     useGroovyPlayer({
+      slug: slug ? (typeof slug === 'string' ? slug : slug.join()) : '',
       tracks,
       initialMetronome,
       initialTempo,
@@ -40,6 +45,95 @@ const GroovyPlayerEngine: FC<Props> = ({
     })
 
   const [settingsOpen, setSettingsOpen] = useState(false)
+
+  const settings = useMemo(
+    () => (
+      <PlayerSettings
+        onClose={() => setSettingsOpen(false)}
+        className={cx([
+          'transition ease-in-out duration-300',
+          settingsOpen
+            ? 'translate-x-0'
+            : 'translate-x-16 pointer-events-none opacity-0',
+        ])}
+      />
+    ),
+    [settingsOpen]
+  )
+
+  const setTempo = (tempo: number) => {
+    rest.setTempo(tempo)
+    onTempoChange?.(tempo)
+  }
+
+  const controls = useMemo(
+    () => (
+      <PlayerControls
+        {...{
+          ...rest,
+          disabled: !tracks.length,
+          swingStyle,
+          signalDisabled: loopLength < 16,
+          setTempo,
+        }}
+      />
+    ),
+    [
+      rest.playLoop,
+      tracks.length,
+      swingStyle,
+      loopLength,
+      rest.playing,
+      rest.metronome,
+      rest.tempo,
+      rest.signalActive,
+      rest.signalRequested,
+      rest.swing,
+    ]
+  )
+
+  const tracksMemo = useMemo(
+    () =>
+      tracks.map(({ title, instrument, pattern }, index) => {
+        const barSize = 2 * beatSize
+        const _signal = matchSignal(beatSize, signal, swingStyle)
+        const signalTrack = rest.signalActive && instrument === 'djembe'
+        const prolongedSignal =
+          '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
+        const excess = pattern.length % barSize
+        const _pattern =
+          excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern
+        const prolongedPattern = _pattern?.repeat(loopLength / _pattern.length)
+
+        return (
+          <Track
+            key={`${title}${index}`}
+            title={signalTrack ? 'djembe signal' : title}
+            highlight={signalTrack}
+            beat={beat}
+            instrument={instrument}
+            pattern={
+              (rest.signalActive || rest.signalRequested) &&
+              instrument === 'djembe'
+                ? prolongedSignal
+                : prolongedPattern
+            }
+            muted={muted[instrument]}
+            setMuted={(value) => setMuted({ ...muted, [instrument]: value })}
+          />
+        )
+      }),
+    [
+      beat,
+      muted,
+      rest.signalActive,
+      rest.signalRequested,
+      tracks.map((t) => t.pattern).join(),
+      signal,
+      beatSize,
+      loopLength,
+    ]
+  )
 
   return (
     <Wrapper {...divProps}>
@@ -68,59 +162,12 @@ const GroovyPlayerEngine: FC<Props> = ({
           </div>
         </div>
         {tracks.length
-          ? tracks.map(({ title, instrument, pattern }, index) => {
-              const barSize = 2 * beatSize
-              const _signal = matchSignal(beatSize, signal, swingStyle)
-              const signalTrack = rest.signalActive && instrument === 'djembe'
-              const prolongedSignal =
-                '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
-              const excess = pattern.length % barSize
-              const _pattern =
-                excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern
-              const prolongedPattern = _pattern?.repeat(
-                loopLength / _pattern.length
-              )
-
-              return (
-                <Track
-                  key={`${title}${index}`}
-                  title={signalTrack ? 'djembe signal' : title}
-                  highlight={signalTrack}
-                  beat={beat}
-                  instrument={instrument}
-                  pattern={
-                    (rest.signalActive || rest.signalRequested) &&
-                    instrument === 'djembe'
-                      ? prolongedSignal
-                      : prolongedPattern
-                  }
-                  muted={muted[instrument]}
-                  setMuted={(value) =>
-                    setMuted({ ...muted, [instrument]: value })
-                  }
-                />
-              )
-            })
+          ? tracksMemo
           : [...Array(3)].map((_, i) => <Track key={`track-${i}`} />)}
 
-        <PlayerControls
-          {...{
-            disabled: !tracks.length,
-            swingStyle,
-            signalDisabled: loopLength < 16,
-            ...rest,
-          }}
-        />
+        {controls}
       </div>
-      <PlayerSettings
-        onClose={() => setSettingsOpen(false)}
-        className={cx([
-          'transition ease-in-out duration-300',
-          settingsOpen
-            ? 'translate-x-0'
-            : 'translate-x-16 pointer-events-none opacity-0',
-        ])}
-      />
+      {settings}
     </Wrapper>
   )
 }

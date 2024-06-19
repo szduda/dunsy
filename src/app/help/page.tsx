@@ -18,6 +18,37 @@ import {
 const HelpPage: FC = () => (
   <main className='flex mx-auto flex-col items-center justify-center px-2 pt-8 pb-8 max-w-[1024px]'>
     <TopScrollGuard top={0} />
+
+    <div className='px-12 py-6 mb-12 bg-blacky/25 rounded-md'>
+      <h3 className='font-bold text-lg mb-2'>
+        About dunsy<small>.app</small>
+      </h3>
+      <p className='mb-2 leading-relaxed font-medium'>
+        This is an open source project - you can access the code at&nbsp;
+        <TextLink href='http://szduda.github.com/dunsy'>
+          dunsy GitHub repository
+        </TextLink>
+        .<br />
+        The core of this website - the GroovyPlayer - is built with&nbsp;
+        <TextLink href='https://github.com/surikov/midi-sounds-react'>
+          MIDISounds
+        </TextLink>
+        &nbsp;&&nbsp;
+        <TextLink href='https://github.com/surikov/webaudiofont'>
+          WebAudioFont
+        </TextLink>
+        &nbsp; libraries.
+      </p>
+      <p className='leading-relaxed font-medium'>
+        This is currently a one man project. If by any chance you would like to
+        help building dunsy and you are familiar with web development -&nbsp;
+        <TextLink href='mailto:dunsy.contact@gmail.com'>message me</TextLink>
+        &nbsp;any time. If you want to contribute your drumming talents or
+        whatever else from the muggle-in-the-software world - that would also be
+        appreciated.
+      </p>
+    </div>
+
     <h2 className='text-4xl tracking-wider text-greeny mt-12 mb-8 drop-shadow-lg'>
       Website Features
     </h2>
@@ -28,13 +59,9 @@ const HelpPage: FC = () => (
           Search by tag or rhythm name: e.g. <i>konkoba</i>, <i>9/8</i>,{' '}
           <i>break</i>, or use it as navigation and type <i>all</i>, <i>help</i>{' '}
           or <i>story</i>. If you don&rsquo;t know what to search for you can{' '}
-          <Link
-            href='/grooves'
-            className='underline hover:no-underline tracking-widest'
-            scroll={false}
-          >
+          <TextLink href='/grooves' scroll={false}>
             browse all rhythms
-          </Link>{' '}
+          </TextLink>{' '}
           at the grooves page.
         </p>
       }
@@ -208,13 +235,13 @@ const HelpPage: FC = () => (
     <h3 className='text-graye text-3xl drop-shadow-lg mt-48'>
       Need more help?
     </h3>
-    <Link href='mailto:dunsy.contact@gmail.com' target='_blank'>
+    <TextLink href='mailto:dunsy.contact@gmail.com' target='_blank'>
       <Button className='mt-8'>Send a message</Button>
-    </Link>
+    </TextLink>
 
     <h3 className='text-graye text-3xl drop-shadow-lg mt-48'>App Version</h3>
     <div className='mt-8 pr-4 pl-6 py-4 border border-yellowy-light/25 rounded-full flex items-baseline'>
-      <div className='text-2xl'>v0.2</div>
+      <div className='text-2xl'>v0.4</div>
       <div className='bg-yellowy-light/75 font-medium uppercase text-sm rounded-full px-2 py-0.5 ml-3 text-blacky self-center'>
         beta
       </div>
@@ -226,7 +253,7 @@ const HelpPage: FC = () => (
       description={
         <p>
           Great people playing drums in the amazing old house. Check out both{' '}
-          <TextLink href='https://www.moribaya.pl/?lang=en' target='_blank'>
+          <TextLink href='https://www.moribaya.pl' target='_blank'>
             Moribaya
           </TextLink>{' '}
           bandpage and{' '}

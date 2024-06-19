@@ -43,24 +43,24 @@ const ServerGrooves: FC<Props & { search?(term: string): void }> = ({
               'hover:scale-125 transition',
               ['self-center', 'self-start', 'self-end'].at(index % 3),
               str > 0.9
-                ? 'text-8xl bg-yellowy-light border-yellowy text-blacky  tracking-tighter'
+                ? 'text-8xl bg-yellowy-light border-yellowy text-blacky tracking-tighter font-medium'
                 : str > 0.8
-                  ? 'text-7xl bg-yellowy/10 border-yellowy/50 font-medium'
+                  ? 'text-7xl bg-yellowy/10 border-yellowy/50 font-semibold'
                   : str > 0.7
                     ? 'text-7xl bg-redy-dark border-yellowy-50 font-bold'
                     : str > 0.6
                       ? 'text-6xl bg-redy/25 border-whitey/50 font-bold'
                       : str > 0.5
-                        ? 'text-5xl bg-orangey border-orangey-light/25 text-blacky font-bold'
+                        ? 'text-5xl bg-orangey border-orangey-light/25 text-blacky font-black'
                         : str > 0.4
-                          ? 'text-4xl bg-orangey-dark border-yellowy/50 text-graye-light font-medium'
+                          ? 'text-4xl bg-orangey-dark border-yellowy/50 text-graye-light font-bold'
                           : str > 0.3
-                            ? 'text-3xl bg-greeny-light border-whitey/25 text-graye-darker font-medium'
+                            ? 'text-3xl bg-greeny-light border-whitey/25 text-graye-darker font-semibold'
                             : str > 0.2
-                              ? 'text-2xl bg-greeny border-greeny-dark text-graye-lighter/90 font-medium'
+                              ? 'text-2xl bg-greeny border-greeny-dark text-graye-lighter/90 font-semibold'
                               : str > 0.1
-                                ? 'text-xl bg-greeny/50 border-whitey/10 text-graye-light'
-                                : 'text-lg text-graye-light/90 bg-greeny-darker border-graye/25',
+                                ? 'text-xl bg-greeny/50 border-whitey/10 text-graye-light font-medium'
+                                : 'text-lg text-graye-light/90 bg-greeny-darker border-graye/25 font-medium',
             ])}
           >
             {tag.trim().toLowerCase()}

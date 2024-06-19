@@ -45,7 +45,7 @@ export const Button: FC<Props> = ({
   >
     <div
       className={cx([
-        'transition-all tracking-wider variant-small-caps font-semibold',
+        'transition-all tracking-wider variant-small-caps font-bold',
         padding,
         mini ? '' : 'hover:scale-110',
       ])}

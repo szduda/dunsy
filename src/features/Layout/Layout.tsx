@@ -17,7 +17,7 @@ export const Layout: FC<Props> = ({ children }) => {
 
   return (
     <div className='transition-all duration-500 ease-in-out'>
-      <Header compact={pathname !== '/'} />
+      <Header />
       <div className='relative'>{children}</div>
     </div>
   )

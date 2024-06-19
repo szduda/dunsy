@@ -20,6 +20,8 @@ const defaultData: Partial<Snippet> = {
   },
 }
 
+const QUERY_PARAM = 'q'
+
 const isDataEqual = (data: Partial<Snippet>, data2: Partial<Snippet>) =>
   data.swing === data2.swing &&
   data.tempo === data2.tempo &&
@@ -47,10 +49,10 @@ const createQueryString = (data: Partial<Snippet>) => {
   }
 
   if (isDataEqual(defaultData, reducedData)) {
-    params.has('q') && params.delete('q')
+    params.has(QUERY_PARAM) && params.delete(QUERY_PARAM)
   } else {
     const lz = compressToEncodedURIComponent(JSON.stringify(reducedData))
-    params.set('q', lz)
+    params.set(QUERY_PARAM, lz)
   }
 
   return params.toString()
@@ -64,9 +66,11 @@ export const usePlayground = () => {
 
   useEffect(() => {
     try {
-      const urlInput = searchParams.has('q')
+      const urlInput = searchParams.has(QUERY_PARAM)
         ? JSON.parse(
-            decompressFromEncodedURIComponent(searchParams.get('q') ?? '')
+            decompressFromEncodedURIComponent(
+              searchParams.get(QUERY_PARAM) ?? ''
+            )
           ) || {}
         : null
       setDataSeed(urlInput || defaultData)
