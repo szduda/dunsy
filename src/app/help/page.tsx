@@ -25,7 +25,7 @@ const HelpPage: FC = () => (
       </h3>
       <p className='mb-2 leading-relaxed font-medium'>
         This is an open source project - you can access the code at&nbsp;
-        <TextLink href='http://szduda.github.com/dunsy'>
+        <TextLink href='https://github.com/szduda/dunsy'>
           dunsy GitHub repository
         </TextLink>
         .<br />
