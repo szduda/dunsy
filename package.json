@@ -25,7 +25,7 @@
     "@types/throttleit": "^1.0.0",
     "autoprefixer": "10.4.14",
     "encoding": "^0.1.13",
-    "eslint": "8.46.0",
+    "eslint": "8.57.0",
     "eslint-config-next": "13.4.12",
     "firebase": "^10.1.0",
     "postcss": "8.4.27",
