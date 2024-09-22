@@ -27,7 +27,7 @@ export const Input: FC<Props> = ({
   ...inputProps
 }) => {
   const inputClasses = cx([
-    'border size-16 text-lg tracking-wide p-2 rounded-md focus:outline-none transition-all ease-in-out',
+    'border size-12 text-lg tracking-wide p-2 rounded-md focus:outline-none transition-all ease-in-out',
     black
       ? 'bg-blacky text-whitey border-graye-darker hover:border-graye-dark focus:border-graye py-3'
       : 'bg-greeny-darker text-whitey border-graye-dark hover:border-graye focus:border-graye-light',
