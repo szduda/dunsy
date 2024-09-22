@@ -89,18 +89,41 @@ type BarsProps = {
   instrument: string
 }
 
+const fn = (bars: string[], maxN = 8, n: number = 1): number => {
+  if (n > maxN || n < 1 || n > bars.length) {
+    return bars.length
+  }
+
+  if (n === 1) {
+    return bars.some((b) => b !== bars[0]) ? fn(bars, maxN, 2) : 1
+  }
+
+  const firstN = bars.slice(0, n).join()
+  const restNs = bars
+    .map((_, i) =>
+      i % n === 0 ? bars.slice(i, Math.min(bars.length, i + n)).join() : null
+    )
+    .filter(Boolean)
+
+  const allSame = !restNs.some((pattern) => pattern !== firstN)
+  return allSame ? n : fn(bars, maxN, n + 1)
+}
+
 export const Bars: FC<BarsProps> = ({
   bars,
   activeIndex = -1,
   large = false,
   instrument,
-}) =>
-  bars.map((bar, index) => (
+}) => {
+  const barsInPattern = fn(bars, 8)
+  return bars.slice(0, barsInPattern).map((bar, index) => (
     <div
       key={bar + index}
       className={cx([
         'flex w-full overflow-hidden',
-        activeIndex === index ? 'bg-greeny-dark' : 'bg-graye-darkest',
+        activeIndex % barsInPattern === index
+          ? 'bg-greeny-dark'
+          : 'bg-graye-darkest',
         large ? 'rounded-3xl' : 'rounded-2xl',
       ])}
     >
@@ -120,6 +143,7 @@ export const Bars: FC<BarsProps> = ({
       ))}
     </div>
   ))
+}
 
 const MemoBars = memo(
   Bars,
