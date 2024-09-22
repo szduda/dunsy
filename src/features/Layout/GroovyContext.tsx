@@ -45,6 +45,7 @@ export const GroovyContext: FC<Props> = (props) => {
         console.log(remoteData?.length, 'grooves fetched now')
         writeSnippets(remoteData)
         setCards(remoteData)
+        setLoading(false)
       }
       asyncEffect()
     } else {
@@ -57,8 +58,8 @@ export const GroovyContext: FC<Props> = (props) => {
         `${localData?.length} grooves from ${whenStr} read from local storage`
       )
       setCards(localData)
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   return <Context.Provider value={{ cards, loading }} {...props} />

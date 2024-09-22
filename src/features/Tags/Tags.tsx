@@ -4,6 +4,7 @@ import { cx } from '@/utils'
 
 type Props = {
   onClick?(tag: string): void
+  className?: string
 } & (
   | {
       tagString: string
@@ -29,12 +30,12 @@ const ClientTags: FC<Props> = (props) => {
 
 const ServerTags: FC<Props> = ({ tagString, tags, onClick }) => {
   if (typeof tags === 'undefined') {
-    tags = tagString.split(',')
+    tags = tagString?.split(',')
   }
 
   return (
     <div className='flex flex-wrap w-full'>
-      {tags.map((tag) => (
+      {tags?.map((tag) => (
         <button
           key={tag}
           className={cx([
@@ -51,14 +52,14 @@ const ServerTags: FC<Props> = ({ tagString, tags, onClick }) => {
   )
 }
 
-export const CardTags: FC<Props> = ({ tagString, tags }) => {
+export const CardTags: FC<Props> = ({ tagString, tags, className }) => {
   if (typeof tags === 'undefined') {
-    tags = tagString.split(',')
+    tags = tagString?.split(',')
   }
 
   return (
-    <div className='flex flex-wrap w-full'>
-      {tags.map((tag) => (
+    <div className={cx(['flex flex-wrap w-full', className])}>
+      {tags?.map((tag) => (
         <span
           key={tag}
           className={cx([
