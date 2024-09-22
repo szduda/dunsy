@@ -115,13 +115,13 @@ export const Bars: FC<BarsProps> = ({
   large = false,
   instrument,
 }) => {
-  const barsInPattern = fn(bars, 8)
+  const barsInPattern = Math.max(fn(bars, 8), 4)
   return bars.slice(0, barsInPattern).map((bar, index) => (
     <div
       key={bar + index}
       className={cx([
         'flex w-full overflow-hidden',
-        activeIndex % barsInPattern === index
+        barsInPattern > 1 && activeIndex % barsInPattern === index
           ? 'bg-greeny-dark'
           : 'bg-graye-darkest',
         large ? 'rounded-3xl' : 'rounded-2xl',
