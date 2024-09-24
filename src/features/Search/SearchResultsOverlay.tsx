@@ -46,7 +46,7 @@ const SearchResultsOverlayClient: FC = () => {
             )}
             {loading && (
               <span className='opacity-75 pr-2 text-2xl self-baseline'>
-                let's chill for a sec...
+                let&rsquo;s chill for a sec...
               </span>
             )}
           </div>

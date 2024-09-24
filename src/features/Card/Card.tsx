@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import Link from 'next/link'
 import { CardTags } from '@/features'
 import { SnippetCard } from '@/features/SnippetApi'
@@ -16,7 +16,7 @@ export const Card = ({ slug, title, tags }: SnippetCard) => (
   </Link>
 )
 
-Card.Placeholder = ({ i }: { i: number }) => (
+const Placeholder: FC<{ i: number }> = ({ i }) => (
   <div className='px-2 py-3 lg:p-3 rounded-lg bg-blacky/30 flex flex-col justify-between transition gap-3'>
     <div className='flex gap-1'>
       <div className='h-5 bg-graye/5 w-[35px] rounded-lg' />
@@ -29,3 +29,6 @@ Card.Placeholder = ({ i }: { i: number }) => (
     />
   </div>
 )
+
+Card.Placeholder = Placeholder
+Card.Placeholder.displayName = 'Card.Placeholder'
