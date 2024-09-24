@@ -7,13 +7,19 @@ export const useSearchResults = () => {
   const router = useRouter()
   const { clearSearch, searchQuery } = useSearch()
   const [searchResults, setSearchResults] = useState<SnippetCard[] | null>()
-  const { cards } = useGrooves()
+  const [loading, setLoading] = useState(Boolean(searchQuery))
+  const grooves = useGrooves()
 
   useEffect(() => {
+    if(grooves.loading) {
+      return
+    }
+
     if (searchQuery.length < 3) {
       document.body.classList.remove('overflow-y-hidden')
       setSearchResults(null)
       clearSearch()
+      setLoading(false)
       return
     }
 
@@ -25,20 +31,22 @@ export const useSearchResults = () => {
       router.push('/story')
     } else {
       const asyncEffect = async () => {
-        const snippets = cards.filter((card) =>
+        const snippets = grooves.cards.filter((card) =>
           [card.title, card.slug, ...card.tags].some((prop) =>
             prop.toLowerCase().includes(searchQuery.toLowerCase())
           )
         )
         setSearchResults(snippets.slice(0, 100))
+        setLoading(false)
       }
 
       document.body.classList.add('overflow-y-hidden')
       asyncEffect()
     }
-  }, [searchQuery])
+  }, [searchQuery, grooves.loading])
 
   return {
     searchResults,
+    loading: grooves.loading || loading
   }
 }

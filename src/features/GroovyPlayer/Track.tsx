@@ -89,13 +89,15 @@ type BarsProps = {
   instrument: string
 }
 
-const fn = (bars: string[], maxN = 8, n: number = 1): number => {
+const findPatternLength = (bars: string[], maxN = 8, n: number = 1): number => {
   if (n > maxN || n < 1 || n > bars.length) {
     return bars.length
   }
 
   if (n === 1) {
-    return bars.some((b) => b !== bars[0]) ? fn(bars, maxN, 2) : 1
+    return bars.some((b) => b !== bars[0])
+      ? findPatternLength(bars, maxN, 2)
+      : 1
   }
 
   const firstN = bars.slice(0, n).join()
@@ -106,7 +108,7 @@ const fn = (bars: string[], maxN = 8, n: number = 1): number => {
     .filter(Boolean)
 
   const allSame = !restNs.some((pattern) => pattern !== firstN)
-  return allSame ? n : fn(bars, maxN, n + 1)
+  return allSame ? n : findPatternLength(bars, maxN, n + 1)
 }
 
 export const Bars: FC<BarsProps> = ({
@@ -115,7 +117,7 @@ export const Bars: FC<BarsProps> = ({
   large = false,
   instrument,
 }) => {
-  const barsInPattern = Math.max(fn(bars, 8), 4)
+  const barsInPattern = Math.max(findPatternLength(bars, 8), large ? 2 : 4)
   return bars.slice(0, barsInPattern).map((bar, index) => (
     <div
       key={bar + index}

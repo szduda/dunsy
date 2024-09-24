@@ -79,9 +79,15 @@ export const usePlayground = () => {
     }
   }, [])
 
+  const searchQuery = searchParams.has('search')
+    ? `q=${searchParams.get('search')}`
+    : ''
+
   return {
     dataSeed,
     onChange: (data: Partial<Snippet>) =>
-      router.push(`/playground?${createQueryString(data)}`, { scroll: false }),
+      router.push(`/playground?${createQueryString(data)}${searchQuery}`, {
+        scroll: false,
+      }),
   }
 }
