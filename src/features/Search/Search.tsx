@@ -11,7 +11,7 @@ export const Search: FC = () => (
 )
 
 const ClientSearch: FC = () => {
-  const { suggestions, term, setTerm, submitSearch, search } = useSearchForm()
+  const { suggestions, term, setTerm, search } = useSearchForm()
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
 
@@ -55,7 +55,8 @@ const ClientSearch: FC = () => {
       <form
         className='flex relative w-full'
         onSubmit={(e) => {
-          submitSearch(e)
+          e.preventDefault()
+          search(term)
           closeSuggestions()
         }}
       >

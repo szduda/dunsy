@@ -23,7 +23,7 @@ const SearchResultsOverlayClient: FC = () => {
 
   return (
     <aside
-      style={{ zIndex: -1 }}
+      style={{ zIndex: 99 }}
       className={cx([
         'absolute top-full left-0 right-0 bg-greeny-darker transition-all duration-500 ease-in-out bg-greeny-darker',
         open

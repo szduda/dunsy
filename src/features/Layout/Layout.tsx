@@ -2,7 +2,7 @@
 
 import { FC, ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
-import { Header } from './Header'
+import { AnimatedHeader } from './Header'
 
 type Props = {
   children: ReactNode
@@ -17,7 +17,7 @@ export const Layout: FC<Props> = ({ children }) => {
 
   return (
     <div className='transition-all duration-500 ease-in-out'>
-      <Header />
+      <AnimatedHeader />
       <div className='relative'>{children}</div>
     </div>
   )
