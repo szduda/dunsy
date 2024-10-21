@@ -1,6 +1,12 @@
-import { ComponentProps, FC } from 'react'
+import { ComponentProps, FC, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { AdminButton, Logo, Search, SearchResultsOverlay } from '@/features'
+import {
+  AdminButton,
+  Logo,
+  Search,
+  SearchResultsOverlay,
+  useSearch,
+} from '@/features'
 import { Button } from '@/features/rsc'
 import { InfoIcon, LogoIcon } from '@/features/Icons'
 import { cx } from '@/utils'
@@ -10,12 +16,38 @@ const menu = {
   playground: 'Playground',
 }
 
-export const Header: FC = () => (
+const LOGO_ID = 'logo-section'
+
+export const AnimatedHeader: FC = () => {
+  const { searchQuery } = useSearch()
+
+  useEffect(() => {
+    if (searchQuery) {
+      const logoSectionHeight =
+        document.querySelector(`#${LOGO_ID}`)?.clientHeight ?? 0
+
+      if (document.body.scrollTop < logoSectionHeight) {
+        setTimeout(
+          () =>
+            document
+              .querySelector('nav')
+              ?.scrollIntoView({ behavior: 'smooth' }),
+          100
+        )
+      }
+    }
+  }, [Boolean(searchQuery)])
+
+  return <Header logoId={LOGO_ID} />
+}
+
+export const Header: FC<{ logoId?: string }> = ({ logoId }) => (
   <header
     className={cx(['sticky -top-[185px] md:-top-[225px]'])}
     style={{ zIndex: 100 }}
   >
     <div
+      id={logoId}
       className={cx([
         'flex justify-center items-center pt-8 md:pt-14 pb-6 md:pb-10 px-4 w-full',
       ])}

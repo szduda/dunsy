@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSearch } from '@/features'
 import { useGrooves } from '../Layout/GroovyContext'
 
@@ -34,22 +34,16 @@ export const useSearchForm = () => {
     }
   }
 
-  const submitSearch = (e?: FormEvent<HTMLFormElement>) => {
-    e?.preventDefault()
-    search(term)
-  }
-
   return {
-    suggestions,
     term,
+    suggestions,
+    search,
     setTerm: (term: string, options: { updateSuggestions?: boolean } = {}) => {
       setTerm(term || '')
       if (options.updateSuggestions) {
         getSuggestions(term)
       }
     },
-    submitSearch,
-    search,
   }
 }
 

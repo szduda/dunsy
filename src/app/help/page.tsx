@@ -125,7 +125,14 @@ const HelpPage: FC = () => (
 
     <Legend
       title={<span className='text-redy'>Paprika Afreaka Spice</span>}
-      description='Groove it up. Apply swing, sometimes swong.'
+      description={
+        <>
+          Groove it up. Apply swing, sometimes swong. <br />
+          Apply equally to all beats. <br />
+          Use with caution! <br />
+          It may get dangerous.
+        </>
+      }
       icon={<PepperIcon className='w-24 h-24 hover:animate-spin' />}
     />
 
