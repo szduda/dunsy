@@ -16,9 +16,9 @@ export const Layout: FC<Props> = ({ children }) => {
   }
 
   return (
-    <div className='transition-all duration-500 ease-in-out'>
+    <div>
       <AnimatedHeader />
-      <div className='relative'>{children}</div>
+      <div className='relative min-h-screen'>{children}</div>
     </div>
   )
 }

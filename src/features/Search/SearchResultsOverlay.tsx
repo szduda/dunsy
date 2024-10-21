@@ -19,7 +19,7 @@ const SearchResultsOverlayClient: FC = () => {
 
   useEffect(() => {
     setOpen(Boolean(searchQuery))
-  }, [searchQuery])
+  }, [Boolean(searchQuery)])
 
   return (
     <aside

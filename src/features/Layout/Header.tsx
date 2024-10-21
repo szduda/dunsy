@@ -16,40 +16,39 @@ const menu = {
   playground: 'Playground',
 }
 
+const LOGO_ID = 'logo-section'
+
 export const AnimatedHeader: FC = () => {
   const { searchQuery } = useSearch()
-  const [offset, setOffset] = useState(0)
 
   useEffect(() => {
-    setOffset(0)
-
     if (searchQuery) {
-      setOffset(Math.min(0, document.body.scrollTop - 225))
+      const logoSectionHeight =
+        document.querySelector(`#${LOGO_ID}`)?.clientHeight ?? 0
+
+      if (document.body.scrollTop < logoSectionHeight) {
+        setTimeout(
+          () =>
+            document
+              .querySelector('nav')
+              ?.scrollIntoView({ behavior: 'smooth' }),
+          100
+        )
+      }
     }
   }, [Boolean(searchQuery)])
 
-  return (
-    <Header
-      // className={cx(['transition-all duration-1000 ease-in-out'])}
-      style={{ transition: 'margin-top 500ms ease-in-out', marginTop: offset }}
-      logoClassName={cx([
-        'transition-all duration-500 ease-in-out',
-        searchQuery ? 'opacity-0' : 'delay-500',
-      ])}
-    />
-  )
+  return <Header logoId={LOGO_ID} />
 }
 
-export const Header: FC<
-  ComponentProps<'header'> & { logoClassName: string }
-> = ({ className, logoClassName, style }) => (
+export const Header: FC<{ logoId?: string }> = ({ logoId }) => (
   <header
     className={cx(['sticky -top-[185px] md:-top-[225px]'])}
-    style={{ zIndex: 100, ...style }}
+    style={{ zIndex: 100 }}
   >
     <div
+      id={logoId}
       className={cx([
-        logoClassName,
         'flex justify-center items-center pt-8 md:pt-14 pb-6 md:pb-10 px-4 w-full',
       ])}
     >
@@ -58,7 +57,6 @@ export const Header: FC<
     <div className='relative'>
       <nav
         className={cx([
-          className,
           'flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md max-w-screen',
         ])}
       >

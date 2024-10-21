@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export const Loading = () => (
   <main>
-    <div className='opacity-50 w-full h-screen text-3xl font-black flex flex-col items-center max-w-screen px-4 md:mt-8 tracking-widest text-center overflow-hidden'>
+    <div className='opacity-50 w-full h-screen text-3xl font-black flex flex-col items-center max-w-screen px-4 mt-8 md:mt-16 tracking-widest text-center overflow-hidden'>
       <div className='relative w-[450px] h-[450px]'>
         <Image
           fill
