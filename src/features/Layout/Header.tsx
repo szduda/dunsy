@@ -1,53 +1,23 @@
-import { ComponentProps, FC, useEffect, useState } from 'react'
+import { ComponentProps, FC } from 'react'
 import Link from 'next/link'
-import {
-  AdminButton,
-  Logo,
-  Search,
-  SearchResultsOverlay,
-  useSearch,
-} from '@/features'
+import { AdminButton, Logo, Search, SearchResultsOverlay } from '@/features'
 import { Button } from '@/features/rsc'
 import { InfoIcon, LogoIcon } from '@/features/Icons'
 import { cx } from '@/utils'
+import { LOGO_ID } from './constants'
 
 const menu = {
   grooves: 'Rhythms',
   playground: 'Playground',
 }
 
-const LOGO_ID = 'logo-section'
-
-export const AnimatedHeader: FC = () => {
-  const { searchQuery } = useSearch()
-
-  useEffect(() => {
-    if (searchQuery) {
-      const logoSectionHeight =
-        document.querySelector(`#${LOGO_ID}`)?.clientHeight ?? 0
-
-      if (document.body.scrollTop < logoSectionHeight) {
-        setTimeout(
-          () =>
-            document
-              .querySelector('nav')
-              ?.scrollIntoView({ behavior: 'smooth' }),
-          100
-        )
-      }
-    }
-  }, [Boolean(searchQuery)])
-
-  return <Header logoId={LOGO_ID} />
-}
-
-export const Header: FC<{ logoId?: string }> = ({ logoId }) => (
+export const Header: FC = () => (
   <header
     className={cx(['sticky -top-[185px] md:-top-[225px]'])}
     style={{ zIndex: 100 }}
   >
     <div
-      id={logoId}
+      id={LOGO_ID}
       className={cx([
         'flex justify-center items-center pt-8 md:pt-14 pb-6 md:pb-10 px-4 w-full',
       ])}
@@ -58,6 +28,7 @@ export const Header: FC<{ logoId?: string }> = ({ logoId }) => (
       <nav
         className={cx([
           'flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md max-w-screen',
+          'z-[100] relative',
         ])}
       >
         <div className='flex md:flex-1 items-center md:w-[64px] h-fit gap-4'>

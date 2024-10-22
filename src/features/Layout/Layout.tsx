@@ -2,7 +2,8 @@
 
 import { FC, ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
-import { AnimatedHeader } from './Header'
+import { Header } from './Header'
+import { WithScrollToNav } from './WithScrollToNav'
 
 type Props = {
   children: ReactNode
@@ -17,7 +18,9 @@ export const Layout: FC<Props> = ({ children }) => {
 
   return (
     <div>
-      <AnimatedHeader />
+      <WithScrollToNav>
+        <Header />
+      </WithScrollToNav>
       <div className='relative min-h-screen'>{children}</div>
     </div>
   )
