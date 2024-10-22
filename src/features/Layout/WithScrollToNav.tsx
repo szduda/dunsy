@@ -1,10 +1,10 @@
 'use client'
 
-import { ComponentProps, FC, Suspense, useEffect } from 'react'
+import { ComponentProps, FC, ReactNode, Suspense, useEffect } from 'react'
 import { useSearch } from '../Search/useSearch'
 import { LOGO_ID } from './constants'
 
-export const WithScrollToNav: FC<ComponentProps<typeof Suspense>> = (props) => {
+export const WithScrollToNav: FC<{ children: ReactNode }> = ({ children }) => {
   const { searchQuery } = useSearch()
 
   useEffect(() => {
@@ -24,5 +24,5 @@ export const WithScrollToNav: FC<ComponentProps<typeof Suspense>> = (props) => {
     }
   }, [Boolean(searchQuery)])
 
-  return <Suspense {...props} />
+  return children
 }

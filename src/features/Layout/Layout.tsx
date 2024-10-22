@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, Suspense } from 'react'
 import { usePathname } from 'next/navigation'
 import { Header } from './Header'
 import { WithScrollToNav } from './WithScrollToNav'
@@ -18,9 +18,11 @@ export const Layout: FC<Props> = ({ children }) => {
 
   return (
     <div>
-      <WithScrollToNav>
-        <Header />
-      </WithScrollToNav>
+      <Suspense>
+        <WithScrollToNav>
+          <Header />
+        </WithScrollToNav>
+      </Suspense>
       <div className='relative min-h-screen'>{children}</div>
     </div>
   )
