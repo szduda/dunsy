@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { BellnardNail } from '@/features/admin'
+import { FC, useMemo } from 'react'
+import { BellnardNail, useAuth } from '@/features/admin'
 import { SnippetFormProvider, useSnippetForm } from './SnippetFormContext'
 import { PatternsSection } from './inputs/PatternsSection'
 import { FormSuccessScreen } from './components/FormSuccessScreen'
@@ -14,14 +14,22 @@ import { Submit } from './components/Submit'
 import { TempoInput } from './inputs/TempoInput'
 import Link from 'next/link'
 
-export const SnippetForm: FC = () => (
-  <SnippetFormProvider>
-    <FormSuccessScreen />
-    <BellnardNail />
-    <BackToFoladmin />
-    <Form />
-  </SnippetFormProvider>
-)
+export const SnippetForm: FC = () => {
+  const { user } = useAuth()
+  const content = useMemo(
+    () => (
+      <SnippetFormProvider user={user}>
+        <FormSuccessScreen />
+        <BellnardNail />
+        <BackToFoladmin />
+        <Form />
+      </SnippetFormProvider>
+    ),
+    [user?.uid]
+  )
+
+  return content
+}
 
 const Form = () => {
   const { success } = useSnippetForm()

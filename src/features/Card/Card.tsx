@@ -7,7 +7,7 @@ export const Card = ({ slug, title, tags }: SnippetCard) => (
   <Link
     href={{ pathname: slug }}
     scroll={false}
-    className='p-2 lg:p-3 lg:pt-2 rounded-lg bg-blacky/50 flex flex-col justify-between hover:bg-blacky/75 hover:scale-105 transition'
+    className='p-2 lg:p-3 lg:pt-2 rounded-lg bg-blacky/50 flex flex-col justify-evenly hover:bg-blacky/75 hover:scale-105 transition'
   >
     <>
       <CardTags tags={tags!} className='-mx-1' />
