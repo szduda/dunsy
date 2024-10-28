@@ -11,15 +11,15 @@ export const useSearchResults = () => {
   const grooves = useGrooves()
 
   useEffect(() => {
-    if(grooves.loading) {
+    if (grooves.loading) {
       return
     }
 
     if (searchQuery.length < 3) {
       document.body.classList.remove('overflow-y-hidden')
-      setSearchResults(null)
       clearSearch()
       setLoading(false)
+      setTimeout(() => setSearchResults(null), 500)
       return
     }
 
@@ -47,6 +47,6 @@ export const useSearchResults = () => {
 
   return {
     searchResults,
-    loading: grooves.loading || loading
+    loading: grooves.loading || loading,
   }
 }

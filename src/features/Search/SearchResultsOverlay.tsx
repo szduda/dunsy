@@ -25,9 +25,9 @@ const SearchResultsOverlayClient: FC = () => {
     <aside
       style={{ zIndex: 99 }}
       className={cx([
-        'absolute top-full left-0 right-0 bg-greeny-darker transition-all duration-500 ease-in-out bg-greeny-darker',
+        'overflow-y-auto absolute top-full left-0 right-0 bg-greeny-darker transition-all duration-500 ease-in-out bg-greeny-darker',
         open
-          ? 'h-[calc(100dvh-57px)] overflow-y-auto'
+          ? 'h-[calc(100dvh-57px)]'
           : 'opacity-0 pointer-events-none -translate-y-[82px]',
       ])}
     >
@@ -54,7 +54,7 @@ const SearchResultsOverlayClient: FC = () => {
           <CloseIconButton
             onClick={() => {
               setOpen(false)
-              setTimeout(clearSearch, 800)
+              setTimeout(clearSearch, 500)
             }}
           />
         </div>
