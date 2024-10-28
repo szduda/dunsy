@@ -54,7 +54,7 @@ const SearchResultsOverlayClient: FC = () => {
           <CloseIconButton
             onClick={() => {
               setOpen(false)
-              setTimeout(clearSearch, 500)
+              setTimeout(clearSearch, 800)
             }}
           />
         </div>
