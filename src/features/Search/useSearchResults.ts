@@ -16,10 +16,13 @@ export const useSearchResults = () => {
     }
 
     if (searchQuery.length < 3) {
-      document.body.classList.remove('overflow-y-hidden')
-      clearSearch()
-      setLoading(false)
-      setTimeout(() => setSearchResults(null), 500)
+      if (searchQuery.length === 0) {
+        document.body.classList.remove('overflow-y-hidden')
+        clearSearch()
+        setLoading(false)
+        setTimeout(() => setSearchResults(null), 500)
+      }
+
       return
     }
 

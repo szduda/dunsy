@@ -18,7 +18,7 @@ export const Layout: FC<Props> = ({ children }) => {
 
   return (
     <div>
-      <Suspense>
+      <Suspense key={pathname}>
         <WithScrollToNav>
           <Header />
         </WithScrollToNav>
