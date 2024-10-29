@@ -4,13 +4,14 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
-import Image from 'next/image'
 import { User } from '@firebase/auth'
 import { auth } from '@/firebaseAuth'
 import { LoginForm, logIn, getConfig, getUserData } from '@/features/admin'
 import { onAuthStateChanged } from 'firebase/auth'
+import { Loader } from '@/features/Layout/Loader'
 
 type UserData = {
   name?: string
@@ -80,23 +81,16 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({
     }
   }, [user?.uid, userData?.isAdmin])
 
+  const ctxMemo = useMemo(
+    () => ({ user, userData, config, logIn }),
+    [user?.uid, Boolean(userData), Boolean(config)]
+  )
+
   return (
-    <AuthContext.Provider value={{ user, userData, config, logIn }}>
+    <AuthContext.Provider value={ctxMemo}>
       {loading ? (
-        <div className='fixed top-0 left-0 right-0 h-screen text-3xl font-black flex flex-col items-center justify-center p-4 tracking-widest text-center'>
-          <div className='relative w-[450px] h-[450px]'>
-            <Image
-              fill
-              sizes='(max-width: 767px) 100%, 450px'
-              placeholder='blur'
-              blurDataURL='fallback.jpeg'
-              className='rounded-lg object-cover object-bottom'
-              src={'/hotpot-ai/loader.png'}
-              quality={80}
-              alt='Dundunin The Guardian'
-            />
-          </div>
-          <div className='mt-32 pt-1 animate-pulse'>Loading...</div>
+        <div className='opacity-50 fixed inset-0'>
+          <Loader />
         </div>
       ) : user ? (
         children

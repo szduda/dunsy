@@ -1,13 +1,19 @@
-import { FC, ReactNode } from 'react'
+import { ComponentProps, FC, ReactNode } from 'react'
 import Link from 'next/link'
 import { CardTags } from '@/features'
 import { SnippetCard } from '@/features/SnippetApi'
 
-export const Card = ({ slug, title, tags }: SnippetCard) => (
+export const Card = ({
+  slug,
+  title,
+  tags,
+  onClick,
+}: SnippetCard & Partial<ComponentProps<typeof Link>>) => (
   <Link
     href={{ pathname: slug }}
+    onClick={onClick}
     scroll={false}
-    className='p-2 lg:p-3 lg:pt-2 rounded-lg bg-blacky/50 flex flex-col justify-between hover:bg-blacky/75 hover:scale-105 transition'
+    className='p-2 lg:p-3 lg:pt-2 rounded-lg bg-blacky/50 flex flex-col justify-evenly hover:bg-blacky/75 hover:scale-105 transition'
   >
     <>
       <CardTags tags={tags!} className='-mx-1' />

@@ -3,7 +3,7 @@ import { ComponentProps, FC } from 'react'
 import { External } from '../Icons/External'
 
 export const Paragraph: FC<ComponentProps<'p'>> = (props) => (
-  <p className='mt-6 text-xl leading-relaxed tracking-wide' {...props} />
+  <p className='mt-6 text-xl text-whitey/80 leading-relaxed tracking-wide' {...props} />
 )
 
 export const H2: FC<ComponentProps<'h2'>> = (props) => (

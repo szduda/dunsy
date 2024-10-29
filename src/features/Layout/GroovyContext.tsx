@@ -12,7 +12,6 @@ import {
   readSnippets,
   writeSnippets,
 } from '../SnippetApi'
-import { useAuth } from '../admin'
 
 type GroovyGarage = {
   cards: SnippetCard[]

@@ -1,8 +1,9 @@
 'use client'
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, Suspense } from 'react'
 import { usePathname } from 'next/navigation'
 import { Header } from './Header'
+import { WithScrollToNav } from './WithScrollToNav'
 
 type Props = {
   children: ReactNode
@@ -16,9 +17,13 @@ export const Layout: FC<Props> = ({ children }) => {
   }
 
   return (
-    <div className='transition-all duration-500 ease-in-out'>
-      <Header />
-      <div className='relative'>{children}</div>
+    <div>
+      <Suspense key={pathname}>
+        <WithScrollToNav>
+          <Header />
+        </WithScrollToNav>
+      </Suspense>
+      <div className='relative min-h-screen'>{children}</div>
     </div>
   )
 }

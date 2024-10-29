@@ -1,4 +1,16 @@
-import { getAuth } from 'firebase/auth'
+import {
+  browserLocalPersistence,
+  browserSessionPersistence,
+  indexedDBLocalPersistence,
+  initializeAuth,
+} from 'firebase/auth'
 import { app } from './firebase'
 
-export const auth = getAuth(app)
+export const auth = initializeAuth(app, {
+  persistence: [
+    indexedDBLocalPersistence,
+    browserLocalPersistence,
+    browserSessionPersistence,
+  ],
+  popupRedirectResolver: undefined,
+})

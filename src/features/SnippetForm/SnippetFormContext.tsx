@@ -23,6 +23,7 @@ import {
   SnippetFormContext,
 } from './types'
 import { hashify } from '@/utils'
+import { User } from '@firebase/auth'
 
 const Context = createContext<SnippetFormContext>({
   handleSubmit: Promise.resolve,
@@ -46,10 +47,10 @@ export const SnippetFormProvider: FC<{
   children: ReactNode
   dataSeed?: Partial<Snippet>
   onChange?(data: Partial<Snippet>): void
+  user?: User | null
 }> = (props) => {
   const pickContext = usePickSnippet()
   const initialData = props.dataSeed || pickContext.initialData
-  const { user } = useAuth()
   const [errors, setErrors] = useState<string[]>([])
   const [success, setSuccess] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -120,7 +121,7 @@ export const SnippetFormProvider: FC<{
     try {
       const res = formData.id
         ? await updateSnippet(formData, patternsDirty)
-        : await addSnippet({ ...formData, authorUid: user?.uid! })
+        : await addSnippet({ ...formData, authorUid: props.user?.uid! })
       if (res.ok) {
         setSuccess(true)
         setErrors([])
@@ -165,5 +166,5 @@ export const SnippetFormProvider: FC<{
     [pickContext.loading, success, mode, initialHash, formHash, busy]
   )
 
-  return <Context.Provider {...props} value={memoValue} />
+  return <Context.Provider value={memoValue}>{props.children}</Context.Provider>
 }

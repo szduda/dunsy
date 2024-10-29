@@ -20,6 +20,19 @@ const defaultData: Partial<Snippet> = {
   },
 }
 
+const formValidRegexp =
+  /[:,"{}]|swing|tempo|signal|patterns|dundunba|sangban|kenkeni|kenkeni2|bell|djembe|"[btsfxo-]+"|"\d{2,3}"|[<>-]{2,3}/
+
+const validateUrlSeed = (decodedString: string) =>
+  decodedString.replaceAll(formValidRegexp, '').length === 0
+
+const getSnippetFromUrl = (encodedString: string) => {
+  const decodedString = decompressFromEncodedURIComponent(encodedString)
+  if (validateUrlSeed(decodedString)) {
+    return JSON.parse(decodedString) || {}
+  }
+}
+
 const QUERY_PARAM = 'q'
 
 const isDataEqual = (data: Partial<Snippet>, data2: Partial<Snippet>) =>
@@ -66,14 +79,10 @@ export const usePlayground = () => {
 
   useEffect(() => {
     try {
-      const urlInput = searchParams.has(QUERY_PARAM)
-        ? JSON.parse(
-            decompressFromEncodedURIComponent(
-              searchParams.get(QUERY_PARAM) ?? ''
-            )
-          ) || {}
+      const urlSnippet = searchParams.has(QUERY_PARAM)
+        ? getSnippetFromUrl(searchParams.get(QUERY_PARAM)!)
         : null
-      setDataSeed(urlInput || defaultData)
+      setDataSeed(urlSnippet || defaultData)
     } catch (error) {
       router.push('/playground', { scroll: false })
     }

@@ -19,16 +19,16 @@ const SearchResultsOverlayClient: FC = () => {
 
   useEffect(() => {
     setOpen(Boolean(searchQuery))
-  }, [searchQuery])
+  }, [Boolean(searchQuery)])
 
   return (
     <aside
-      style={{ zIndex: -1 }}
+      style={{ zIndex: 99 }}
       className={cx([
-        'absolute top-full left-0 right-0 bg-greeny-darker transition-all duration-500 ease-in-out bg-greeny-darker',
+        'overflow-y-auto absolute top-full left-0 right-0 bg-greeny-darker transition-all duration-500 ease-in-out bg-greeny-darker',
         open
-          ? 'h-[calc(100dvh-57px)] overflow-y-auto'
-          : 'opacity-0 pointer-events-none -translate-y-[82px]',
+          ? 'h-[calc(100dvh-57px)]'
+          : 'h-0 opacity-0 pointer-events-none -translate-y-[82px]',
       ])}
     >
       {(hasResults || loading) && (

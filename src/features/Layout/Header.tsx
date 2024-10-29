@@ -4,6 +4,7 @@ import { AdminButton, Logo, Search, SearchResultsOverlay } from '@/features'
 import { Button } from '@/features/rsc'
 import { InfoIcon, LogoIcon } from '@/features/Icons'
 import { cx } from '@/utils'
+import { LOGO_ID } from './constants'
 
 const menu = {
   grooves: 'Rhythms',
@@ -16,6 +17,7 @@ export const Header: FC = () => (
     style={{ zIndex: 100 }}
   >
     <div
+      id={LOGO_ID}
       className={cx([
         'flex justify-center items-center pt-8 md:pt-14 pb-6 md:pb-10 px-4 w-full',
       ])}
@@ -26,6 +28,7 @@ export const Header: FC = () => (
       <nav
         className={cx([
           'flex justify-between items-center px-2 py-2 bg-greeny-darker shadow-md max-w-screen',
+          'z-[100] relative',
         ])}
       >
         <div className='flex md:flex-1 items-center md:w-[64px] h-fit gap-4'>

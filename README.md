@@ -36,7 +36,7 @@ A player, looper and mixer for WebAudioFont phrases.
     - to each 4 evenly spaced notes `1234 => 1....2....3....4....` 
     - you can apply some swing e.g. `1234 => 1......2..3......4..`
     - the dots are very small pauses, which when you move here or there they may eventually create a nice groovy feeling
-    - mind that `1234` is not 4 beats, but 4 quarter notes, so 1 beat
+    - mind that `1234` is not 4 beats, but 4 eight notes, so 1 beat
     - since this is still a hack when such swing is applied the tempo needs to be quintupled, which gives a note duration of 60ms allowing to play 1000 notes per minute, that's 200 BPM of perceived tempo, and still include some margin to handle javascript intervals accuracy
     - if performance allows this factor (5) will be once increased to 6, the reason is a longer story :)
       
