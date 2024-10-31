@@ -2,7 +2,7 @@ import { GroovyPlayer, Tags, TopScrollGuard } from '@/features'
 import { getSnippetBySlug, getSnippets } from '@/features/SnippetApi'
 import { ResolvingMetadata } from 'next'
 import { FC } from 'react'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { RhythmPage } from '@/features/RhythmPage'
 
 type Props = {
@@ -15,7 +15,7 @@ const PublishedRhythmPage: FC<Props> = async ({ params }) => {
   const data = await getSnippetBySlug(params.slug[0])
 
   if (!data?.published) {
-    redirect('/not-found')
+    notFound()
   }
 
   return <RhythmPage data={data} />
