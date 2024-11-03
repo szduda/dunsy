@@ -1,4 +1,12 @@
-import { ComponentProps, FC, memo, useMemo, useState } from 'react'
+import {
+  ComponentProps,
+  FC,
+  memo,
+  MouseEventHandler,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { PlayerControls } from './PlayerControls'
 import { Track } from './Track'
 import { useGroovyPlayer } from './useGroovyPlayer'
