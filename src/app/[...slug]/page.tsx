@@ -1,8 +1,7 @@
-import { GroovyPlayer, Tags, TopScrollGuard } from '@/features'
 import { getSnippetBySlug, getSnippets } from '@/features/SnippetApi'
 import { ResolvingMetadata } from 'next'
 import { FC } from 'react'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { RhythmPage } from '@/features/RhythmPage'
 
 type Props = {
