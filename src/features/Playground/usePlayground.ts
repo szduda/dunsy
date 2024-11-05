@@ -21,7 +21,7 @@ const defaultData: Partial<Snippet> = {
 }
 
 const formValidRegexp =
-  /[:,"{}]|swing|tempo|signal|patterns|dundunba|sangban|kenkeni|kenkeni2|bell|djembe|"[btsfxo-]+"|"\d{2,3}"|[<>-]{2,3}/
+  /swing|tempo|signal|patterns|dundunba|sangban|kenkeni|kenkeni2|bell|djembe|"[btsfxo-]+"|"\d{2,3}"|[<>-]{2,3}|[:,"{}]/g
 
 const validateUrlSeed = (decodedString: string) =>
   decodedString.replaceAll(formValidRegexp, '').length === 0
