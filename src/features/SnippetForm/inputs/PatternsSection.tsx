@@ -11,9 +11,9 @@ export const PatternsSection: FC<{
 }> = ({ title = 'Patterns', onClear, syncPlayerTempo = false }) => {
   const [inputsVisible, setInputsVisible] = useState(false)
   return (
-    <div className='bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24'>
-      <div className='text-xl pb-4 flex justify-between items-center gap-4'>
-        <div className='flex gap-6 items-center'>
+    <div className='bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-8 md:px-8'>
+      <div className='text-xl pb-8 flex justify-between items-center gap-4'>
+        <div className='flex flex-1 gap-6 items-center'>
           {title?.length > 0 && (
             <h3 className='text-yellowy tracking-wide'>{title}</h3>
           )}
@@ -21,10 +21,10 @@ export const PatternsSection: FC<{
             mini
             padding='px-1 py-.5'
             onClick={() => setInputsVisible(!inputsVisible)}
-            className='border w-auto bg-greeny! text-sm font-medium opacity-75 hover:opacity-100'
+            className='border border-greeny-lighter text-nowrap bg-greeny! text-sm font-medium opacity-75 hover:opacity-100'
             colorClasses='bg-greeny-dark hover:bg-greeny'
           >
-            {`${inputsVisible ? 'Hide' : 'Show'} Classic Editor`}
+            {`${inputsVisible ? 'Hide' : 'Show'} Editor`}
           </Button>
           {onClear && (
             <Button
@@ -41,7 +41,7 @@ export const PatternsSection: FC<{
       </div>
 
       {inputsVisible && (
-        <div className='grid grid-flow-row gap-8 mt-4'>
+        <div className='grid grid-flow-row gap-8 mt-4 mb-12'>
           <PatternInput label='Dundunba' track='dundunba' />
           <PatternInput label='Sangban' track='sangban' />
           <PatternInput label='Kenkeni' track='kenkeni' />
@@ -51,10 +51,8 @@ export const PatternsSection: FC<{
         </div>
       )}
 
-      <div className='pt-8 lg:pt-12'>
-        <div className='-mx-2 w-fill xl:-mx-24'>
-          <FormPlayer syncTempo={syncPlayerTempo} />
-        </div>
+      <div className='-mx-2 w-fill xl:-mx-8'>
+        <FormPlayer syncTempo={syncPlayerTempo} />
       </div>
     </div>
   )
@@ -66,7 +64,7 @@ const PatternsSectionHint = () => {
     <div className='pl-4 text-yellowy text-sm text-right'>
       {currentBarSize > 0 ? (
         <div className='flex items-center'>
-          <div className='mr-2 opacity-50'>notes in bar:</div>
+          <div className='mr-2 opacity-50'>grid:</div>
           <div
             className='bg-black rounded-full w-8 h-8 flex items-center justify-center text-xl cursor-help'
             title='Resolved from your first pattern. All patterns must by divisible by this number.'

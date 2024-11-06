@@ -6,13 +6,13 @@ type Props = {
   defaultWidth?: number
 }
 
-export const useCanvasWidth = ({ canvasId, defaultWidth = 300 }: Props) => {
+export const useCanvasWidth = ({ canvasId, defaultWidth = 280 }: Props) => {
   const [canvasWidth, setCanvasWidth] = useState(defaultWidth)
 
   useEffect(() => {
     const handler = () => {
       setCanvasWidth(
-        document.getElementById(canvasId)?.parentElement?.clientWidth ?? 300
+        document.getElementById(canvasId)?.parentElement?.clientWidth ?? defaultWidth
       )
     }
     handler()

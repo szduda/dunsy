@@ -33,11 +33,16 @@ const stickRenderer: NoteRenderer = (ctx, el) => {
   ctx.stroke()
 }
 
+const flamRenderer: NoteRenderer = (ctx, el) => {
+  drawCircle(ctx, el, getR(el))
+}
+
 const xRenderer: NoteRenderer = (ctx, el) =>
   drawCross(ctx, el, getR(el) + 4, getR(el) / 3.5)
 
 const pauseSymbol: CharsRenderer = {
-  '-': (ctx, el) => drawCircle(ctx, el, el.height / 30),
+  '-': (ctx, el) =>
+    drawCircle(ctx, { ...el, colour: colors.w0 }, el.height / 30),
 }
 const dundunSymbols: CharsRenderer = {
   ...pauseSymbol,
@@ -56,10 +61,14 @@ export const font: FontRenderer = {
     b: soundLowRenderer,
     t: soundMidRenderer,
     s: soundHighRenderer,
-    f: stickRenderer,
+    f: flamRenderer,
   },
   bell: {
     ...pauseSymbol,
     x: xRenderer,
+  },
+  stick: {
+    ...pauseSymbol,
+    x: stickRenderer,
   },
 }

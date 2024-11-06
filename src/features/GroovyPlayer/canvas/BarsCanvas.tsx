@@ -16,6 +16,7 @@ import { detectCollision } from './detectCollision'
 import { findPatternLength } from './findPatterLength'
 import { cx } from '@/utils'
 import { Button } from '@/features/Button'
+import { IconLink } from '@/features/IconLink/IconLink'
 
 type BarsProps = {
   id: string
@@ -25,19 +26,26 @@ type BarsProps = {
   instrument: string
   readonly?: boolean
   onChange?(args: PlayerChangeArgs): void
+  demo?: boolean
+  defaultWidth?: number
 }
 
 export const Bars: FC<BarsProps> = ({
+  id,
   bars,
   activeIndex = -1,
   large = false,
   instrument,
   readonly = true,
   onChange,
+  demo = false,
+  defaultWidth = 280,
 }) => {
-  const canvasId = `${instrument}-canvas`
-  const canvasWidth = useCanvasWidth({ canvasId })
-  const viewportModifier = canvasWidth < 900 ? 0.5 : 1
+  const canvasId = `${instrument}-${id}-canvas`
+  const _canvasWidth = useCanvasWidth({ canvasId, defaultWidth })
+  const canvasWidth = demo ? 200 : _canvasWidth
+  const viewportModifier =
+    canvasWidth < 280 ? 0.25 : canvasWidth < 900 ? 0.5 : 1
   const barsPerRow = viewportModifier * (large ? 4 : 8)
   const barsInPattern = Math.max(findPatternLength(bars, 8), barsPerRow)
   const hash = bars.join('')
@@ -100,11 +108,13 @@ export const Bars: FC<BarsProps> = ({
   const noteHeight = large ? BAR_HEIGHT_LARGE_PX : BAR_HEIGHT_PX
 
   return (
-    <div className='flex items-end'>
+    <div className='flex flex-col items-end gap-2'>
       <canvas
         id={canvasId}
         height={
-          (noteHeight + 2 * BAR_GAP_PX) * Math.ceil(barsInPattern / barsPerRow)
+          (noteHeight + 2 * BAR_GAP_PX) *
+            Math.ceil(barsInPattern / barsPerRow) -
+          2 * BAR_GAP_PX
         }
         width={canvasWidth}
         className={cx(['bg-blacky h-auto', !readonly && 'cursor-pointer'])}
@@ -130,7 +140,7 @@ export const Bars: FC<BarsProps> = ({
         }}
         onContextMenu={(e) => e.preventDefault()}
       />
-      {!readonly && (
+      {!readonly && !demo && (
         <Button
           onClick={(e) =>
             onChange?.({
@@ -140,10 +150,11 @@ export const Bars: FC<BarsProps> = ({
           }
           mini
           circle
-          padding='p-1'
-          className='w-10 h-10 text-2xl font-black flex items-center justify-center'
+          padding='px-3 py-1'
+          colorClasses='bg-greeny hover:bg-greeny-light'
+          className='text-2xl font-black flex items-center justify-center'
         >
-          +
+          ++
         </Button>
       )}
     </div>
@@ -182,6 +193,7 @@ const rollNextNote = (
     validNoteIndex === validNotes.length - 1 ? 0 : validNoteIndex + 1
   const nextEl = {
     ...(target.element as Required<CanvasElement>),
+    colour: colors.w2,
     note: leftButtonClicked ? validNotes[nextNoteIndex] : '-',
   }
 

@@ -36,10 +36,11 @@ export const renderNote = ({ instrument, el, context }: RendererArgs) => {
 
 export const renderBarWrapper = ({ context, el }: RendererArgs) => {
   context.fillStyle = el.bgColor
+  context.lineCap = 'square'
   context.fillRect(el.left, el.top, el.width, el.height)
   context.beginPath()
-  context.moveTo(el.left + el.width, el.top - 2)
-  context.lineTo(el.left + el.width, el.top + el.height + 2)
+  context.moveTo(el.left + el.width + 2, el.top + 1)
+  context.lineTo(el.left + el.width + 2, el.top + el.height - 1)
   context.strokeStyle = colors.w0
   context.lineWidth = 2
   context.stroke()
