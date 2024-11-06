@@ -107,37 +107,41 @@ const GroovyPlayerEngine: FC<Props> = ({
 
   const tracksMemo = useMemo(
     () =>
-      tracks.map(({ title, instrument, pattern }, index) => {
-        const barSize = 2 * beatSize
-        const _signal = matchSignal(beatSize, signal, swingStyle)
-        const signalTrack = rest.signalActive && instrument === 'djembe'
-        const prolongedSignal =
-          '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
-        const excess = pattern.length % barSize
-        const _pattern =
-          excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern
-        const prolongedPattern = _pattern?.repeat(loopLength / _pattern.length)
+      tracks
+        .sort((t1, t2) => t1.title.localeCompare(t2.title))
+        .map(({ title, instrument, pattern }, index) => {
+          const barSize = 2 * beatSize
+          const _signal = matchSignal(beatSize, signal, swingStyle)
+          const signalTrack = rest.signalActive && instrument === 'djembe'
+          const prolongedSignal =
+            '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
+          const excess = pattern.length % barSize
+          const _pattern =
+            excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern
+          const prolongedPattern = _pattern?.repeat(
+            loopLength / _pattern.length
+          )
 
-        return (
-          <Track
-            onChange={onChange}
-            readonly={readonly}
-            key={`${title}${index}`}
-            title={signalTrack ? 'djembe signal' : title}
-            highlight={signalTrack}
-            beat={beat}
-            instrument={instrument}
-            pattern={
-              (rest.signalActive || rest.signalRequested) &&
-              instrument === 'djembe'
-                ? prolongedSignal
-                : prolongedPattern
-            }
-            muted={muted[instrument]}
-            setMuted={(value) => setMuted({ ...muted, [instrument]: value })}
-          />
-        )
-      }),
+          return (
+            <Track
+              onChange={onChange}
+              readonly={readonly}
+              key={`${title}${index}`}
+              title={signalTrack ? 'djembe signal' : title}
+              highlight={signalTrack}
+              beat={beat}
+              instrument={instrument}
+              pattern={
+                (rest.signalActive || rest.signalRequested) &&
+                instrument === 'djembe'
+                  ? prolongedSignal
+                  : prolongedPattern
+              }
+              muted={muted[instrument]}
+              setMuted={(value) => setMuted({ ...muted, [instrument]: value })}
+            />
+          )
+        }),
     [
       beat,
       muted,

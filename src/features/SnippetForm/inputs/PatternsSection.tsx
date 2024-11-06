@@ -21,7 +21,7 @@ export const PatternsSection: FC<{
             mini
             padding='px-1 py-.5'
             onClick={() => setInputsVisible(!inputsVisible)}
-            className='border border-greeny-lighter text-nowrap bg-greeny! text-sm font-medium opacity-75 hover:opacity-100'
+            className='border border-whitey/50 text-nowrap bg-greeny! text-sm font-medium opacity-75 hover:opacity-100'
             colorClasses='bg-greeny-dark hover:bg-greeny'
           >
             {`${inputsVisible ? 'Hide' : 'Show'} Editor`}
@@ -30,7 +30,7 @@ export const PatternsSection: FC<{
             <Button
               padding='px-1 py-.5'
               mini
-              className='border border-whitey text-sm font-medium opacity-75 hover:opacity-100'
+              className='border border-whitey/50 text-sm font-medium opacity-75 hover:opacity-100'
               onClick={onClear}
             >
               Clear

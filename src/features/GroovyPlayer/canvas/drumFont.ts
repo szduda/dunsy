@@ -36,10 +36,16 @@ const stickRenderer: NoteRenderer = (ctx, el) => {
 type FlamRenderer = (notes: [NoteRenderer, NoteRenderer]) => NoteRenderer
 
 const flamRenderer: FlamRenderer = (notes) => (ctx, el) => {
-  const top = el.top - getR(el) / 2
-  const left = el.left - getR(el) / 3
+  const top = el.top - getR(el) * 0.2
+  const left = el.left - getR(el) * 0.1
   const [leftRenderer, rightRenderer] = notes
-  leftRenderer(ctx, { ...el, top, left })
+  leftRenderer(ctx, {
+    ...el,
+    top,
+    left,
+    height: el.height * 0.8,
+    width: el.width * 0.8,
+  })
   rightRenderer(ctx, { ...el, top: el.top + 1, left: el.left + 1 })
 }
 
@@ -48,30 +54,30 @@ const stFlamRenderer: NoteRenderer = flamRenderer([
   soundMidRenderer,
 ])
 
-const tsFlamRenderer: NoteRenderer = (ctx, el) => {
-  soundMidRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
-  soundHighRenderer(ctx, el)
-}
+const tsFlamRenderer: NoteRenderer = flamRenderer([
+  soundMidRenderer,
+  soundHighRenderer,
+])
 
-const ttFlamRenderer: NoteRenderer = (ctx, el) => {
-  soundMidRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
-  soundMidRenderer(ctx, el)
-}
+const ttFlamRenderer: NoteRenderer = flamRenderer([
+  soundMidRenderer,
+  soundMidRenderer,
+])
 
-const ssFlamRenderer: NoteRenderer = (ctx, el) => {
-  soundHighRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
-  soundHighRenderer(ctx, el)
-}
+const ssFlamRenderer: NoteRenderer = flamRenderer([
+  soundHighRenderer,
+  soundHighRenderer,
+])
 
-const bsFlamRenderer: NoteRenderer = (ctx, el) => {
-  soundLowRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
-  soundHighRenderer(ctx, el)
-}
+const bsFlamRenderer: NoteRenderer = flamRenderer([
+  soundLowRenderer,
+  soundHighRenderer,
+])
 
-const btFlamRenderer: NoteRenderer = (ctx, el) => {
-  soundLowRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
-  soundMidRenderer(ctx, el)
-}
+const btFlamRenderer: NoteRenderer = flamRenderer([
+  soundLowRenderer,
+  soundMidRenderer,
+])
 
 const xRenderer: NoteRenderer = (ctx, el) =>
   drawCross(ctx, el, getR(el) + 4, getR(el) / 3.5)

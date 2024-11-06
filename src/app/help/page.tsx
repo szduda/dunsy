@@ -74,7 +74,7 @@ const HelpPage: FC = () => (
         <p>
           Rhythm not found?
           <br />
-          <TextLink href='/grooves' scroll={false}>
+          <TextLink href='/playground' scroll={false}>
             Create shareable loops
           </TextLink>{' '}
           in the sandbox.
@@ -195,11 +195,18 @@ const HelpPage: FC = () => (
       }
       icon={
         <div className='flex flex-col items-center'>
-          <BarsCanvas large id='' bars={['--------']} instrument='djembe' />
+          <BarsCanvas
+            defaultWidth={180}
+            large
+            id='4/4 bar'
+            bars={['--------']}
+            instrument='djembe'
+          />
           <div className='w-fit mt-4'>
             <BarsCanvas
+              defaultWidth={180}
               large
-              id=''
+              id='6/8 bar'
               bars={['------']}
               instrument='djembe'
               activeIndex={0}
