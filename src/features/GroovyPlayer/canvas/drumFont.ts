@@ -33,8 +33,44 @@ const stickRenderer: NoteRenderer = (ctx, el) => {
   ctx.stroke()
 }
 
-const flamRenderer: NoteRenderer = (ctx, el) => {
-  drawCircle(ctx, el, getR(el))
+type FlamRenderer = (notes: [NoteRenderer, NoteRenderer]) => NoteRenderer
+
+const flamRenderer: FlamRenderer = (notes) => (ctx, el) => {
+  const top = el.top - getR(el) / 2
+  const left = el.left - getR(el) / 3
+  const [leftRenderer, rightRenderer] = notes
+  leftRenderer(ctx, { ...el, top, left })
+  rightRenderer(ctx, { ...el, top: el.top + 1, left: el.left + 1 })
+}
+
+const stFlamRenderer: NoteRenderer = flamRenderer([
+  soundHighRenderer,
+  soundMidRenderer,
+])
+
+const tsFlamRenderer: NoteRenderer = (ctx, el) => {
+  soundMidRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
+  soundHighRenderer(ctx, el)
+}
+
+const ttFlamRenderer: NoteRenderer = (ctx, el) => {
+  soundMidRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
+  soundMidRenderer(ctx, el)
+}
+
+const ssFlamRenderer: NoteRenderer = (ctx, el) => {
+  soundHighRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
+  soundHighRenderer(ctx, el)
+}
+
+const bsFlamRenderer: NoteRenderer = (ctx, el) => {
+  soundLowRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
+  soundHighRenderer(ctx, el)
+}
+
+const btFlamRenderer: NoteRenderer = (ctx, el) => {
+  soundLowRenderer(ctx, { ...el, top: el.top - 10, left: el.left - 3 })
+  soundMidRenderer(ctx, el)
 }
 
 const xRenderer: NoteRenderer = (ctx, el) =>
@@ -61,7 +97,12 @@ export const font: FontRenderer = {
     b: soundLowRenderer,
     t: soundMidRenderer,
     s: soundHighRenderer,
-    f: flamRenderer,
+    f: ttFlamRenderer,
+    p: ssFlamRenderer,
+    l: tsFlamRenderer,
+    k: stFlamRenderer,
+    g: bsFlamRenderer,
+    d: btFlamRenderer,
   },
   bell: {
     ...pauseSymbol,

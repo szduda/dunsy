@@ -3,16 +3,19 @@ import { CanvasElement } from '../types'
 export const drawCircle = (
   ctx: CanvasRenderingContext2D,
   el: CanvasElement,
-  radius: number
+  radius: number,
+  angle?: [number, number]
 ) => {
+  const startAngle = Math.min(360, Math.max(0, angle?.[0] ?? 0))
+  const endAngle = Math.min(360, Math.max(0, angle?.[1] ?? 360))
   ctx.fillStyle = el.colour!
   ctx.beginPath()
   ctx.arc(
     el.left + el.width / 2,
     el.top + el.height / 2,
     radius,
-    0,
-    2 * Math.PI
+    (startAngle / 180) * Math.PI,
+    (endAngle / 180) * Math.PI
   )
   ctx.fill()
 }
@@ -22,16 +25,20 @@ export const drawRing = (
   el: CanvasElement,
   radius: number,
   stroke: number,
-  bgColor: string
+  bgColor: string,
+  angle?: [number, number]
 ) => {
+  const startAngle = Math.min(360, Math.max(0, angle?.[0] ?? 0))
+  const endAngle = Math.min(360, Math.max(0, angle?.[1] ?? 360))
+
   ctx.fillStyle = el.colour!
   ctx.beginPath()
   ctx.arc(
     el.left + el.width / 2,
     el.top + el.height / 2,
     radius,
-    0,
-    2 * Math.PI
+    (startAngle / 180) * Math.PI,
+    (endAngle / 180) * Math.PI
   )
   ctx.fill()
 
@@ -41,8 +48,8 @@ export const drawRing = (
     el.left + el.width / 2,
     el.top + el.height / 2,
     radius - stroke,
-    0,
-    2 * Math.PI
+    (startAngle / 180) * Math.PI,
+    (endAngle / 180) * Math.PI
   )
   ctx.fill()
 }
