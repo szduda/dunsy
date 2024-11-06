@@ -59,18 +59,21 @@ export const PatternsSection: FC<{
 }
 
 const PatternsSectionHint = () => {
-  const { currentBarSize } = useSnippetForm()
+  const { currentBarSize, updateFormData } = useSnippetForm()
   return (
     <div className='pl-4 text-yellowy text-sm text-right'>
       {currentBarSize > 0 ? (
         <div className='flex items-center'>
           <div className='mr-2 opacity-50'>grid:</div>
-          <div
-            className='bg-black rounded-full w-8 h-8 flex items-center justify-center text-xl cursor-help'
+          <button
+            className='bg-black rounded-full w-8 h-8 flex items-center justify-center text-xl hover:bg-orangey/50 active:scale-95'
             title='Resolved from your first pattern. All patterns must by divisible by this number.'
+            onClick={() =>
+              updateFormData({ beatSize: currentBarSize === 8 ? 3 : 4 })
+            }
           >
             {currentBarSize || '?'}
-          </div>
+          </button>
         </div>
       ) : (
         'min 1 pattern required'

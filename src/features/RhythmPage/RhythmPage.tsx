@@ -20,6 +20,7 @@ export const RhythmPage: FC<{ data: Snippet }> = ({ data }) => (
       signal={data.signal}
       divProps={{ className: 'md:w-full mt-12 md:mt-16 -mx-2' }}
       swingStyle={data.swing}
+      beatSize={data.beatSize}
       tempo={data.tempo ? Number(data.tempo) : 110}
       tracks={Object.keys(data.patterns)
         .map((instrument) => ({

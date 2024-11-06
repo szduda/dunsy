@@ -14,7 +14,7 @@ import {
   getSnippet,
   Snippet,
 } from '@/features/SnippetApi'
-import { useAuth, usePickSnippet } from '@/features/admin'
+import { usePickSnippet } from '@/features/admin'
 import {
   DEFAULT_FORM_DATA,
   FormData,
@@ -90,7 +90,9 @@ export const SnippetFormProvider: FC<{
   }, [initialHash, pickContext.loading])
 
   const len = Object.values(formData.patterns).find(Boolean)?.length ?? 0
-  const currentBarSize = 2 * (len % 3 === 0 ? 3 : len % 4 === 0 ? 4 : 0)
+  const _currentBarSize = 2 * (len % 3 === 0 ? 3 : len % 4 === 0 ? 4 : 0)
+  const x = len > 2 && len >= _currentBarSize ? _currentBarSize : 0
+  const currentBarSize = formData.beatSize * 2 || x
 
   const updateFormData = (partial: Partial<FormData>) =>
     setFormData((state) => ({
@@ -161,7 +163,7 @@ export const SnippetFormProvider: FC<{
       setMode,
       formData,
       updateFormData,
-      currentBarSize: len > 2 && len >= currentBarSize ? currentBarSize : -2,
+      currentBarSize,
     }),
     [pickContext.loading, success, mode, initialHash, formHash, busy]
   )

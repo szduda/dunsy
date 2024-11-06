@@ -11,6 +11,7 @@ export const useGroovyPlayer = ({
   initialMetronome = true,
   swingStyle = '',
   initialTempo = 110,
+  beatSize: _beatSize,
   signal = '',
 }: GroovyPlayerHook) => {
   const midiSounds = useMidiSounds()
@@ -26,7 +27,8 @@ export const useGroovyPlayer = ({
   const currentBeats = useRef(Array<number[][]>())
 
   const loopLength = tracks.sort(byPatternLength)[0]?.pattern?.length ?? 0
-  const beatSize = loopLength % 3 === 0 ? 3 : 4
+  const beatSize = _beatSize || (loopLength % 3 === 0 ? 3 : 4)
+
   const swingModifier = swing && swingStyle ? 6 : 1
 
   const calcTrueTempo = () => (beatSize / 4) * tempo * swingModifier
@@ -119,7 +121,7 @@ export const useGroovyPlayer = ({
   const maybePlaySignal = () => {
     const swingAwareLoopLength = loopLength * swingModifier
     const signalLength =
-      (signal?.length ?? (beatSize % 6 === 0 ? 12 : 16)) * swingModifier
+      (signal?.length ?? (beatSize % 3 === 0 ? 12 : 16)) * swingModifier
     const lastNoteBeforeSignal = swingAwareLoopLength - signalLength - 1
     const startSignalOnNoteIndex =
       lastNoteBeforeSignal > 0 ? lastNoteBeforeSignal : swingAwareLoopLength - 1

@@ -15,6 +15,7 @@ export const PlaygroundDemo = () => {
         }}
       >
         <BarsCanvas
+          beatSize={6}
           large
           demo
           readonly={false}

@@ -16,7 +16,6 @@ import { detectCollision } from './detectCollision'
 import { findPatternLength } from './findPatterLength'
 import { cx } from '@/utils'
 import { Button } from '@/features/Button'
-import { IconLink } from '@/features/IconLink/IconLink'
 
 type BarsProps = {
   id: string
@@ -28,6 +27,7 @@ type BarsProps = {
   onChange?(args: PlayerChangeArgs): void
   demo?: boolean
   defaultWidth?: number
+  beatSize: number
 }
 
 export const Bars: FC<BarsProps> = ({
@@ -36,6 +36,7 @@ export const Bars: FC<BarsProps> = ({
   activeIndex = -1,
   large = false,
   instrument,
+  beatSize,
   readonly = true,
   onChange,
   demo = false,
@@ -74,7 +75,7 @@ export const Bars: FC<BarsProps> = ({
   }
 
   // paint all bars
-  useEffect(renderAll, [hash, canvasId, canvasWidth, large])
+  useEffect(renderAll, [hash, canvasId, canvasWidth, large, beatSize])
 
   // repaint transitioning bars on beat pulse
   useEffect(() => {
@@ -150,9 +151,9 @@ export const Bars: FC<BarsProps> = ({
           }
           mini
           circle
-          padding='px-3 py-1'
-          colorClasses='bg-greeny hover:bg-greeny-light'
-          className='text-2xl font-black flex items-center justify-center'
+          padding='px-3 py-0'
+          colorClasses='bg-orangey/40 hover:bg-greeny-light'
+          className='text-xl font-black flex items-center justify-center'
         >
           ++
         </Button>
@@ -166,7 +167,8 @@ export const BarsCanvas = memo(
   (prev, next) =>
     prev.id === next.id &&
     prev.activeIndex === next.activeIndex &&
-    prev.large === next.large
+    prev.large === next.large &&
+    prev.beatSize === next.beatSize
 )
 
 // handle canvas interactions

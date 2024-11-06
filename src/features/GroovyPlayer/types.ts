@@ -13,6 +13,7 @@ export type GroovyPlayerHook = {
   swingStyle: SwingStyle
   initialTempo: number
   signal?: string
+  beatSize?: number
 }
 
 export type CanvasElement = {

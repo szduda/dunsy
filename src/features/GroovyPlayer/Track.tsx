@@ -14,6 +14,7 @@ type Props = {
   highlight?: boolean
   onChange?(args: PlayerChangeArgs): void
   readonly?: boolean
+  beatSize?: number
 }
 
 export const Track: FC<Props> = ({
@@ -26,13 +27,11 @@ export const Track: FC<Props> = ({
   highlight = false,
   onChange,
   readonly = true,
+  beatSize = 4,
 }) => {
-  const barSize =
-    [6, 8].find((length) => pattern.length % length === 0) ?? pattern.length
-
   const bars = useMemo(
-    () => pattern?.match(RegExp(`.{1,${barSize}}`, 'g')) ?? [],
-    [pattern]
+    () => pattern?.match(RegExp(`.{1,${beatSize * 2}}`, 'g')) ?? [],
+    [pattern, beatSize]
   )
 
   const { largeBars, videoSync } = usePlayerSettings()
@@ -61,6 +60,7 @@ export const Track: FC<Props> = ({
       <div className={cx(['transition', muted && 'opacity-10'])}>
         {pattern ? (
           <BarsCanvas
+            beatSize={beatSize}
             readonly={readonly}
             onChange={onChange}
             large={largeBars}

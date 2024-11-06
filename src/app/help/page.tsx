@@ -97,6 +97,7 @@ const HelpPage: FC = () => (
           <div className='w-fit grid my-4 gap-2 w-full'>
             <div className='flex'>
               <BarsCanvas
+                beatSize={4}
                 large
                 id='4/4 call'
                 bars={['f-tt-t-t', 't-t-t---']}
@@ -105,6 +106,7 @@ const HelpPage: FC = () => (
             </div>
             <div className='flex'>
               <BarsCanvas
+                beatSize={6}
                 large
                 id='6/8 call'
                 bars={['f-tt-t', 't-tt--']}
@@ -113,6 +115,7 @@ const HelpPage: FC = () => (
             </div>
             <div className='flex'>
               <BarsCanvas
+                beatSize={6}
                 large
                 id='6/4 alternative call'
                 bars={['ttttt-', 'tt-t--']}
@@ -197,6 +200,7 @@ const HelpPage: FC = () => (
         <div className='flex flex-col items-center'>
           <BarsCanvas
             defaultWidth={180}
+            beatSize={4}
             large
             id='4/4 bar'
             bars={['--------']}
@@ -205,6 +209,7 @@ const HelpPage: FC = () => (
           <div className='w-fit mt-4'>
             <BarsCanvas
               defaultWidth={180}
+              beatSize={6}
               large
               id='6/8 bar'
               bars={['------']}

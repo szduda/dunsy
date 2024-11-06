@@ -33,6 +33,7 @@ export type Props = {
   readonly?: boolean
   onChange?(args: PlayerChangeArgs): void
   divProps?: ComponentProps<'div'>
+  beatSize?: number
 }
 
 const GroovyPlayerEngine: FC<Props> = ({
@@ -45,6 +46,7 @@ const GroovyPlayerEngine: FC<Props> = ({
   readonly = true,
   onChange,
   divProps,
+  beatSize: _beatSize,
 }) => {
   const { slug } = useParams()
   const { muted, setMuted, loopLength, beat, beatSize, ...rest } =
@@ -55,6 +57,7 @@ const GroovyPlayerEngine: FC<Props> = ({
       initialTempo,
       swingStyle,
       signal,
+      beatSize: _beatSize,
     })
 
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -124,6 +127,7 @@ const GroovyPlayerEngine: FC<Props> = ({
 
           return (
             <Track
+              beatSize={beatSize}
               onChange={onChange}
               readonly={readonly}
               key={`${title}${index}`}
