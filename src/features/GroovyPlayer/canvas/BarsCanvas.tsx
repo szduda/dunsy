@@ -1,12 +1,21 @@
 'use client'
 
-import { FC, memo, MouseEventHandler, useEffect, useState } from 'react'
-import { CanvasElement } from '../types'
-import { BAR_GAP_PX, colors, renderBar, renderNote } from './renderers'
+import { FC, memo, useEffect, useState } from 'react'
+import { CanvasElement, PlayerChangeArgs } from '../types'
+import {
+  BAR_GAP_PX,
+  BAR_HEIGHT_LARGE_PX,
+  BAR_HEIGHT_PX,
+  colors,
+  renderBar,
+  renderNote,
+} from './renderers'
 import { font } from './drumFont'
 import { useCanvasWidth } from './useCanvasWidth'
 import { detectCollision } from './detectCollision'
 import { findPatternLength } from './findPatterLength'
+import { cx } from '@/utils'
+import { Button } from '@/features/Button'
 
 type BarsProps = {
   id: string
@@ -14,6 +23,8 @@ type BarsProps = {
   large?: boolean
   activeIndex?: number
   instrument: string
+  readonly?: boolean
+  onChange?(args: PlayerChangeArgs): void
 }
 
 export const Bars: FC<BarsProps> = ({
@@ -21,13 +32,15 @@ export const Bars: FC<BarsProps> = ({
   activeIndex = -1,
   large = false,
   instrument,
+  readonly = true,
+  onChange,
 }) => {
   const canvasId = `${instrument}-canvas`
   const canvasWidth = useCanvasWidth({ canvasId })
   const viewportModifier = canvasWidth < 900 ? 0.5 : 1
   const barsPerRow = viewportModifier * (large ? 4 : 8)
   const barsInPattern = Math.max(findPatternLength(bars, 8), barsPerRow)
-  const hash = bars.join()
+  const hash = bars.join('')
 
   const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([])
 
@@ -84,51 +97,56 @@ export const Bars: FC<BarsProps> = ({
     barsPerRow,
   ])
 
-  // handle canvas interactions
-  const rollNextNote: MouseEventHandler<HTMLCanvasElement> = (event) => {
-    event.preventDefault()
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement
-    const target = detectCollision(canvas, canvasElements, event)
-    const leftButtonClicked = event.button === 0
-
-    if (target?.element?.type !== 'note') {
-      return
-    }
-
-    const validNotes = Object.keys(font[instrument]).filter(
-      (char) => char !== '-'
-    )
-    const validNoteIndex = validNotes.indexOf(target.element.note!)
-    const nextNoteIndex =
-      validNoteIndex === validNotes.length - 1 ? 0 : validNoteIndex + 1
-    const newNoteEl = {
-      ...(target.element as Required<CanvasElement>),
-      note: leftButtonClicked ? validNotes[nextNoteIndex] : '-',
-    }
-
-    const newElements = [...canvasElements]
-    newElements[target.index] = newNoteEl
-    renderNote({
-      instrument,
-      noteEl: newNoteEl,
-      context: canvas.getContext('2d')!,
-    })
-    setCanvasElements(newElements)
-  }
-
-  const noteHeight = large ? 40 : 25
+  const noteHeight = large ? BAR_HEIGHT_LARGE_PX : BAR_HEIGHT_PX
 
   return (
-    <canvas
-      id={canvasId}
-      height={
-        (noteHeight + 2 * BAR_GAP_PX) * Math.ceil(barsInPattern / barsPerRow)
-      }
-      width={canvasWidth}
-      className='bg-blacky h-auto'
-      onMouseUp={rollNextNote}
-      onContextMenu={(e) => e.preventDefault()}
-    />
+    <div className='flex items-end'>
+      <canvas
+        id={canvasId}
+        height={
+          (noteHeight + 2 * BAR_GAP_PX) * Math.ceil(barsInPattern / barsPerRow)
+        }
+        width={canvasWidth}
+        className={cx(['bg-blacky h-auto', !readonly && 'cursor-pointer'])}
+        onMouseUp={(e) => {
+          if (readonly) {
+            return
+          }
+
+          const { nextElements, currentEl, nextEl } = rollNextNote(e, {
+            canvasId,
+            canvasElements,
+            instrument,
+          })
+          if ((currentEl?.barIndex ?? -1) > -1 && nextElements) {
+            setCanvasElements(nextElements)
+            const _bars = [...bars]
+            const pattern = [..._bars[currentEl.barIndex!]]
+            pattern[nextEl.noteIndex] = nextEl.note
+            _bars[currentEl.barIndex!] = pattern.join('')
+            console.log(instrument, pattern.join(''))
+            onChange?.({ instrument, newPattern: _bars.join('') })
+          }
+        }}
+        onContextMenu={(e) => e.preventDefault()}
+      />
+      {!readonly && (
+        <Button
+          onClick={(e) =>
+            onChange?.({
+              instrument,
+              newPattern: hash + Array(bars[0]?.length).fill('-').join(''),
+            })
+          }
+          mini
+          circle
+          padding='p-1'
+          className='w-10 h-10 text-2xl font-black flex items-center justify-center'
+        >
+          +
+        </Button>
+      )}
+    </div>
   )
 }
 
@@ -139,3 +157,41 @@ export const BarsCanvas = memo(
     prev.activeIndex === next.activeIndex &&
     prev.large === next.large
 )
+
+// handle canvas interactions
+const rollNextNote = (
+  event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+  props: {
+    canvasId: string
+    canvasElements: CanvasElement[]
+    instrument: string
+  }
+) => {
+  event.preventDefault()
+  const canvas = document.getElementById(props.canvasId) as HTMLCanvasElement
+  const target = detectCollision(canvas, props.canvasElements, event)
+  const leftButtonClicked = event.button === 0
+
+  if (target?.element?.type !== 'note') {
+    return {}
+  }
+
+  const validNotes = Object.keys(font[props.instrument])
+  const validNoteIndex = validNotes.indexOf(target.element.note!)
+  const nextNoteIndex =
+    validNoteIndex === validNotes.length - 1 ? 0 : validNoteIndex + 1
+  const nextEl = {
+    ...(target.element as Required<CanvasElement>),
+    note: leftButtonClicked ? validNotes[nextNoteIndex] : '-',
+  }
+
+  const nextElements = [...props.canvasElements]
+  nextElements[target.index] = nextEl
+  renderNote({
+    instrument: props.instrument,
+    el: nextEl,
+    context: canvas.getContext('2d')!,
+  })
+
+  return { nextElements, currentEl: target.element, nextEl }
+}

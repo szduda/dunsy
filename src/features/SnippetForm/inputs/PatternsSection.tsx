@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { FormPlayer } from './FormPlayer'
 import { PatternInput } from './PatternInput'
 import { useSnippetForm } from '../SnippetFormContext'
@@ -8,40 +8,57 @@ export const PatternsSection: FC<{
   title?: string
   onClear?(): void
   syncPlayerTempo?: boolean
-}> = ({ title = 'Patterns', onClear, syncPlayerTempo = false }) => (
-  <div className='bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24'>
-    <div className='text-xl pb-4 flex justify-between items-center gap-4'>
-      <div className='flex gap-2 items-center'>
-        <h3 className='text-yellowy tracking-wide'>{title}</h3>
-        {onClear && (
+}> = ({ title = 'Patterns', onClear, syncPlayerTempo = false }) => {
+  const [inputsVisible, setInputsVisible] = useState(false)
+  return (
+    <div className='bg-[#0004] md:rounded-lg mt-4 -mx-2 px-2 pt-8 md:-mx-24 md:pt-12 md:px-24'>
+      <div className='text-xl pb-4 flex justify-between items-center gap-4'>
+        <div className='flex gap-6 items-center'>
+          {title?.length > 0 && (
+            <h3 className='text-yellowy tracking-wide'>{title}</h3>
+          )}
           <Button
-            padding='px-1 py-.5'
             mini
-            className='border border-whitey text-sm font-medium opacity-75 hover:opacity-100'
-            onClick={onClear}
+            padding='px-1 py-.5'
+            onClick={() => setInputsVisible(!inputsVisible)}
+            className='border w-auto bg-greeny! text-sm font-medium opacity-75 hover:opacity-100'
+            colorClasses='bg-greeny-dark hover:bg-greeny'
           >
-            Clear
+            {`${inputsVisible ? 'Hide' : 'Show'} Classic Editor`}
           </Button>
-        )}
+          {onClear && (
+            <Button
+              padding='px-1 py-.5'
+              mini
+              className='border border-whitey text-sm font-medium opacity-75 hover:opacity-100'
+              onClick={onClear}
+            >
+              Clear
+            </Button>
+          )}
+        </div>
+        <PatternsSectionHint />
       </div>
-      <PatternsSectionHint />
-    </div>
 
-    <div className='grid grid-flow-row gap-8 mt-4'>
-      <PatternInput label='Dundunba' track='dundunba' />
-      <PatternInput label='Sangban' track='sangban' />
-      <PatternInput label='Kenkeni' track='kenkeni' />
-      <PatternInput label='Kenkeni (high)' track='kenkeni2' />
-      <PatternInput label='Bell' track='bell' />
-      <PatternInput label='Djembe (beta)' track='djembe' />
-    </div>
-    <div className='pt-8 lg:pt-12'>
-      <div className='-mx-2 w-fill xl:-mx-24'>
-        <FormPlayer syncTempo={syncPlayerTempo} />
+      {inputsVisible && (
+        <div className='grid grid-flow-row gap-8 mt-4'>
+          <PatternInput label='Dundunba' track='dundunba' />
+          <PatternInput label='Sangban' track='sangban' />
+          <PatternInput label='Kenkeni' track='kenkeni' />
+          <PatternInput label='Kenkeni (high)' track='kenkeni2' />
+          <PatternInput label='Bell' track='bell' />
+          <PatternInput label='Djembe (beta)' track='djembe' />
+        </div>
+      )}
+
+      <div className='pt-8 lg:pt-12'>
+        <div className='-mx-2 w-fill xl:-mx-24'>
+          <FormPlayer syncTempo={syncPlayerTempo} />
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 const PatternsSectionHint = () => {
   const { currentBarSize } = useSnippetForm()

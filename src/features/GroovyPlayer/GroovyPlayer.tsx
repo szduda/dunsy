@@ -11,7 +11,7 @@ import { PlayerControls } from './PlayerControls'
 import { Track } from './Track'
 import { useGroovyPlayer } from './useGroovyPlayer'
 import { SwingStyle } from '../SnippetApi/types'
-import { TTrack } from './types'
+import { PlayerChangeArgs, TTrack } from './types'
 import { cx } from '@/utils'
 import {
   AVSyncLabel,
@@ -23,13 +23,16 @@ import { PlayerSettingsProvider } from './PlayerSettingsContext'
 import { matchSignal } from './notation'
 import { useParams } from 'next/navigation'
 
-export type Props = ComponentProps<'div'> & {
+export type Props = {
   tracks: TTrack[]
   swingStyle?: SwingStyle
   signal?: string
   metronome?: boolean
   tempo?: number
   onTempoChange?(tempo: number): void
+  readonly?: boolean
+  onChange?(args: PlayerChangeArgs): void
+  divProps?: ComponentProps<'div'>
 }
 
 const GroovyPlayerEngine: FC<Props> = ({
@@ -39,7 +42,9 @@ const GroovyPlayerEngine: FC<Props> = ({
   metronome: initialMetronome = true,
   tempo: initialTempo = 110,
   onTempoChange,
-  ...divProps
+  readonly = true,
+  onChange,
+  divProps,
 }) => {
   const { slug } = useParams()
   const { muted, setMuted, loopLength, beat, beatSize, ...rest } =
@@ -115,6 +120,8 @@ const GroovyPlayerEngine: FC<Props> = ({
 
         return (
           <Track
+            onChange={onChange}
+            readonly={readonly}
             key={`${title}${index}`}
             title={signalTrack ? 'djembe signal' : title}
             highlight={signalTrack}

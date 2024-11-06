@@ -2,6 +2,8 @@ import { font } from './drumFont'
 import { CanvasElement } from '../types'
 
 export const BAR_GAP_PX = 5
+export const BAR_HEIGHT_PX = 32
+export const BAR_HEIGHT_LARGE_PX = 48
 
 export const colors = {
   b0: '#121211',
@@ -18,18 +20,29 @@ export const colors = {
 
 type RendererArgs = {
   instrument: string
-  noteEl: Required<CanvasElement>
   context: CanvasRenderingContext2D
+  el: CanvasElement
 }
 
-const renderChar = ({ instrument, noteEl, context }: RendererArgs) =>
-  font[instrument]?.[noteEl.note]?.(context, noteEl, noteEl.bgColor)
+const renderChar = ({ instrument, el, context }: RendererArgs) =>
+  font[instrument]?.[el.note ?? '-']?.(context, el, el.bgColor)
 
-export const renderNote = ({ instrument, noteEl, context }: RendererArgs) => {
-  context.fillStyle = noteEl.bgColor
-  context.fillRect(noteEl.left, noteEl.top, noteEl.width, noteEl.height)
+export const renderNote = ({ instrument, el, context }: RendererArgs) => {
+  context.fillStyle = el.bgColor
+  context.fillRect(el.left, el.top, el.width, el.height)
 
-  renderChar({ instrument, noteEl, context })
+  renderChar({ instrument, el, context })
+}
+
+export const renderBarWrapper = ({ context, el }: RendererArgs) => {
+  context.fillStyle = el.bgColor
+  context.fillRect(el.left, el.top, el.width, el.height)
+  context.beginPath()
+  context.moveTo(el.left + el.width, el.top - 2)
+  context.lineTo(el.left + el.width, el.top + el.height + 2)
+  context.strokeStyle = colors.w0
+  context.lineWidth = 2
+  context.stroke()
 }
 
 type BarRendererArgs = {
@@ -54,7 +67,7 @@ export const renderBar = ({
   highlighted = false,
 }: BarRendererArgs) => {
   const bar = bars[barIndex]
-  const noteHeight = large ? 40 : 25
+  const noteHeight = large ? BAR_HEIGHT_LARGE_PX : BAR_HEIGHT_PX
   const barHeightGross = noteHeight + 2 * BAR_GAP_PX
   const barWidth =
     (canvas.clientWidth - (barsPerRow - 1) * BAR_GAP_PX) / barsPerRow
@@ -75,8 +88,7 @@ export const renderBar = ({
   }
 
   // Render bar
-  context.fillStyle = barEl.bgColor
-  context.fillRect(barEl.left, barEl.top, barEl.width, barEl.height)
+  renderBarWrapper({ context, el: barEl, instrument })
 
   // Render notes
   const noteElements = [...bar].map((note, noteIndex) => {
@@ -103,7 +115,7 @@ export const renderBar = ({
       noteIndex,
     }
 
-    renderNote({ instrument, noteEl, context })
+    renderNote({ instrument, el: noteEl, context })
 
     return noteEl
   })

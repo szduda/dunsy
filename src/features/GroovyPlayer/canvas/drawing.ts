@@ -55,6 +55,7 @@ export const drawCross = (
 ) => {
   ctx.strokeStyle = el.colour!
   ctx.lineWidth = stroke
+  ctx.lineCap = 'round'
   const x0 = el.left + (el.width - radius) / 2,
     y0 = el.top + (el.height - radius) / 2,
     x1 = el.left + el.width - (el.width - radius) / 2,

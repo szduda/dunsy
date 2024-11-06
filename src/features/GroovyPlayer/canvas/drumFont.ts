@@ -5,6 +5,7 @@ import {
   FontRenderer,
   NoteRenderer,
 } from '../types'
+import { colors } from './renderers'
 
 const getR = (el: CanvasElement) => {
   const r = Math.min(el.width, el.height) / 2
@@ -24,13 +25,16 @@ const soundHighRenderer: NoteRenderer = (ctx, el, bgColor = '#111') => {
 const stickRenderer: NoteRenderer = (ctx, el) => {
   const x = el.left + el.width / 2
   const padding = el.height < 30 ? 2 : 4
-  ctx.strokeStyle = el.colour
+  ctx.strokeStyle = el.colour ?? colors.w2
   ctx.lineWidth = el.width / 4
   ctx.beginPath()
   ctx.moveTo(x, el.top + padding)
   ctx.lineTo(x, el.top + el.height - padding)
   ctx.stroke()
 }
+
+const xRenderer: NoteRenderer = (ctx, el) =>
+  drawCross(ctx, el, getR(el) + 4, getR(el) / 3.5)
 
 const pauseSymbol: CharsRenderer = {
   '-': (ctx, el) => drawCircle(ctx, el, el.height / 30),
@@ -39,7 +43,7 @@ const dundunSymbols: CharsRenderer = {
   ...pauseSymbol,
   o: soundLowRenderer,
   x: soundHighRenderer,
-  i: soundMidRenderer,
+  // i: xRenderer, placeholder for drum shell hit
 }
 
 export const font: FontRenderer = {
@@ -56,6 +60,6 @@ export const font: FontRenderer = {
   },
   bell: {
     ...pauseSymbol,
-    x: stickRenderer,
+    x: xRenderer,
   },
 }

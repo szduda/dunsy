@@ -1,10 +1,8 @@
-import {
-  FC,
-  useMemo,
-} from 'react'
+import { FC, useMemo } from 'react'
 import { cx } from '@/utils'
 import { usePlayerSettings } from './PlayerSettingsContext'
 import { BarsCanvas } from './canvas/BarsCanvas'
+import { PlayerChangeArgs } from './types'
 
 type Props = {
   title?: string
@@ -14,6 +12,8 @@ type Props = {
   setMuted?(muted: boolean): void
   beat?: number
   highlight?: boolean
+  onChange?(args: PlayerChangeArgs): void
+  readonly?: boolean
 }
 
 export const Track: FC<Props> = ({
@@ -24,6 +24,8 @@ export const Track: FC<Props> = ({
   setMuted,
   beat = -1,
   highlight = false,
+  onChange,
+  readonly = true,
 }) => {
   const barSize =
     [6, 8].find((length) => pattern.length % length === 0) ?? pattern.length
@@ -59,6 +61,8 @@ export const Track: FC<Props> = ({
       <div className={cx(['transition', muted && 'opacity-10'])}>
         {pattern ? (
           <BarsCanvas
+            readonly={readonly}
+            onChange={onChange}
             large={largeBars}
             bars={bars}
             id={instrument + pattern}

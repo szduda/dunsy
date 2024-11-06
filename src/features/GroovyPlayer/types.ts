@@ -35,3 +35,8 @@ export type NoteRenderer = (
 ) => void
 export type CharsRenderer = Record<string, NoteRenderer>
 export type FontRenderer = Record<string, CharsRenderer>
+
+export type PlayerChangeArgs = {
+  instrument: string
+  newPattern: string
+}
