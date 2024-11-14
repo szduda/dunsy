@@ -15,7 +15,7 @@ export type Snippet = {
   slug: string
   title: string
   tags: string
-  beatSize: number
+  beatSize?: number
   patterns: Record<string, string>
   description?: string
   swing?: SwingStyle
