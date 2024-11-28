@@ -1,8 +1,7 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { TopScrollGuard } from '@/features'
-import { Bars, Button, Legend, TextLink } from '@/features/rsc'
+import { Button, Legend, TextLink } from '@/features/rsc'
 import {
   GearIcon,
   PepperIcon,
@@ -14,6 +13,8 @@ import {
   SoundLowIcon,
   SoundMidIcon,
 } from '@/features/Icons'
+import { BarsCanvas } from '@/features/GroovyPlayer/canvas/BarsCanvas'
+import { PlaygroundDemo } from '@/features/Playground/PlaygroundDemo'
 
 const HelpPage: FC = () => (
   <main className='flex mx-auto flex-col items-center justify-center px-2 pt-8 pb-8 max-w-[1024px]'>
@@ -67,6 +68,22 @@ const HelpPage: FC = () => (
       }
       icon={<SearchIcon className='w-24 h-24 fill-whitey' />}
     />
+    <Legend
+      title='Playground'
+      description={
+        <p>
+          Rhythm not found?
+          <br />
+          <TextLink href='/playground' scroll={false}>
+            Create shareable loops
+          </TextLink>{' '}
+          in the sandbox.
+          <br />
+          Full groove potential enabled.
+        </p>
+      }
+      icon={<PlaygroundDemo />}
+    />
     <h2 className='text-4xl tracking-wider text-yellowy mt-48 mb-8 drop-shadow-lg'>
       Player Features
     </h2>
@@ -79,7 +96,8 @@ const HelpPage: FC = () => (
           patterns, for the rest it will be one of 3 default calls.
           <div className='w-fit grid my-4 gap-2 w-full'>
             <div className='flex'>
-              <Bars
+              <BarsCanvas
+                beatSize={4}
                 large
                 id='4/4 call'
                 bars={['f-tt-t-t', 't-t-t---']}
@@ -87,7 +105,8 @@ const HelpPage: FC = () => (
               />
             </div>
             <div className='flex'>
-              <Bars
+              <BarsCanvas
+                beatSize={6}
                 large
                 id='6/8 call'
                 bars={['f-tt-t', 't-tt--']}
@@ -95,12 +114,13 @@ const HelpPage: FC = () => (
               />
             </div>
             <div className='flex'>
-              <Bars
+              <BarsCanvas
+                beatSize={6}
                 large
                 id='6/4 alternative call'
                 bars={['ttttt-', 'tt-t--']}
                 instrument='djembe'
-              />{' '}
+              />
             </div>
           </div>
           <p>
@@ -178,11 +198,20 @@ const HelpPage: FC = () => (
       }
       icon={
         <div className='flex flex-col items-center'>
-          <Bars large id='' bars={['--------']} instrument='djembe' />
+          <BarsCanvas
+            defaultWidth={180}
+            beatSize={4}
+            large
+            id='4/4 bar'
+            bars={['--------']}
+            instrument='djembe'
+          />
           <div className='w-fit mt-4'>
-            <Bars
+            <BarsCanvas
+              defaultWidth={180}
+              beatSize={6}
               large
-              id=''
+              id='6/8 bar'
               bars={['------']}
               instrument='djembe'
               activeIndex={0}
@@ -248,7 +277,7 @@ const HelpPage: FC = () => (
 
     <h3 className='text-graye text-3xl drop-shadow-lg mt-48'>App Version</h3>
     <div className='mt-8 pr-4 pl-6 py-4 border border-yellowy-light/25 rounded-full flex items-baseline'>
-      <div className='text-2xl'>v0.4</div>
+      <div className='text-2xl'>v0.6</div>
       <div className='bg-yellowy-light/75 font-medium uppercase text-sm rounded-full px-2 py-0.5 ml-3 text-blacky self-center'>
         beta
       </div>

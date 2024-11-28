@@ -26,6 +26,7 @@ const PlaygroundForm = () => {
   return (
     <>
       <PatternsSection
+        title=''
         onClear={canClear ? () => resetForm() : undefined}
         syncPlayerTempo
       />

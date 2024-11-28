@@ -15,6 +15,7 @@ export type Snippet = {
   slug: string
   title: string
   tags: string
+  beatSize?: number
   patterns: Record<string, string>
   description?: string
   swing?: SwingStyle
@@ -34,6 +35,7 @@ export type DbSnippet = {
   description?: string
   swing?: SwingStyle
   tempo?: number
+  beatSize?: number
   signal?: string
   authorUid: string
   published?: boolean

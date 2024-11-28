@@ -25,7 +25,7 @@ export const Button: FC<Props> = ({
 }) => (
   <button
     className={cx([
-      'transition-all ease-in-out border',
+      'transition-all ease-in-out border select-none',
       props.disabled
         ? 'bg-graye opacity-25 text-graye-light pointer-events-none border-transparent'
         : black

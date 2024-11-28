@@ -3,11 +3,16 @@ import { useSnippetForm } from '../SnippetFormContext'
 
 export const FormPlayer = ({ syncTempo = false }: { syncTempo?: boolean }) => {
   const {
-    formData: { patterns, signal, swing, tempo },
+    formData: { patterns, signal, swing, tempo, beatSize },
     updateFormData,
   } = useSnippetForm()
   return (
     <GroovyPlayer
+      onChange={({ instrument, newPattern }) =>
+        updateFormData({ patterns: { [instrument]: newPattern } })
+      }
+      beatSize={beatSize}
+      readonly={false}
       signal={signal}
       swingStyle={swing}
       onTempoChange={(tempo) =>

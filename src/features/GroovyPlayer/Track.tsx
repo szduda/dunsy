@@ -1,7 +1,8 @@
-import { FC, memo, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import { cx } from '@/utils'
 import { usePlayerSettings } from './PlayerSettingsContext'
-import { Note } from './Note'
+import { BarsCanvas } from './canvas/BarsCanvas'
+import { PlayerChangeArgs } from './types'
 
 type Props = {
   title?: string
@@ -11,6 +12,9 @@ type Props = {
   setMuted?(muted: boolean): void
   beat?: number
   highlight?: boolean
+  onChange?(args: PlayerChangeArgs): void
+  readonly?: boolean
+  beatSize?: number
 }
 
 export const Track: FC<Props> = ({
@@ -21,13 +25,13 @@ export const Track: FC<Props> = ({
   setMuted,
   beat = -1,
   highlight = false,
+  onChange,
+  readonly = true,
+  beatSize = 4,
 }) => {
-  const barSize =
-    [6, 8].find((length) => pattern.length % length === 0) ?? pattern.length
-
   const bars = useMemo(
-    () => pattern?.match(RegExp(`.{1,${barSize}}`, 'g')) ?? [],
-    [pattern]
+    () => pattern?.match(RegExp(`.{1,${beatSize * 2}}`, 'g')) ?? [],
+    [pattern, beatSize]
   )
 
   const { largeBars, videoSync } = usePlayerSettings()
@@ -54,103 +58,23 @@ export const Track: FC<Props> = ({
         <div className='text-graye-light'>{title}</div>
       </label>
       <div className={cx(['transition', muted && 'opacity-10'])}>
-        <div
-          className={cx([
-            'grid gap-0.5 gap-y-3 w-full',
-            largeBars
-              ? 'grid-cols-2 lg:grid-cols-4'
-              : 'grid-cols-4 lg:grid-cols-8',
-          ])}
-        >
-          {pattern ? (
-            <MemoBars
-              large={largeBars}
-              bars={bars}
-              id={instrument + pattern}
-              activeIndex={muted ? undefined : Math.round(beat / 2) - 1}
-              instrument={instrument}
-            />
-          ) : (
-            <div className='min-h-[48px] flex items-center justify-center text-graye-light'>
-              &nbsp;
-            </div>
-          )}
-        </div>
+        {pattern ? (
+          <BarsCanvas
+            beatSize={beatSize}
+            readonly={readonly}
+            onChange={onChange}
+            large={largeBars}
+            bars={bars}
+            id={instrument + pattern}
+            activeIndex={muted ? undefined : Math.round(beat / 2) - 1}
+            instrument={instrument}
+          />
+        ) : (
+          <div className='min-h-[48px] flex items-center justify-center text-graye-light'>
+            &nbsp;
+          </div>
+        )}
       </div>
     </div>
   )
 }
-
-type BarsProps = {
-  id: string
-  bars: string[]
-  large?: boolean
-  activeIndex?: number
-  instrument: string
-}
-
-const findPatternLength = (bars: string[], maxN = 8, n: number = 1): number => {
-  if (n > maxN || n < 1 || n > bars.length) {
-    return bars.length
-  }
-
-  if (n === 1) {
-    return bars.some((b) => b !== bars[0])
-      ? findPatternLength(bars, maxN, 2)
-      : 1
-  }
-
-  const firstN = bars.slice(0, n).join()
-  const restNs = bars
-    .map((_, i) =>
-      i % n === 0 ? bars.slice(i, Math.min(bars.length, i + n)).join() : null
-    )
-    .filter(Boolean)
-
-  const allSame = !restNs.some((pattern) => pattern !== firstN)
-  return allSame ? n : findPatternLength(bars, maxN, n + 1)
-}
-
-export const Bars: FC<BarsProps> = ({
-  bars,
-  activeIndex = -1,
-  large = false,
-  instrument,
-}) => {
-  const barsInPattern = Math.max(findPatternLength(bars, 8), large ? 2 : 4)
-  return bars.slice(0, barsInPattern).map((bar, index) => (
-    <div
-      key={bar + index}
-      className={cx([
-        'flex w-full overflow-hidden',
-        barsInPattern > 1 && activeIndex % barsInPattern === index
-          ? 'bg-greeny-dark'
-          : 'bg-graye-darkest',
-        large ? 'rounded-3xl' : 'rounded-2xl',
-      ])}
-    >
-      {[...bar].map((note, noteIndex) => (
-        <Note
-          instrument={instrument}
-          key={noteIndex}
-          note={note}
-          large={large}
-          beat={(bar.length % 6 === 0
-            ? [0, 3]
-            : bar.length % 9 === 0
-              ? [0, 3, 6]
-              : [0, 4]
-          ).includes(noteIndex)}
-        />
-      ))}
-    </div>
-  ))
-}
-
-const MemoBars = memo(
-  Bars,
-  (prev, next) =>
-    prev.id === next.id &&
-    prev.activeIndex === next.activeIndex &&
-    prev.large === next.large
-)
