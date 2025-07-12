@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, memo, useEffect, useState } from 'react'
+import { FC, memo, useEffect, useMemo, useState } from 'react'
 import { CanvasElement, PlayerChangeArgs } from '../types'
 import {
   BAR_GAP_PX,
@@ -50,6 +50,7 @@ export const Bars: FC<BarsProps> = ({
   const barsPerRow = viewportModifier * (large ? 4 : 8)
   const barsInPattern = Math.max(findPatternLength(bars, 8), barsPerRow)
   const hash = bars.join('')
+  const barSize = beatSize * 2
 
   const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([])
 
@@ -108,8 +109,22 @@ export const Bars: FC<BarsProps> = ({
 
   const noteHeight = large ? BAR_HEIGHT_LARGE_PX : BAR_HEIGHT_PX
 
+  const actions = useMemo(
+    () =>
+      Object.entries({
+        '+': () => hash + Array(barSize).fill('-').join(''),
+        '-': () =>
+          hash.length === barSize
+            ? Array(barSize).fill('-').join('')
+            : hash.slice(0, -barSize),
+      }),
+    [hash, barSize]
+  )
+
+  console.log('szd', hash, hash.length, barSize)
+
   return (
-    <div className='flex flex-col items-end gap-2'>
+    <div className='flex flex-col gap-2'>
       <canvas
         id={canvasId}
         height={
@@ -142,21 +157,29 @@ export const Bars: FC<BarsProps> = ({
         onContextMenu={(e) => e.preventDefault()}
       />
       {!readonly && !demo && (
-        <Button
-          onClick={(e) =>
-            onChange?.({
-              instrument,
-              newPattern: hash + Array(bars[0]?.length).fill('-').join(''),
-            })
-          }
-          mini
-          circle
-          padding='px-3 py-0'
-          colorClasses='bg-orangey/40 hover:bg-greeny-light'
-          className='text-xl font-black flex items-center justify-center'
-        >
-          ++
-        </Button>
+        <div className='flex gap-2 w-full justify-end items-center'>
+          {actions.map(([label, getPattern], index) => (
+            <Button
+              key={label}
+              onClick={(e) =>
+                onChange?.({
+                  instrument,
+                  newPattern: getPattern(),
+                })
+              }
+              mini
+              circle
+              padding='px-3 py-0'
+              colorClasses={cx([
+                'hover:bg-greeny-light',
+                label === '-' ? 'bg-orangey/40' : 'bg-greeny/40',
+              ])}
+              className='text-xl font-black flex items-center justify-center w-10 h-10'
+            >
+              {label}
+            </Button>
+          ))}
+        </div>
       )}
     </div>
   )
