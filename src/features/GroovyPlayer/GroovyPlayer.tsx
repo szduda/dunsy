@@ -82,6 +82,10 @@ const GroovyPlayerEngine: FC<Props> = ({
     onTempoChange?.(tempo)
   }
 
+  useEffect(() => {
+    rest.setTempo(initialTempo)
+  }, [initialTempo])
+
   const controls = useMemo(
     () => (
       <PlayerControls

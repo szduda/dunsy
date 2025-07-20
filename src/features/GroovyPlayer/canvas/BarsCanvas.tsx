@@ -121,8 +121,6 @@ export const Bars: FC<BarsProps> = ({
     [hash, barSize]
   )
 
-  console.log('szd', hash, hash.length, barSize)
-
   return (
     <div className='flex flex-col gap-2'>
       <canvas
