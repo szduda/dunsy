@@ -163,16 +163,16 @@ const getMeter = (data: Snippet) => {
 }
 
 export const vocabularyOk = (instrument: string, pattern: string) => {
-  let regex = /^[xo-]+$/
+  let regex = /^[ xo-]+$/
   let vocabulary = 'xo-'
 
   if (instrument === 'bell') {
-    regex = /^[x-]+$/
+    regex = /^[ x-]+$/
     vocabulary = 'x-'
   }
 
   if (instrument === 'djembe') {
-    regex = /^[btsf-]+$/
+    regex = /^[ btsfplkgd-]+$/
     vocabulary = 'btsf-'
   }
 

@@ -123,11 +123,11 @@ const GroovyPlayerEngine: FC<Props> = ({
           const prolongedSignal =
             '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
           const excess = pattern.length % barSize
-          const _pattern =
-            excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern
-          const prolongedPattern = _pattern?.repeat(
-            loopLength / _pattern.length
-          )
+          const _pattern = pattern + '-'.repeat(barSize - (excess || barSize))
+          const prolongedPattern =
+            loopLength > _pattern.length && loopLength % _pattern.length === 0
+              ? _pattern?.repeat(loopLength / _pattern.length)
+              : _pattern
 
           return (
             <Track

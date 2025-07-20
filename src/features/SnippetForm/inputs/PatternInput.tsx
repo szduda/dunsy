@@ -24,6 +24,7 @@ export const PatternInputPure: FC<PatternInputPureProps> = ({
 }) => {
   return (
     <Input
+      beatPattern={currentBarSize / 2}
       disabled={disabled}
       label={label}
       hint={
@@ -73,7 +74,9 @@ export const PatternInput: FC<PatternInputProps> = ({ label, track }) => {
         disabled: mode === 'read',
         onChange: (e: ChangeEvent<HTMLInputElement>) =>
           updateFormData({
-            patterns: { [track]: e.target.value.toLowerCase() },
+            patterns: {
+              [track]: e.target.value.toLowerCase().replaceAll(' ', ''),
+            },
           }),
       }}
     />

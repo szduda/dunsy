@@ -7,6 +7,7 @@ type Props = {
   hint?: ReactNode
   className?: string
   black?: boolean
+  beatPattern?: number
 } & (InputProps | TextareaProps)
 
 type InputProps = {
@@ -24,6 +25,8 @@ export const Input: FC<Props> = ({
   hint,
   className,
   textarea = false,
+  beatPattern,
+  value,
   ...inputProps
 }) => {
   const inputClasses = cx([
@@ -32,9 +35,20 @@ export const Input: FC<Props> = ({
       ? 'bg-blacky text-whitey border-graye-darker hover:border-graye-dark focus:border-graye py-3'
       : 'bg-greeny-darker text-whitey border-graye-dark hover:border-graye focus:border-graye-light',
     !mini && 'w-full',
-    !inputProps.value && 'opacity-50',
+    !value && 'opacity-50',
     className,
   ])
+
+  const maskedValue = beatPattern
+    ? [...new Array(Math.ceil(String(value).length / beatPattern))]
+        .map((_, beatIndex) =>
+          String(value).substring(
+            beatIndex * beatPattern,
+            (beatIndex + 1) * beatPattern
+          )
+        )
+        .join(' ')
+    : value
 
   return (
     <label>
@@ -52,18 +66,20 @@ export const Input: FC<Props> = ({
       )}
       {textarea ? (
         <textarea
+          value={maskedValue}
           className={inputClasses}
           name={
-            inputProps.name ?? typeof label === 'string' ? String(label) : ''
+            (inputProps.name ?? typeof label === 'string') ? String(label) : ''
           }
           {...(inputProps as ComponentProps<'textarea'>)}
         />
       ) : (
         <input
+          value={maskedValue}
           className={inputClasses}
           type='text'
           name={
-            inputProps.name ?? typeof label === 'string' ? String(label) : ''
+            (inputProps.name ?? typeof label === 'string') ? String(label) : ''
           }
           {...(inputProps as ComponentProps<'input'>)}
         />
