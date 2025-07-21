@@ -23,7 +23,7 @@ import {
   SnippetFormContext,
 } from './types'
 import { hashify } from '@/utils'
-import { User } from '@firebase/auth'
+import { User } from 'firebase/auth'
 
 const Context = createContext<SnippetFormContext>({
   handleSubmit: Promise.resolve,
