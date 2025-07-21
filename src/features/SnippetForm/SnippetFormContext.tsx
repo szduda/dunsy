@@ -163,7 +163,7 @@ export const SnippetFormProvider: FC<{
       setMode,
       formData,
       updateFormData,
-      currentBarSize,
+      currentBarSize: 2 * (formData.beatSize ?? currentBarSize),
     }),
     [pickContext.loading, success, mode, initialHash, formHash, busy]
   )

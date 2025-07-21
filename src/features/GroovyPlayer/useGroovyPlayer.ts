@@ -77,7 +77,8 @@ export const useGroovyPlayer = ({
       muted,
       metronome,
       signalActive,
-      matchSignal(beatSize, signal, swingStyle)
+      matchSignal(beatSize, signal, swingStyle),
+      beatSize
     )
 
     if (swing && swingStyle) beats = applySwing(beats, beatSize, swingStyle)

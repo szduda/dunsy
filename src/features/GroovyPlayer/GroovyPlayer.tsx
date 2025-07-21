@@ -1,12 +1,4 @@
-import {
-  ComponentProps,
-  FC,
-  memo,
-  MouseEventHandler,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { ComponentProps, FC, memo, useEffect, useMemo, useState } from 'react'
 import { PlayerControls } from './PlayerControls'
 import { Track } from './Track'
 import { useGroovyPlayer } from './useGroovyPlayer'
@@ -124,10 +116,10 @@ const GroovyPlayerEngine: FC<Props> = ({
             '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
           const excess = pattern.length % barSize
           const _pattern = pattern + '-'.repeat(barSize - (excess || barSize))
-          const prolongedPattern =
-            loopLength > _pattern.length && loopLength % _pattern.length === 0
-              ? _pattern?.repeat(loopLength / _pattern.length)
-              : _pattern
+          // const prolongedPattern =
+          //   loopLength > _pattern.length && loopLength % _pattern.length === 0
+          //     ? _pattern?.repeat(loopLength / _pattern.length)
+          //     : _pattern
 
           return (
             <Track
@@ -143,7 +135,7 @@ const GroovyPlayerEngine: FC<Props> = ({
                 (rest.signalActive || rest.signalRequested) &&
                 instrument === 'djembe'
                   ? prolongedSignal
-                  : prolongedPattern
+                  : _pattern
               }
               muted={muted[instrument]}
               setMuted={(value) => setMuted({ ...muted, [instrument]: value })}

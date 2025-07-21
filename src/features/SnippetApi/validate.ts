@@ -2,7 +2,7 @@ import { Snippet } from './types'
 
 export const validate = (data: Snippet) => {
   let messages: string[] = []
-  const meter = getMeter(data)
+  const meter = data.beatSize ?? getMeter(data)
   const base = meter % 3 === 0 ? 3 : meter % 4 === 0 ? 4 : 0
 
   const options = {
