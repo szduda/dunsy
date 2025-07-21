@@ -91,8 +91,8 @@ export const SnippetFormProvider: FC<{
 
   const len = Object.values(formData.patterns).find(Boolean)?.length ?? 0
   const _currentBarSize = 2 * (len % 3 === 0 ? 3 : len % 4 === 0 ? 4 : 0)
-  const x = len > 2 && len >= _currentBarSize ? _currentBarSize : 0
-  const currentBarSize = (formData.beatSize ?? 4) * 2 || x
+  const legitBarSize = len > 2 && len >= _currentBarSize ? _currentBarSize : 0
+  const currentBarSize = (formData.beatSize ?? 4) * 2 || legitBarSize
 
   const updateFormData = (partial: Partial<FormData>) =>
     setFormData((state) => ({
@@ -163,7 +163,7 @@ export const SnippetFormProvider: FC<{
       setMode,
       formData,
       updateFormData,
-      currentBarSize: 2 * (formData.beatSize ?? currentBarSize),
+      currentBarSize,
     }),
     [pickContext.loading, success, mode, initialHash, formHash, busy]
   )

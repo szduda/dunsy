@@ -97,11 +97,11 @@ export const useGroovyPlayer = ({
   // update beats and trueTempo on player settings change
   useEffect(() => {
     updateBeats()
-  }, [muted, signalActive, metronome, swing])
+  }, [muted, signalActive, metronome, swing, beatSize])
 
   useEffect(() => {
     trueTempo.current = calcTrueTempo()
-  }, [tempo, swing])
+  }, [tempo, swing, beatSize])
 
   // reset player settings on page change
   useEffect(() => {
