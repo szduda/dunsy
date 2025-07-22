@@ -19,13 +19,15 @@ export const colors = {
 }
 
 type RendererArgs = {
-  instrument: string
   context: CanvasRenderingContext2D
   el: CanvasElement
+  instrument?: string
+  selected?: boolean
+  isLastInRow?: boolean
 }
 
 const renderChar = ({ instrument, el, context }: RendererArgs) =>
-  font[instrument]?.[el.note ?? '-']?.(context, el, el.bgColor)
+  font[instrument!]?.[el.note ?? '-']?.(context, el, el.bgColor)
 
 export const renderNote = ({ instrument, el, context }: RendererArgs) => {
   context.fillStyle = el.bgColor
@@ -34,16 +36,26 @@ export const renderNote = ({ instrument, el, context }: RendererArgs) => {
   renderChar({ instrument, el, context })
 }
 
-export const renderBarWrapper = ({ context, el }: RendererArgs) => {
+export const renderBarWrapper = ({
+  context,
+  el,
+  isLastInRow,
+}: RendererArgs) => {
   context.fillStyle = el.bgColor
   context.lineCap = 'square'
   context.fillRect(el.left, el.top, el.width, el.height)
+
+  if (isLastInRow) {
+    return
+  }
+
   context.beginPath()
   context.moveTo(el.left + el.width + 2, el.top + 1)
   context.lineTo(el.left + el.width + 2, el.top + el.height - 1)
   context.strokeStyle = colors.w0
   context.lineWidth = 2
   context.stroke()
+  context.closePath()
 }
 
 type BarRendererArgs = {
@@ -55,6 +67,7 @@ type BarRendererArgs = {
   barIndex?: number
   barsPerRow?: number
   highlighted?: boolean
+  selected?: boolean
 }
 
 export const renderBar = ({
@@ -66,6 +79,7 @@ export const renderBar = ({
   barIndex = 0,
   barsPerRow = 2,
   highlighted = false,
+  selected = false,
 }: BarRendererArgs) => {
   const bar = bars[barIndex]
   const noteHeight = large ? BAR_HEIGHT_LARGE_PX : BAR_HEIGHT_PX
@@ -89,7 +103,12 @@ export const renderBar = ({
   }
 
   // Render bar
-  renderBarWrapper({ context, el: barEl, instrument })
+  renderBarWrapper({
+    context,
+    el: barEl,
+    instrument,
+    isLastInRow: !((barEl.barIndex! + 1) % barsPerRow),
+  })
 
   // Render notes
   const noteElements = [...bar].map((note, noteIndex) => {
@@ -121,5 +140,19 @@ export const renderBar = ({
     return noteEl
   })
 
+  if (selected) renderSelection({ context, el: barEl })
+
   return [barEl, ...noteElements]
+}
+const renderSelection = ({ context, el }: RendererArgs) => {
+  context.beginPath()
+  context.moveTo(el.barIndex === 0 ? el.left + 2 : el.left - 2, el.top)
+  context.lineTo(
+    el.barIndex === 0 ? el.left + 2 : el.left - 2,
+    el.top + el.height
+  )
+  context.strokeStyle = '#ff0'
+  context.lineWidth = 2
+  context.stroke()
+  context.closePath()
 }
