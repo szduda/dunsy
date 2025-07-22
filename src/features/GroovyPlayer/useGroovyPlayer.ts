@@ -16,7 +16,7 @@ export const useGroovyPlayer = ({
 }: GroovyPlayerHook) => {
   const midiSounds = useMidiSounds()
   const [tempo, setTempo] = useState(initialTempo)
-  const [muted, setMuted] = useState<Record<string, boolean>>({})
+  const [volumes, setVolumes] = useState<Record<string, number>>({})
   const [metronome, setMetronome] = useState(initialMetronome)
   const [playing, setPlaying] = useState(false)
   const [swing, setSwing] = useState(swingStyle !== '')
@@ -35,7 +35,9 @@ export const useGroovyPlayer = ({
   const trueTempo = useRef(calcTrueTempo())
 
   const unmutedPatternsHash = tracks
-    .map((t) => t.pattern && !muted[t.instrument] && `${t.title}:${t.pattern}`)
+    .map(
+      (t) => t.pattern && volumes[t.instrument] > 0 && `${t.title}:${t.pattern}`
+    )
     .filter(Boolean)
     .join()
 
@@ -71,6 +73,14 @@ export const useGroovyPlayer = ({
   const updateBeats = () => {
     if (!tracks || !tracks[0]) return
 
+    // Convert volumes to muted state for the fillBeat function
+    const muted = Object.fromEntries(
+      Object.entries(volumes).map(([instrument, volume]) => [
+        instrument,
+        volume === 0,
+      ])
+    )
+
     let beats = fillBeat(
       loopLength,
       tracks,
@@ -97,7 +107,9 @@ export const useGroovyPlayer = ({
   // update beats and trueTempo on player settings change
   useEffect(() => {
     updateBeats()
-  }, [muted, signalActive, metronome, swing, beatSize])
+    // stop playback if player is closed
+    return stopLoop
+  }, [signalActive, metronome, swing, beatSize])
 
   useEffect(() => {
     trueTempo.current = calcTrueTempo()
@@ -115,7 +127,7 @@ export const useGroovyPlayer = ({
   useEffect(() => {
     setTempo(initialTempo)
     setMetronome(initialMetronome)
-    setMuted({})
+    setVolumes({})
     setSwing(swingStyle !== '')
   }, [slug])
 
@@ -156,13 +168,11 @@ export const useGroovyPlayer = ({
   }, [noteIndex])
 
   // adjust volumes on mount
-  // stop playback if player is closed
   useEffect(() => {
-    Object.values(DRUMS).forEach(({ sampleId, volume }) =>
-      midiSounds?.current?.setDrumVolume(sampleId, volume)
+    Object.values(DRUMS).forEach(({ sampleId, volume, instrument }) =>
+      midiSounds?.current?.setDrumVolume(sampleId, volume * volumes[instrument])
     )
-    return stopLoop
-  }, [])
+  }, [volumes])
 
   return {
     playLoop,
@@ -172,8 +182,8 @@ export const useGroovyPlayer = ({
     setMetronome,
     tempo,
     setTempo,
-    muted,
-    setMuted,
+    volumes,
+    setVolumes,
     loopLength,
     beat,
     beatSize,

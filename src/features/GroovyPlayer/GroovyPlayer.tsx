@@ -41,7 +41,7 @@ const GroovyPlayerEngine: FC<Props> = ({
   beatSize: _beatSize,
 }) => {
   const { slug } = useParams()
-  const { muted, setMuted, loopLength, beat, beatSize, ...rest } =
+  const { volumes, setVolumes, loopLength, beat, beatSize, ...rest } =
     useGroovyPlayer({
       slug: slug ? (typeof slug === 'string' ? slug : slug.join()) : '',
       tracks,
@@ -137,14 +137,16 @@ const GroovyPlayerEngine: FC<Props> = ({
                   ? prolongedSignal
                   : _pattern
               }
-              muted={muted[instrument]}
-              setMuted={(value) => setMuted({ ...muted, [instrument]: value })}
+              volume={volumes[instrument] ?? 1}
+              setVolume={(value) =>
+                setVolumes({ ...volumes, [instrument]: value })
+              }
             />
           )
         }),
     [
       beat,
-      muted,
+      volumes,
       rest.signalActive,
       rest.signalRequested,
       tracks.map((t) => t.pattern).join(),
