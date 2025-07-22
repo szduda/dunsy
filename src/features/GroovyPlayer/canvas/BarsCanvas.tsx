@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, memo, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, Fragment, memo, useEffect, useMemo, useRef, useState } from 'react'
 import { CanvasElement, PlayerChangeArgs } from '../types'
 import {
   BAR_GAP_PX,
@@ -122,13 +122,46 @@ export const Bars: FC<BarsProps> = ({
   const actions = useMemo(
     () =>
       Object.entries({
-        '+': () => hash + Array(barSize).fill('-').join(''),
-        '-': () =>
-          hash.length === barSize
-            ? Array(barSize).fill('-').join('')
-            : hash.slice(0, -barSize),
+        Deselect: () => setCursor(-1),
+        '+': () => {
+          const newHash =
+            (cursor > 0
+              ? hash.substring(0, cursor * barSize)
+              : cursor < 0
+                ? hash
+                : '') +
+            Array(barSize).fill('-').join('') +
+            (cursor > 0
+              ? hash.substring(cursor * barSize)
+              : cursor < 0
+                ? ''
+                : hash)
+
+          if (cursor >= 0) {
+            setCursor(cursor + 1)
+          }
+
+          return newHash
+        },
+        '-': () => {
+          const newHash =
+            cursor < 0
+              ? hash.length === barSize
+                ? Array(barSize).fill('-').join('')
+                : hash.slice(0, -barSize)
+              : cursor > 0
+                ? hash.slice(0, (cursor - 1) * barSize) +
+                  hash.slice(cursor * barSize)
+                : hash
+
+          if (cursor > 0) {
+            setCursor(cursor - 1)
+          }
+
+          return newHash
+        },
       }),
-    [hash, barSize]
+    [hash, barSize, cursor]
   )
 
   const onPressed = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
@@ -137,6 +170,10 @@ export const Bars: FC<BarsProps> = ({
       canvasId,
       canvasElements,
     })
+
+    if (!target) {
+      return
+    }
 
     setCursor(
       cursor === target.element.barIndex ? -1 : (target.element.barIndex ?? -1)
@@ -169,11 +206,17 @@ export const Bars: FC<BarsProps> = ({
       canvasId,
       canvasElements,
     })
+
+    if (!target) {
+      return
+    }
+
     const { nextElements, nextEl } = rollNextNote(e, target, {
       canvasId,
       canvasElements,
       instrument,
     })
+
     if ((target.element?.barIndex ?? -1) > -1 && nextElements) {
       setCanvasElements(nextElements)
       const _bars = [...bars]
@@ -185,7 +228,7 @@ export const Bars: FC<BarsProps> = ({
   }
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='flex flex-col gap-4 lg:gap-8'>
       <canvas
         id={canvasId}
         height={
@@ -201,27 +244,64 @@ export const Bars: FC<BarsProps> = ({
       />
       {!readonly && !demo && (
         <div className='flex gap-2 w-full justify-end items-center'>
-          {actions.map(([label, getPattern], index) => (
-            <Button
-              key={label}
-              onClick={(e) =>
-                onChange?.({
-                  instrument,
-                  newPattern: getPattern(),
-                })
-              }
-              mini
-              circle
-              padding='px-3 py-0'
-              colorClasses={cx([
-                'hover:bg-greeny-light',
-                label === '-' ? 'bg-orangey/40' : 'bg-greeny/40',
-              ])}
-              className='text-xl font-black flex items-center justify-center w-10 h-10'
-            >
-              {label}
-            </Button>
-          ))}
+          {actions
+            .map(([label, action]) =>
+              label === 'Deselect' && cursor < 0 ? null : (
+                <div key={label} className='flex flex-col justify-center'>
+                  {label === 'Deselect' && (
+                    <button
+                      className='text-sm font-normal text-center'
+                      onClick={action}
+                    >
+                      <span className='text-xs opacity-70'>Bar No.</span>{' '}
+                      {cursor + 1}
+                    </button>
+                  )}
+                  <Button
+                    key={label}
+                    onClick={() => {
+                      const newPattern = action()
+
+                      newPattern &&
+                        onChange?.({
+                          instrument,
+                          newPattern,
+                        })
+                    }}
+                    mini
+                    circle
+                    padding='px-2 py-0 whitespace-nowrap'
+                    colorClasses={cx([
+                      '',
+                      label === '-'
+                        ? 'bg-orangey/40 hover:bg-orangey-light/80'
+                        : label === '+'
+                          ? 'bg-greeny/40 hover:bg-greeny-light/80'
+                          : 'bg-yellowy/40 hover:bg-yellowy-light/60',
+                    ])}
+                    className={cx([
+                      'flex items-center justify-center',
+                      label === 'Deselect' && 'text-sm h-5 font-medium',
+                      ['+', '-'].includes(label) &&
+                        'text-xl font-black !w-10 h-10',
+                    ])}
+                  >
+                    {label === '+' && cursor > 0 && (
+                      <span className='text-lg text-yellowy/60 font-semibold'>
+                        |
+                      </span>
+                    )}
+                    {label}
+                    {label === '-' && cursor > 0 && (
+                      <span className='text-lg text-yellowy/60 font-semibold'>
+                        |
+                      </span>
+                    )}
+                  </Button>
+                </div>
+              )
+            )
+            .filter(Boolean)}
         </div>
       )}
     </div>
@@ -252,6 +332,11 @@ const getTarget = (
 ) => {
   event.preventDefault()
   const canvas = document.getElementById(props.canvasId) as HTMLCanvasElement
+
+  if (!canvas) {
+    return { canvas, target: null }
+  }
+
   const target = detectCollision(canvas, props.canvasElements, event)
 
   return { canvas, target }

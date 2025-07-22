@@ -24,6 +24,7 @@ type RendererArgs = {
   instrument?: string
   selected?: boolean
   isLastInRow?: boolean
+  barsPerRow?: number
 }
 
 const renderChar = ({ instrument, el, context }: RendererArgs) =>
@@ -140,15 +141,18 @@ export const renderBar = ({
     return noteEl
   })
 
-  if (selected) renderSelection({ context, el: barEl })
+  if (selected) renderSelection({ context, el: barEl, barsPerRow })
 
   return [barEl, ...noteElements]
 }
-const renderSelection = ({ context, el }: RendererArgs) => {
+const renderSelection = ({ context, el, barsPerRow }: RendererArgs) => {
   context.beginPath()
-  context.moveTo(el.barIndex === 0 ? el.left + 2 : el.left - 2, el.top)
+  context.moveTo(
+    el.barIndex! % barsPerRow! === 0 ? el.left + 2 : el.left - 2,
+    el.top
+  )
   context.lineTo(
-    el.barIndex === 0 ? el.left + 2 : el.left - 2,
+    el.barIndex! % barsPerRow! === 0 ? el.left + 2 : el.left - 2,
     el.top + el.height
   )
   context.strokeStyle = '#ff0'
