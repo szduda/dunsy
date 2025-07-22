@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, memo, useEffect, useMemo, useState } from 'react'
+import { FC, memo, useEffect, useMemo, useRef, useState } from 'react'
 import { CanvasElement, PlayerChangeArgs } from '../types'
 import {
   BAR_GAP_PX,
@@ -42,6 +42,14 @@ export const Bars: FC<BarsProps> = ({
   demo = false,
   defaultWidth = 280,
 }) => {
+  let clickTimeout: NodeJS.Timeout | null = null
+  const clearClick = () => {
+    clickTimeout && clearTimeout(clickTimeout)
+    clickTimeout = null
+  }
+
+  const [cursor, setCursor] = useState(-1)
+
   const canvasId = `${instrument}-${id}-canvas`
   const _canvasWidth = useCanvasWidth({ canvasId, defaultWidth })
   const canvasWidth = demo ? 200 : _canvasWidth
@@ -70,13 +78,14 @@ export const Bars: FC<BarsProps> = ({
         large,
         barIndex,
         barsPerRow,
+        selected: cursor === barIndex,
       })
     )
     setCanvasElements(elements.flat())
   }
 
   // paint all bars
-  useEffect(renderAll, [hash, canvasId, canvasWidth, large, beatSize])
+  useEffect(renderAll, [hash, canvasId, canvasWidth, large, beatSize, cursor])
 
   // repaint transitioning bars on beat pulse
   useEffect(() => {
@@ -94,6 +103,7 @@ export const Bars: FC<BarsProps> = ({
         ...mutual,
         barIndex: activeIndex,
         highlighted: true,
+        selected: cursor === activeIndex,
       })
     }
 
@@ -121,6 +131,59 @@ export const Bars: FC<BarsProps> = ({
     [hash, barSize]
   )
 
+  const onPressed = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+    clearClick()
+    const { target } = getTarget(e, {
+      canvasId,
+      canvasElements,
+    })
+
+    setCursor(
+      cursor === target.element.barIndex ? -1 : (target.element.barIndex ?? -1)
+    )
+  }
+
+  const onCanvasPressStart = (
+    e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
+  ) => {
+    if (readonly) {
+      return
+    }
+    clickTimeout = setTimeout(() => onPressed(e), 600)
+  }
+
+  const onCanvasPressEnd = (
+    e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
+  ) => {
+    if (readonly) {
+      return
+    }
+
+    if (clickTimeout) {
+      clearClick()
+    } else {
+      return
+    }
+
+    const { target } = getTarget(e, {
+      canvasId,
+      canvasElements,
+    })
+    const { nextElements, nextEl } = rollNextNote(e, target, {
+      canvasId,
+      canvasElements,
+      instrument,
+    })
+    if ((target.element?.barIndex ?? -1) > -1 && nextElements) {
+      setCanvasElements(nextElements)
+      const _bars = [...bars]
+      const pattern = [..._bars[target.element.barIndex!]]
+      pattern[nextEl.noteIndex] = nextEl.note
+      _bars[target.element.barIndex!] = pattern.join('')
+      onChange?.({ instrument, newPattern: _bars.join('') })
+    }
+  }
+
   return (
     <div className='flex flex-col gap-2'>
       <canvas
@@ -132,26 +195,8 @@ export const Bars: FC<BarsProps> = ({
         }
         width={canvasWidth}
         className={cx(['bg-blacky h-auto', !readonly && 'cursor-pointer'])}
-        onMouseUp={(e) => {
-          if (readonly) {
-            return
-          }
-
-          const { nextElements, currentEl, nextEl } = rollNextNote(e, {
-            canvasId,
-            canvasElements,
-            instrument,
-          })
-          if ((currentEl?.barIndex ?? -1) > -1 && nextElements) {
-            setCanvasElements(nextElements)
-            const _bars = [...bars]
-            const pattern = [..._bars[currentEl.barIndex!]]
-            pattern[nextEl.noteIndex] = nextEl.note
-            _bars[currentEl.barIndex!] = pattern.join('')
-            console.log(instrument, pattern.join(''))
-            onChange?.({ instrument, newPattern: _bars.join('') })
-          }
-        }}
+        onMouseDown={onCanvasPressStart}
+        onMouseUp={onCanvasPressEnd}
         onContextMenu={(e) => e.preventDefault()}
       />
       {!readonly && !demo && (
@@ -192,23 +237,41 @@ export const BarsCanvas = memo(
     prev.beatSize === next.beatSize
 )
 
+type CanvasTarget = {
+  element: CanvasElement
+  index: number
+}
+
 // handle canvas interactions
+const getTarget = (
+  event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+  props: {
+    canvasId: string
+    canvasElements: CanvasElement[]
+  }
+) => {
+  event.preventDefault()
+  const canvas = document.getElementById(props.canvasId) as HTMLCanvasElement
+  const target = detectCollision(canvas, props.canvasElements, event)
+
+  return { canvas, target }
+}
+
 const rollNextNote = (
   event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+  target: CanvasTarget,
   props: {
     canvasId: string
     canvasElements: CanvasElement[]
     instrument: string
   }
 ) => {
-  event.preventDefault()
-  const canvas = document.getElementById(props.canvasId) as HTMLCanvasElement
-  const target = detectCollision(canvas, props.canvasElements, event)
-  const leftButtonClicked = event.button === 0
-
   if (target?.element?.type !== 'note') {
     return {}
   }
+  const canvas = document.getElementById(props.canvasId) as HTMLCanvasElement
+
+  const leftButtonClicked = event.button === 0
 
   const validNotes = Object.keys(font[props.instrument])
   const validNoteIndex = validNotes.indexOf(target.element.note!)
@@ -228,5 +291,5 @@ const rollNextNote = (
     context: canvas.getContext('2d')!,
   })
 
-  return { nextElements, currentEl: target.element, nextEl }
+  return { nextElements, nextEl }
 }
