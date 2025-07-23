@@ -5,6 +5,15 @@ import { BarsCanvas } from './canvas/BarsCanvas'
 import { PlayerChangeArgs } from './types'
 import { VolumeIcon } from './VolumeIcon'
 
+const generateHash = (text: string) => {
+  let hash = 0
+  for (const char of text) {
+    hash = (hash << 5) - hash + char.charCodeAt(0)
+    hash |= 0 // Constrain to 32bit integer
+  }
+  return hash.toString()
+}
+
 type Props = {
   title?: string
   pattern?: string
@@ -81,7 +90,7 @@ export const Track: FC<Props> = ({
             onChange={onChange}
             large={largeBars}
             bars={bars}
-            id={instrument + pattern}
+            id={generateHash(pattern)}
             activeIndex={isMuted ? undefined : Math.round(beat / 2) - 1}
             instrument={instrument}
           />

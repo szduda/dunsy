@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, Fragment, memo, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, memo, useEffect, useMemo, useState } from 'react'
 import { CanvasElement, PlayerChangeArgs } from '../types'
 import {
   BAR_GAP_PX,
@@ -31,7 +31,6 @@ type BarsProps = {
 }
 
 export const Bars: FC<BarsProps> = ({
-  id,
   bars,
   activeIndex = -1,
   large = false,
@@ -50,7 +49,7 @@ export const Bars: FC<BarsProps> = ({
 
   const [cursor, setCursor] = useState(-1)
 
-  const canvasId = `${instrument}-${id}-canvas`
+  const canvasId = `${instrument}-canvas`
   const _canvasWidth = useCanvasWidth({ canvasId, defaultWidth })
   const canvasWidth = demo ? 200 : _canvasWidth
   const viewportModifier =
@@ -63,6 +62,7 @@ export const Bars: FC<BarsProps> = ({
   const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([])
 
   const renderAll = () => {
+    console.log('renderAll', instrument, barsInPattern, barsPerRow, canvasWidth)
     const canvas = document.getElementById(canvasId) as HTMLCanvasElement
     const context = canvas.getContext('2d')!
     context.fillStyle = colors.b0
@@ -85,7 +85,16 @@ export const Bars: FC<BarsProps> = ({
   }
 
   // paint all bars
-  useEffect(renderAll, [hash, canvasId, canvasWidth, large, beatSize, cursor])
+  useEffect(renderAll, [
+    hash,
+    canvasId,
+    canvasWidth,
+    large,
+    beatSize,
+    cursor,
+    barsInPattern,
+    barsPerRow,
+  ])
 
   // repaint transitioning bars on beat pulse
   useEffect(() => {

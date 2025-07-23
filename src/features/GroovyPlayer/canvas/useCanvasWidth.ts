@@ -10,10 +10,15 @@ export const useCanvasWidth = ({ canvasId, defaultWidth = 280 }: Props) => {
   const [canvasWidth, setCanvasWidth] = useState(defaultWidth)
 
   useEffect(() => {
-    const handler = () => {
-      setCanvasWidth(
-        document.getElementById(canvasId)?.parentElement?.clientWidth ?? defaultWidth
-      )
+    const handler = (e?: Event) => {
+      const canvas = document.getElementById(canvasId)
+      if (!canvas) {
+        // TODO: investigate why it even happens
+        // console.log('resize', e, document, canvas, canvasId)
+      }
+
+      canvas &&
+        setCanvasWidth(canvas.parentElement?.clientWidth ?? defaultWidth)
     }
     handler()
 
