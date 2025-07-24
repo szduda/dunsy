@@ -40,11 +40,9 @@ A player, looper and mixer for WebAudioFont phrases.
     - since this is still a hack when such swing is applied the tempo needs to be quintupled, which gives a note duration of 60ms allowing to play 1000 notes per minute, that's 200 BPM of perceived tempo, and still include some margin to handle javascript intervals accuracy
     - if performance allows this factor (5) will be once increased to 6, the reason is a longer story :)
       
-## Next.js
+### Tips
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Handle new instrument sound
+- define sound asset and symbol in `DRUMS` array in `src/lib/MidiSounds/config.ts`
+- add new symbol to `vocabulary` in `src/features/SnippetApi/validate.ts`
+- add new symbol to `formValidRegexp` in `usePlayground.ts`

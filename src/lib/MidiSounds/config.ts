@@ -67,18 +67,20 @@ export const DRUMS = {
     instrument: 'djembe',
     volume: 2.4,
   },
-  djembeMuteTone: {
-    sampleId: 3322,
-    symbol: 'l',
-    instrument: 'djembe',
-    volume: 5,
-  },
-  djembeMuteSlap: {
-    sampleId: 3322,
-    symbol: 'c',
-    instrument: 'djembe',
-    volume: 5,
-  },
+
+  // djembeMuteTone: {
+  //   sampleId: 3322,
+  //   symbol: 'z',
+  //   instrument: 'djembe',
+  //   volume: 5,
+  // },
+  // djembeMuteSlap: {
+  //   sampleId: 3322,
+  //   symbol: 'c',
+  //   instrument: 'djembe',
+  //   volume: 5,
+  // },
+
   djembeFlamTone: {
     sampleId: 3319,
     symbol: 'r',
@@ -91,6 +93,19 @@ export const DRUMS = {
     instrument: 'djembe',
     volume: 5,
   },
+
+  // djembeFlamSlapTone: {
+  //   sampleId: 3319,
+  //   symbol: 'l',
+  //   instrument: 'djembe',
+  //   volume: 5,
+  // },
+  // djembeFlamToneSlap: {
+  //   sampleId: 3319,
+  //   symbol: 'k',
+  //   instrument: 'djembe',
+  //   volume: 5,
+  // },
 }
 
 // open: bts | mute: lc | flam: rf

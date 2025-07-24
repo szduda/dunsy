@@ -32,7 +32,9 @@ export const PatternInputPure: FC<PatternInputPureProps> = ({
           <>
             {!patternOk && (
               <>
-                <span className='text-redy-dark'>{allowedVocabulary} only</span>
+                <span className='text-redy-dark'>
+                  &quot;{allowedVocabulary}&quot; only
+                </span>
                 {' | '}
               </>
             )}

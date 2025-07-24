@@ -103,12 +103,18 @@ export const font: FontRenderer = {
     b: soundLowRenderer,
     t: soundMidRenderer,
     s: soundHighRenderer,
-    f: ttFlamRenderer,
-    p: ssFlamRenderer,
-    l: tsFlamRenderer,
-    k: stFlamRenderer,
-    g: bsFlamRenderer,
-    d: btFlamRenderer,
+
+    // z: muteMidRenderer,
+    // c: muteHighRenderer,
+
+    r: ttFlamRenderer,
+    f: ssFlamRenderer,
+
+    // k: tsFlamRenderer,
+    // l: stFlamRenderer,
+
+    // g: bsFlamRenderer,
+    // d: btFlamRenderer,
   },
   bell: {
     ...pauseSymbol,
