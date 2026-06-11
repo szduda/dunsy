@@ -6,6 +6,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 
@@ -31,18 +32,17 @@ export const PlayerSettingsProvider: FC<{ children: ReactNode }> = ({
   const [videoSync, setVideoSync] = useBooleanSetting('videoSync')
   const [largeBars, setLargeBars] = useBooleanSetting('largeBars')
 
-  return (
-    <Context.Provider
-      value={{
-        videoSync,
-        setVideoSync,
-        largeBars,
-        setLargeBars,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const context = useMemo(
+    () => ({
+      videoSync,
+      setVideoSync,
+      largeBars,
+      setLargeBars,
+    }),
+    [videoSync, largeBars]
   )
+
+  return <Context.Provider value={context}>{children}</Context.Provider>
 }
 
 const useBooleanSetting = (name: string) => {

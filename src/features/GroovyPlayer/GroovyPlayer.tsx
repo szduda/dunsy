@@ -1,9 +1,9 @@
-import { ComponentProps, FC, memo, useMemo, useState } from 'react'
+import { ComponentProps, FC, memo, useEffect, useMemo, useState } from 'react'
 import { PlayerControls } from './PlayerControls'
 import { Track } from './Track'
 import { useGroovyPlayer } from './useGroovyPlayer'
 import { SwingStyle } from '../SnippetApi/types'
-import { TTrack } from './types'
+import { PlayerChangeArgs, TTrack } from './types'
 import { cx } from '@/utils'
 import {
   AVSyncLabel,
@@ -15,13 +15,17 @@ import { PlayerSettingsProvider } from './PlayerSettingsContext'
 import { matchSignal } from './notation'
 import { useParams } from 'next/navigation'
 
-export type Props = ComponentProps<'div'> & {
+export type Props = {
   tracks: TTrack[]
   swingStyle?: SwingStyle
   signal?: string
   metronome?: boolean
   tempo?: number
   onTempoChange?(tempo: number): void
+  readonly?: boolean
+  onChange?(args: PlayerChangeArgs): void
+  divProps?: ComponentProps<'div'>
+  beatSize?: number
 }
 
 const GroovyPlayerEngine: FC<Props> = ({
@@ -31,10 +35,13 @@ const GroovyPlayerEngine: FC<Props> = ({
   metronome: initialMetronome = true,
   tempo: initialTempo = 110,
   onTempoChange,
-  ...divProps
+  readonly = true,
+  onChange,
+  divProps,
+  beatSize: _beatSize,
 }) => {
   const { slug } = useParams()
-  const { muted, setMuted, loopLength, beat, beatSize, ...rest } =
+  const { volumes, setVolumes, loopLength, beat, beatSize, ...rest } =
     useGroovyPlayer({
       slug: slug ? (typeof slug === 'string' ? slug : slug.join()) : '',
       tracks,
@@ -42,6 +49,7 @@ const GroovyPlayerEngine: FC<Props> = ({
       initialTempo,
       swingStyle,
       signal,
+      beatSize: _beatSize,
     })
 
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -65,6 +73,10 @@ const GroovyPlayerEngine: FC<Props> = ({
     rest.setTempo(tempo)
     onTempoChange?.(tempo)
   }
+
+  useEffect(() => {
+    rest.setTempo(initialTempo)
+  }, [initialTempo])
 
   const controls = useMemo(
     () => (
@@ -94,38 +106,47 @@ const GroovyPlayerEngine: FC<Props> = ({
 
   const tracksMemo = useMemo(
     () =>
-      tracks.map(({ title, instrument, pattern }, index) => {
-        const barSize = 2 * beatSize
-        const _signal = matchSignal(beatSize, signal, swingStyle)
-        const signalTrack = rest.signalActive && instrument === 'djembe'
-        const prolongedSignal =
-          '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
-        const excess = pattern.length % barSize
-        const _pattern =
-          excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern
-        const prolongedPattern = _pattern?.repeat(loopLength / _pattern.length)
+      tracks
+        .sort((t1, t2) => t1.title.localeCompare(t2.title))
+        .map(({ title, instrument, pattern }, index) => {
+          const barSize = 2 * beatSize
+          const _signal = matchSignal(beatSize, signal, swingStyle)
+          const signalTrack = rest.signalActive && instrument === 'djembe'
+          const prolongedSignal =
+            '-'.repeat(Math.max(loopLength - _signal?.length, 0)) + _signal
+          const excess = pattern.length % barSize
+          const _pattern = pattern + '-'.repeat(barSize - (excess || barSize))
+          // const prolongedPattern =
+          //   loopLength > _pattern.length && loopLength % _pattern.length === 0
+          //     ? _pattern?.repeat(loopLength / _pattern.length)
+          //     : _pattern
 
-        return (
-          <Track
-            key={`${title}${index}`}
-            title={signalTrack ? 'djembe signal' : title}
-            highlight={signalTrack}
-            beat={beat}
-            instrument={instrument}
-            pattern={
-              (rest.signalActive || rest.signalRequested) &&
-              instrument === 'djembe'
-                ? prolongedSignal
-                : prolongedPattern
-            }
-            muted={muted[instrument]}
-            setMuted={(value) => setMuted({ ...muted, [instrument]: value })}
-          />
-        )
-      }),
+          return (
+            <Track
+              beatSize={beatSize}
+              onChange={onChange}
+              readonly={readonly}
+              key={`${title}${index}`}
+              title={signalTrack ? 'djembe signal' : title}
+              highlight={signalTrack}
+              beat={beat}
+              instrument={instrument}
+              pattern={
+                (rest.signalActive || rest.signalRequested) &&
+                instrument === 'djembe'
+                  ? prolongedSignal
+                  : _pattern
+              }
+              volume={volumes[instrument] ?? 1}
+              setVolume={(value) =>
+                setVolumes({ ...volumes, [instrument]: value })
+              }
+            />
+          )
+        }),
     [
       beat,
-      muted,
+      volumes,
       rest.signalActive,
       rest.signalRequested,
       tracks.map((t) => t.pattern).join(),

@@ -7,10 +7,9 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { User } from '@firebase/auth'
 import { auth } from '@/firebaseAuth'
 import { LoginForm, logIn, getConfig, getUserData } from '@/features/admin'
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged, User } from 'firebase/auth'
 import { Loader } from '@/features/Layout/Loader'
 
 type UserData = {

@@ -29,13 +29,13 @@ export const DRUMS = {
     sampleId: 3314,
     symbol: 'o',
     instrument: 'kenkeni',
-    volume: 1.5,
+    volume: 1.8,
   },
   kenkeniClosed: {
     sampleId: 3315,
     symbol: 'x',
     instrument: 'kenkeni',
-    volume: 1.5,
+    volume: 2,
   },
   kenkeniOpen2: {
     sampleId: 3316,
@@ -59,38 +59,53 @@ export const DRUMS = {
     sampleId: 3318,
     symbol: 't',
     instrument: 'djembe',
-    volume: 3,
+    volume: 2.7,
   },
   djembeOpenSlap: {
     sampleId: 3320,
     symbol: 's',
     instrument: 'djembe',
-    volume: 2,
+    volume: 2.4,
   },
-  djembeMuteTone: {
-    sampleId: 3322,
-    symbol: 'l',
-    instrument: 'djembe',
-    volume: 5,
-  },
-  djembeMuteSlap: {
-    sampleId: 3322,
-    symbol: 'c',
-    instrument: 'djembe',
-    volume: 5,
-  },
+
+  // djembeMuteTone: {
+  //   sampleId: 3322,
+  //   symbol: 'z',
+  //   instrument: 'djembe',
+  //   volume: 5,
+  // },
+  // djembeMuteSlap: {
+  //   sampleId: 3322,
+  //   symbol: 'c',
+  //   instrument: 'djembe',
+  //   volume: 5,
+  // },
+
   djembeFlamTone: {
     sampleId: 3319,
     symbol: 'r',
     instrument: 'djembe',
-    volume: 8,
+    volume: 5,
   },
   djembeFlamSlap: {
     sampleId: 3319,
     symbol: 'f',
     instrument: 'djembe',
-    volume: 8,
+    volume: 5,
   },
+
+  // djembeFlamSlapTone: {
+  //   sampleId: 3319,
+  //   symbol: 'l',
+  //   instrument: 'djembe',
+  //   volume: 5,
+  // },
+  // djembeFlamToneSlap: {
+  //   sampleId: 3319,
+  //   symbol: 'k',
+  //   instrument: 'djembe',
+  //   volume: 5,
+  // },
 }
 
 // open: bts | mute: lc | flam: rf

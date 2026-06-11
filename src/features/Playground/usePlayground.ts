@@ -21,7 +21,7 @@ const defaultData: Partial<Snippet> = {
 }
 
 const formValidRegexp =
-  /swing|tempo|signal|patterns|dundunba|sangban|kenkeni|kenkeni2|bell|djembe|"[btsfxo-]+"|"\d{2,3}"|[<>-]{2,3}|[:,"{}]/g
+  /swing|beatSize|tempo|signal|patterns|volumes|dundunba|sangban|kenkeni|bell|djembe|"[btsfrxo-]+"|"\d{1,3}"|[<>-]{2,3}|[:,"{}\d\.]/g
 
 const validateUrlSeed = (decodedString: string) =>
   decodedString.replaceAll(formValidRegexp, '').length === 0
@@ -29,8 +29,10 @@ const validateUrlSeed = (decodedString: string) =>
 const getSnippetFromUrl = (encodedString: string) => {
   const decodedString = decompressFromEncodedURIComponent(encodedString)
   if (validateUrlSeed(decodedString)) {
-    return JSON.parse(decodedString) || {}
+    return JSON.parse(decodedString)
   }
+
+  return {}
 }
 
 const QUERY_PARAM = 'q'

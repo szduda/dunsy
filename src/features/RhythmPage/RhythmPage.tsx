@@ -11,13 +11,16 @@ export const RhythmPage: FC<{ data: Snippet }> = ({ data }) => (
         {data.title}
       </h1>
       {data.description && (
-        <p className='mt-6 md:mt-12 text-graye-light text-lg font-medium'>{data.description}</p>
+        <p className='mt-6 md:mt-12 text-graye-light text-lg font-medium'>
+          {data.description}
+        </p>
       )}
     </div>
     <GroovyPlayer
       signal={data.signal}
-      className='md:w-full mt-12 md:mt-16 -mx-2'
+      divProps={{ className: 'md:w-full mt-12 md:mt-16 -mx-2' }}
       swingStyle={data.swing}
+      beatSize={data.beatSize}
       tempo={data.tempo ? Number(data.tempo) : 110}
       tracks={Object.keys(data.patterns)
         .map((instrument) => ({

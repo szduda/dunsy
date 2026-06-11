@@ -5,12 +5,13 @@ import { TTrack } from './types'
 export const fillBeat = (
   loopLength: number,
   tracks: TTrack[],
-  muted: Record<string, boolean>,
+  volumes: Record<string, number>,
   metronome: boolean,
   signalActive: boolean,
-  signal: string
+  signal: string,
+  beatSize?: number
 ) => {
-  const barSize = loopLength % 3 ? 8 : 6
+  const barSize = 2 * (beatSize ?? (loopLength % 3 ? 4 : 3))
 
   const parse = (instrument: string, sound: string = 'x') => {
     const pattern =
@@ -33,7 +34,7 @@ export const fillBeat = (
     }
 
     const output = [...Array(DJEMBE_SOUNDS.length)].map(() => Array<boolean>())
-    const prolongedPattern = prolongPattern(pattern, loopLength)
+    const prolongedPattern = prolongPattern(pattern, loopLength, beatSize)
     ;[...prolongedPattern].forEach((note) =>
       DJEMBE_SOUNDS.forEach((sound, i) => output[i].push(note === sound))
     )
@@ -72,7 +73,7 @@ export const fillBeat = (
       .map(({ instrument, symbol }) => {
         if (instrument === 'shaker' && metronome) {
           return generateMetronome()
-        } else if (muted[instrument]) {
+        } else if (volumes[instrument] <= 0.01) {
           return false
         } else if (instrument === 'djembe') {
           return 'skip'
@@ -116,8 +117,12 @@ export const matchSignal = (
   }
 }
 
-const prolongPattern = (pattern: string, loopLength: number) => {
-  const barSize = loopLength % 3 ? 8 : 6
+const prolongPattern = (
+  pattern: string,
+  loopLength: number,
+  beatSize?: number
+) => {
+  const barSize = 2 * (beatSize ?? (loopLength % 3 ? 4 : 3))
   const excess = pattern.length % barSize
   const fullBeatPattern =
     excess > 0 ? pattern + '-'.repeat(barSize - excess) : pattern

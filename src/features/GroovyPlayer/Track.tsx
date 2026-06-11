@@ -1,156 +1,105 @@
-import { FC, memo, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import { cx } from '@/utils'
 import { usePlayerSettings } from './PlayerSettingsContext'
-import { Note } from './Note'
+import { BarsCanvas } from './canvas/BarsCanvas'
+import { PlayerChangeArgs } from './types'
+import { VolumeIcon } from './VolumeIcon'
+
+const generateHash = (text: string) => {
+  let hash = 0
+  for (const char of text) {
+    hash = (hash << 5) - hash + char.charCodeAt(0)
+    hash |= 0 // Constrain to 32bit integer
+  }
+  return hash.toString()
+}
 
 type Props = {
   title?: string
   pattern?: string
   instrument?: string
-  muted?: boolean
-  setMuted?(muted: boolean): void
+  volume?: number
+  setVolume?(volume: number): void
   beat?: number
   highlight?: boolean
+  onChange?(args: PlayerChangeArgs): void
+  readonly?: boolean
+  beatSize?: number
 }
 
 export const Track: FC<Props> = ({
   title,
   pattern = '',
   instrument = '',
-  muted,
-  setMuted,
-  beat = -1,
+  volume = 1,
+  setVolume,
+  beat: _beat = -1,
   highlight = false,
+  onChange,
+  readonly = true,
+  beatSize = 4,
 }) => {
-  const barSize =
-    [6, 8].find((length) => pattern.length % length === 0) ?? pattern.length
+  const { largeBars, videoSync } = usePlayerSettings()
+  const beat = videoSync ? _beat - 1 : _beat
+  const isMuted = volume === 0
 
   const bars = useMemo(
-    () => pattern?.match(RegExp(`.{1,${barSize}}`, 'g')) ?? [],
-    [pattern]
+    () => pattern?.match(RegExp(`.{1,${beatSize * 2}}`, 'g')) ?? [],
+    [pattern, beatSize]
   )
-
-  const { largeBars, videoSync } = usePlayerSettings()
-  beat = videoSync ? beat - 1 : beat
 
   return (
     <div
       className={cx([
-        'px-1 py-4 lg:px-8 border-b-2 border-graye-darker w-full md:px-4',
+        'px-1 py-4 lg:py-8 lg:px-8 border-b-2 border-graye-darker w-full md:px-4 flex flex-col gap-4',
         ,
         highlight && 'bg-redy-dark/25',
       ])}
     >
-      <label className='mx-1 flex items-center mb-4 w-fit cursor-pointer hover:opacity-75'>
-        <input
-          name={`mute ${instrument} track`}
-          className='mr-3 w-4 cursor-pointer'
-          type='checkbox'
-          aria-label={`${title} track ${muted ? 'off' : 'on'}`}
-          onChange={() => setMuted?.(!muted)}
-          checked={!muted}
-          disabled={!pattern}
-        />
-        <div className='text-graye-light'>{title}</div>
-      </label>
-      <div className={cx(['transition', muted && 'opacity-10'])}>
-        <div
-          className={cx([
-            'grid gap-0.5 gap-y-3 w-full',
-            largeBars
-              ? 'grid-cols-2 lg:grid-cols-4'
-              : 'grid-cols-4 lg:grid-cols-8',
-          ])}
-        >
-          {pattern ? (
-            <MemoBars
-              large={largeBars}
-              bars={bars}
-              id={instrument + pattern}
-              activeIndex={muted ? undefined : Math.round(beat / 2) - 1}
-              instrument={instrument}
-            />
-          ) : (
-            <div className='min-h-[48px] flex items-center justify-center text-graye-light'>
-              &nbsp;
-            </div>
-          )}
+      <div className='mx-1 flex items-center mb-4 gap-3'>
+        <div className='flex items-center gap-2 md:gap-8 cursor-pointer hover:opacity-75'>
+          <button
+            onClick={() => setVolume?.(isMuted ? 1 : 0)}
+            className='text-graye-light hover:opacity-75 transition-opacity flex items-center gap-2'
+            aria-label={`${isMuted ? 'unmute' : 'mute'} ${title} track`}
+            disabled={!pattern}
+          >
+            <VolumeIcon {...{ instrument, isMuted }} />
+            <div className='text-graye-light text-xl'>{title}</div>
+          </button>
+          <input
+            disabled={!pattern}
+            type='range'
+            min='0'
+            max='1'
+            step='0.01'
+            value={volume}
+            onChange={(e) => setVolume?.(parseFloat(e.target.value))}
+            className='w-20 h-3 rounded-lg appearance-none cursor-pointer slider py-.5'
+            style={{
+              background: `linear-gradient(to right, #e5e7ebaa 0%, #e5e7ebaa ${volume * 100}%, #374151aa ${volume * 100}%, #374151aa 100%)`,
+            }}
+          />
         </div>
+      </div>
+      <div className={cx(['transition', isMuted && 'opacity-10'])}>
+        {pattern ? (
+          <BarsCanvas
+            beatSize={beatSize}
+            readonly={readonly}
+            onChange={onChange}
+            large={largeBars}
+            bars={bars}
+            id={generateHash(pattern)}
+            activeIndex={isMuted ? undefined : Math.round(beat / 2) - 1}
+            instrument={instrument}
+          />
+        ) : (
+          <div className='min-h-[48px] flex items-center justify-center text-graye-light'>
+            &nbsp;
+          </div>
+        )}
       </div>
     </div>
   )
 }
-
-type BarsProps = {
-  id: string
-  bars: string[]
-  large?: boolean
-  activeIndex?: number
-  instrument: string
-}
-
-const findPatternLength = (bars: string[], maxN = 8, n: number = 1): number => {
-  if (n > maxN || n < 1 || n > bars.length) {
-    return bars.length
-  }
-
-  if (n === 1) {
-    return bars.some((b) => b !== bars[0])
-      ? findPatternLength(bars, maxN, 2)
-      : 1
-  }
-
-  const firstN = bars.slice(0, n).join()
-  const restNs = bars
-    .map((_, i) =>
-      i % n === 0 ? bars.slice(i, Math.min(bars.length, i + n)).join() : null
-    )
-    .filter(Boolean)
-
-  const allSame = !restNs.some((pattern) => pattern !== firstN)
-  return allSame ? n : findPatternLength(bars, maxN, n + 1)
-}
-
-export const Bars: FC<BarsProps> = ({
-  bars,
-  activeIndex = -1,
-  large = false,
-  instrument,
-}) => {
-  const barsInPattern = Math.max(findPatternLength(bars, 8), large ? 2 : 4)
-  return bars.slice(0, barsInPattern).map((bar, index) => (
-    <div
-      key={bar + index}
-      className={cx([
-        'flex w-full overflow-hidden',
-        barsInPattern > 1 && activeIndex % barsInPattern === index
-          ? 'bg-greeny-dark'
-          : 'bg-graye-darkest',
-        large ? 'rounded-3xl' : 'rounded-2xl',
-      ])}
-    >
-      {[...bar].map((note, noteIndex) => (
-        <Note
-          instrument={instrument}
-          key={noteIndex}
-          note={note}
-          large={large}
-          beat={(bar.length % 6 === 0
-            ? [0, 3]
-            : bar.length % 9 === 0
-              ? [0, 3, 6]
-              : [0, 4]
-          ).includes(noteIndex)}
-        />
-      ))}
-    </div>
-  ))
-}
-
-const MemoBars = memo(
-  Bars,
-  (prev, next) =>
-    prev.id === next.id &&
-    prev.activeIndex === next.activeIndex &&
-    prev.large === next.large
-)

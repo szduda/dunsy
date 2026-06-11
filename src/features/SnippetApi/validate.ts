@@ -2,7 +2,7 @@ import { Snippet } from './types'
 
 export const validate = (data: Snippet) => {
   let messages: string[] = []
-  const meter = getMeter(data)
+  const meter = data.beatSize ?? getMeter(data)
   const base = meter % 3 === 0 ? 3 : meter % 4 === 0 ? 4 : 0
 
   const options = {
@@ -85,6 +85,27 @@ const validateSwing = (
   }
 }
 
+const vocabulary: Record<
+  string,
+  {
+    regex: RegExp
+    allowedChars: string
+  }
+> = {
+  dun: {
+    regex: /^[ xo-]+$/,
+    allowedChars: 'xo-',
+  },
+  bell: {
+    regex: /^[ x-]+$/,
+    allowedChars: 'x-',
+  },
+  djembe: {
+    regex: /^[ btsfr-]+$/,
+    allowedChars: 'btsfr-',
+  },
+}
+
 const validateSignal = (
   messages: string[],
   data: Snippet,
@@ -100,7 +121,7 @@ const validateSignal = (
     messages.push('Incorrect signal legth, sir.')
   }
 
-  if (!/^[btsf-]+$/.test(signal)) {
+  if (vocabulary.djembe.regex.test(signal)) {
     messages.push('Incorrect signal notation. Use only symbols: b t s f -')
   }
 }
@@ -163,18 +184,6 @@ const getMeter = (data: Snippet) => {
 }
 
 export const vocabularyOk = (instrument: string, pattern: string) => {
-  let regex = /^[xo-]+$/
-  let vocabulary = 'xo-'
-
-  if (instrument === 'bell') {
-    regex = /^[x-]+$/
-    vocabulary = 'x-'
-  }
-
-  if (instrument === 'djembe') {
-    regex = /^[btsf-]+$/
-    vocabulary = 'btsf-'
-  }
-
-  return [regex.test(pattern), vocabulary] as const
+  const { regex, allowedChars } = vocabulary[instrument] ?? vocabulary.dun
+  return [regex.test(pattern), allowedChars] as const
 }

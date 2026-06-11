@@ -8,7 +8,7 @@ export const SoundLowIcon: Icon = (props) => (
     {...props}
   >
     <g clipPath='url(#clip0_301_19)'>
-      <circle cx='9' cy='9' r='9' fill='#D0DCDB' />
+      <circle cx='9' cy='9' r='9' fill='currentColor' />
     </g>
     <defs>
       <clipPath id='clip0_301_19'>

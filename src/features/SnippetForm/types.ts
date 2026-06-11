@@ -22,13 +22,14 @@ export const DEFAULT_FORM_DATA: Snippet = {
   swing: '',
   tempo: '110',
   signal: '',
+  beatSize: 4,
   patterns: {
-    dundunba: '',
-    sangban: '',
-    kenkeni: '',
-    kenkeni2: '',
-    bell: '',
-    djembe: '',
+    dundunba: '--------',
+    sangban: '--------',
+    kenkeni: '--------',
+    kenkeni2: '--------',
+    bell: '--------',
+    djembe: '--------',
   },
 }
 
