@@ -15,8 +15,13 @@ export const useGroovyPlayer = ({
   signal = '',
 }: GroovyPlayerHook) => {
   const midiSounds = useMidiSounds()
+
+  const getDefaultVolumes = () =>
+    tracks.reduce((acc, t) => ({ ...acc, [t.instrument]: 0.5 }), {})
+  const [volumes, setVolumes] =
+    useState<Record<string, number>>(getDefaultVolumes())
+
   const [tempo, setTempo] = useState(initialTempo)
-  const [volumes, setVolumes] = useState<Record<string, number>>({})
   const [metronome, setMetronome] = useState(initialMetronome)
   const [playing, setPlaying] = useState(false)
   const [swing, setSwing] = useState(swingStyle !== '')
@@ -53,6 +58,7 @@ export const useGroovyPlayer = ({
   }
 
   const stopLoop = () => {
+    console.log('stop')
     midiSounds?.current?.stopPlayLoop()
     setBeat(0)
     setNoteIndex(0)
@@ -73,18 +79,10 @@ export const useGroovyPlayer = ({
   const updateBeats = () => {
     if (!tracks || !tracks[0]) return
 
-    // Convert volumes to muted state for the fillBeat function
-    const muted = Object.fromEntries(
-      Object.entries(volumes).map(([instrument, volume]) => [
-        instrument,
-        volume === 0,
-      ])
-    )
-
     let beats = fillBeat(
       loopLength,
       tracks,
-      muted,
+      volumes,
       metronome,
       signalActive,
       matchSignal(beatSize, signal, swingStyle),
@@ -108,8 +106,11 @@ export const useGroovyPlayer = ({
   useEffect(() => {
     updateBeats()
     // stop playback if player is closed
-    return stopLoop
-  }, [signalActive, metronome, swing, beatSize])
+    return () => {
+      console.log('unm')
+      stopLoop()
+    }
+  }, [signalActive, metronome, swing, beatSize, JSON.stringify(volumes)])
 
   useEffect(() => {
     trueTempo.current = calcTrueTempo()
@@ -127,7 +128,7 @@ export const useGroovyPlayer = ({
   useEffect(() => {
     setTempo(initialTempo)
     setMetronome(initialMetronome)
-    setVolumes({})
+    setVolumes(getDefaultVolumes())
     setSwing(swingStyle !== '')
   }, [slug])
 

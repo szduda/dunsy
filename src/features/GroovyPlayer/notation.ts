@@ -5,7 +5,7 @@ import { TTrack } from './types'
 export const fillBeat = (
   loopLength: number,
   tracks: TTrack[],
-  muted: Record<string, boolean>,
+  volumes: Record<string, number>,
   metronome: boolean,
   signalActive: boolean,
   signal: string,
@@ -73,7 +73,7 @@ export const fillBeat = (
       .map(({ instrument, symbol }) => {
         if (instrument === 'shaker' && metronome) {
           return generateMetronome()
-        } else if (muted[instrument]) {
+        } else if (volumes[instrument] <= 0.01) {
           return false
         } else if (instrument === 'djembe') {
           return 'skip'
